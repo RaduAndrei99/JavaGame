@@ -14,8 +14,6 @@ public class QuitButton extends AbstractButton {
         this.static_image = Assets.quitButton_static;
         this.mouse_over = Assets.quitButton_mouseOver;
 
-        this.x = Toolkit.getDefaultToolkit().getScreenSize().width/2 - Assets.quitButton_static.getWidth()/2;
-        this.y = 800;
 
         current_image = static_image;
     }
@@ -40,7 +38,7 @@ public class QuitButton extends AbstractButton {
 
     @Override
     public void Draw(Graphics g) {
-        g.drawImage(current_image, x,y, null);
+        g.drawImage(current_image, x,y, w,h,null);
     }
 
     @Override

@@ -83,8 +83,8 @@ public class GameMouseListener implements MouseListener, MouseWheelListener {
     }
 
     public static Point getMouseCoordinates(){
-        return new Point((MouseInfo.getPointerInfo().getLocation().x- GameMouseListener.refs.GetGame().GetGameWindow().GetWndFrame().getX()),
-                MouseInfo.getPointerInfo().getLocation().y - GameMouseListener.refs.GetGame().GetGameWindow().GetWndFrame().getY());
+        return new Point((MouseInfo.getPointerInfo().getLocation().x - GameMouseListener.refs.GetGame().GetGameWindow().GetWndFrame().getX() - (int)refs.GetGame().getCamera().getXOffset()),
+                MouseInfo.getPointerInfo().getLocation().y - GameMouseListener.refs.GetGame().GetGameWindow().GetWndFrame().getY()  -(int) refs.GetGame().getCamera().getXOffset());
     }
 
     public void mouseClicked(MouseEvent e) {

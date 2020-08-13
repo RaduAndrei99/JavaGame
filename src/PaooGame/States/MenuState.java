@@ -25,9 +25,13 @@ public class MenuState extends State
     {
             ///Apel al constructorului clasei de baza.
         super(refLink);
-        playButton = new PlayButton(refLink,750, 400, 333, 72);
-        settingsButton = new SettingsButton(refLink,600,600, 636, 72);
-        quitButton = new QuitButton(refLink,770,800,289 , 72);
+
+     //   g.drawImage(Assets.mainMenuTitle, (int) (Toolkit.getDefaultToolkit().getScreenSize().width/2 - (0.78*Toolkit.getDefaultToolkit().getScreenSize().width/2)),(int)(0.0925*Toolkit.getDefaultToolkit().getScreenSize().height),(int)(0.78*Toolkit.getDefaultToolkit().getScreenSize().width),(int)(0.1111*Toolkit.getDefaultToolkit().getScreenSize().height), null);
+
+
+        playButton = new PlayButton(refLink,(int) (Toolkit.getDefaultToolkit().getScreenSize().width/2 - (0.17*Toolkit.getDefaultToolkit().getScreenSize().width/2)), (int)(0.37*Toolkit.getDefaultToolkit().getScreenSize().height), (int)(0.17*Toolkit.getDefaultToolkit().getScreenSize().width), (int)(0.07*Toolkit.getDefaultToolkit().getScreenSize().height));
+        settingsButton = new SettingsButton(refLink, (int) (Toolkit.getDefaultToolkit().getScreenSize().width/2 - (0.3312*Toolkit.getDefaultToolkit().getScreenSize().width/2)),(int)(0.5555*Toolkit.getDefaultToolkit().getScreenSize().height), (int)(0.3312*Toolkit.getDefaultToolkit().getScreenSize().width), (int)(0.07*Toolkit.getDefaultToolkit().getScreenSize().height));
+        quitButton = new QuitButton(refLink, (int) (Toolkit.getDefaultToolkit().getScreenSize().width/2 - (0.15*Toolkit.getDefaultToolkit().getScreenSize().width/2)),(int)(0.74*Toolkit.getDefaultToolkit().getScreenSize().height),(int)(0.15*Toolkit.getDefaultToolkit().getScreenSize().width) , (int)(0.07*Toolkit.getDefaultToolkit().getScreenSize().height));
     }
     /*! \fn public void Update()
         \brief Actualizeaza starea curenta a meniului.
@@ -40,7 +44,7 @@ public class MenuState extends State
         quitButton.Update();
 
         long currentTime =  System.currentTimeMillis()/1000;
-        //System.out.println(curentTime - oldTime);
+        //System.out.println(currentTime - oldTime);
         if(reset || currentTime - oldTime > 60){
             reset = false;
             reset();
@@ -60,8 +64,8 @@ public class MenuState extends State
     @Override
     public void Draw(Graphics g)
     {
-        g.drawImage(Assets.mainMenuWallpaper,0,0,null);
-        g.drawImage(Assets.mainMenuTitle, Toolkit.getDefaultToolkit().getScreenSize().width/2 - Assets.mainMenuTitle.getWidth()/2,100, null);
+        g.drawImage(Assets.mainMenuWallpaper,0,0,refLink.GetWidth(), refLink.GetHeight(),null);
+        g.drawImage(Assets.mainMenuTitle, (int) (Toolkit.getDefaultToolkit().getScreenSize().width/2 - (0.78*Toolkit.getDefaultToolkit().getScreenSize().width/2)),(int)(0.0925*Toolkit.getDefaultToolkit().getScreenSize().height),(int)(0.78*Toolkit.getDefaultToolkit().getScreenSize().width),(int)(0.1111*Toolkit.getDefaultToolkit().getScreenSize().height), null);
         playButton.Draw(g);
         settingsButton.Draw(g);
         quitButton.Draw(g);

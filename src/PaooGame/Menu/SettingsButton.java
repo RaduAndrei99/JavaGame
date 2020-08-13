@@ -19,8 +19,6 @@ public class SettingsButton extends AbstractButton {
         this.static_image = Assets.settingsButton_static;
         this.mouse_over = Assets.settingsButton_mouseOver;
 
-        this.x = Toolkit.getDefaultToolkit().getScreenSize().width/2 - Assets.settingsButton_static.getWidth()/2;
-        this.y = 600;
         current_image = static_image;
 
         elements = new ArrayList<>();
@@ -47,7 +45,7 @@ public class SettingsButton extends AbstractButton {
     @Override
     public void Draw(Graphics g) {
         if(!drawElements)
-            g.drawImage(current_image,x,y, null);
+            g.drawImage(current_image,x,y,w,h ,null);
         else
             for(AbstractButton element : elements)
                 element.Draw(g);

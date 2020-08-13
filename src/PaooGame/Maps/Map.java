@@ -1,6 +1,8 @@
 package PaooGame.Maps;
 
+import PaooGame.Input.GameMouseListener;
 import PaooGame.Items.Chest;
+import PaooGame.Items.Enemies.BigDemon;
 import PaooGame.Items.Enemies.Enemy;
 import PaooGame.Items.Item;
 import PaooGame.Items.Weapons.BasicSword;
@@ -9,6 +11,8 @@ import PaooGame.Items.Weapons.MightySword;
 import PaooGame.Maps.Rooms.LevelSpawner;
 import PaooGame.Maps.Rooms.Room;
 import PaooGame.RefLinks;
+import PaooGame.States.MenuState;
+import PaooGame.States.State;
 import PaooGame.Tiles.Tile;
 
 import java.awt.*;
@@ -55,6 +59,7 @@ public  class Map
         width = 40;
         height = 20;
         enemies = new ArrayList<>();
+        enemies.add(new BigDemon(r,500,500));
 
         levelSpawner = new LevelSpawner();
 
@@ -67,7 +72,7 @@ public  class Map
         chests = new LinkedList<>();
 
         discarded_items = new LinkedList<>();
-/*
+
         Chest temp_chest = new Chest(r,1100,3*48,50,50);
         temp_chest.putItem(new BasicSword(r,temp_chest.GetX(),temp_chest.GetY() + 10));
         chests.add(temp_chest);
@@ -79,7 +84,7 @@ public  class Map
         temp_chest = new Chest(r,1300,3*48,50,50);
         temp_chest.putItem(new MightySword(r,temp_chest.GetX(),temp_chest.GetY() + 10));
         chests.add(temp_chest);
-*/
+
     }
 
 
@@ -100,7 +105,6 @@ public  class Map
             return Tile.tiles[tiles[x][y]];
         else
             return null;
-
     }
 
     /*! \fn private void LoadWorld()
@@ -186,12 +190,16 @@ public  class Map
         return height;
     }
 
-
-
     public void Update() {
         resetSolidTiles();
         for(Enemy enemy : enemies)
             enemy.Update();
+        if(refs.GetGame().GetKeyManager().t) {
+            firstTime = true;
+            LoadWorld(); }
+/*
+        if(GameMouseListener.isLeftMousePressed)
+            System.out.println(GameMouseListener.getMouseCoordinates().x + " " + GameMouseListener.getMouseCoordinates().y);*/
     }
 
     public void Draw(Graphics g)
@@ -256,5 +264,6 @@ public  class Map
         }
         return currentMapLayout[currentPosition.x][currentPosition.y].getLayout()[x][y];
     }
+
 
 }
