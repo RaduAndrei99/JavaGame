@@ -11,6 +11,8 @@ public class Door extends Item {
     protected int i; /*!< retin pozitia camerei din matrice pe y*/
     protected int j;  /*!< retin pozitia camerei din matrice pe x*/
 
+    public boolean linked = false;
+
     public Door(RefLinks refLink, float x, float y, int width, int height) {
         super(refLink, x, y, width, height);
     }
@@ -39,6 +41,19 @@ public class Door extends Item {
 
     public int getJ(){
         return j;
+    }
+
+    public void openDoor(){
+        this.linked = true;
+    }
+
+
+    public void closeDoor(){
+        this.linked = false;
+    }
+
+    public boolean isLinked(){
+        return this.linked;
     }
 
 }

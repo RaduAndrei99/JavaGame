@@ -4,7 +4,7 @@ import PaooGame.Items.Character;
 import PaooGame.RefLinks;
 import PaooGame.Sound.Sound;
 
-public abstract class Enemy extends Character {
+public abstract class  Enemy extends Character {
     protected final int BASE_DAMAGE = 10;
 
     protected int damage;
