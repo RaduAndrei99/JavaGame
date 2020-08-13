@@ -56,8 +56,8 @@ public class Camera {
 
 
     public void draw(Graphics g){
-        //g.setColor(Color.CYAN);
-        //g.drawRect(this.x,this.y ,this.width,this.height);
+        g.setColor(Color.CYAN);
+        g.drawRect(this.x,this.y ,this.width,this.height);
     }
 
     public float getXOffset(){

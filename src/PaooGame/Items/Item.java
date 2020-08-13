@@ -6,8 +6,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 
-public abstract class Item
-{
+public abstract class Item {
     protected float x;                  /*!< Pozitia pe axa X a "tablei" de joc a imaginii entitatii.*/
     protected float y;                  /*!< Pozitia pe axa Y a "tablei" de joc a imaginii entitatii.*/
     protected int width;                /*!< Latimea imaginii entitatii.*/
@@ -20,15 +19,14 @@ public abstract class Item
 
     protected BufferedImage image;
 
-    public Item(RefLinks refLink, float x, float y, int width, int height)
-    {
+    public Item(RefLinks refLink, float x, float y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.refLink = refLink;
 
-        normalBounds = new Rectangle((int)x, (int)y, width, height);
+        normalBounds = new Rectangle((int) x, (int) y + height, width, height);
 
     }
 
@@ -36,55 +34,48 @@ public abstract class Item
 
     public abstract void Draw(Graphics g);
 
-    public float GetX()
-    {
+    public float GetX() {
         return x;
     }
 
-    public float GetY()
-    {
+    public float GetY() {
         return y;
     }
 
-    public int GetWidth()
-    {
+    public int GetWidth() {
         return width;
     }
 
-    public int GetHeight()
-    {
+    public int GetHeight() {
         return height;
     }
 
-    public void SetX(float x)
-    {
+    public void SetX(float x) {
         this.x = x;
     }
 
-    public void SetY(float y)
-    {
+    public void SetY(float y) {
         this.y = y;
     }
 
-    public void SetWidth(int width)
-    {
+    public void SetWidth(int width) {
         this.width = width;
     }
 
-    public void SetHeight(int height)
-    {
+    public void SetHeight(int height) {
         this.height = height;
     }
+
     protected void UpdateBoundsRectangle() {
         normalBounds.x = (int) x;
         normalBounds.y = (int) y;
     }
 
-    public Rectangle getNormalBounds(){
+    public Rectangle getNormalBounds() {
         return this.normalBounds;
     }
 
-    public BufferedImage getImage(){
+    public BufferedImage getImage() {
         return this.image;
     }
 

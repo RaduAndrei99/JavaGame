@@ -53,7 +53,7 @@ public class Hero extends Character///SINGLETON
 
         actionPerformed = false;
 
-        collision_offset_y = 50;
+        collision_offset_y = 0;
     }
 
 

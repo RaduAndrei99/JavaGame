@@ -16,7 +16,7 @@ public class SlimeFloor extends Tile
     {
         /// Apel al constructorului clasei de baza
         super(Assets.slimeFloor, id);
-        this.isSolid = true;
+        this.isSolid = false;
 
     }
 

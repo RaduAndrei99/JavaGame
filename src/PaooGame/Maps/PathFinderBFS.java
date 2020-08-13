@@ -112,7 +112,7 @@ public class PathFinderBFS implements GameObserver {
             while (current != start) {
                 list.add(current);
                 current = P.get(current);
-                System.out.println(current);
+               // System.out.println(current);
             }
         }
         return list;
