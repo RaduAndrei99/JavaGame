@@ -5,7 +5,8 @@ public class RoomFactory {
     public static final int ROOM_TYPES = 3;
 
     public static Room getRoom(int room) throws Exception {
-        if (room > 0 && room < ROOM_TYPES) {
+        room = 1;
+        if (room > 0 && room <= ROOM_TYPES) {
             switch (room) {
                 case 1:
                     return new RoomModel1();
@@ -19,7 +20,7 @@ public class RoomFactory {
                 default:
                     return new RoomModel1();
             }
-        }else
+        } else
             throw new Exception("Invalid argument");
     }
 }

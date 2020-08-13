@@ -13,7 +13,7 @@ public class GameMouseListener implements MouseListener, MouseWheelListener {
 
     static public boolean isRightMouseClicked = false;
     static public boolean isLeftMouseClicked = false;
-
+    static public boolean isLeftMouseReleased = true;
 
 
 
@@ -28,6 +28,7 @@ public class GameMouseListener implements MouseListener, MouseWheelListener {
         switch(mouseEvent.getModifiers()) {
             case InputEvent.BUTTON1_MASK: {
                 isLeftMousePressed = true;
+                isLeftMouseReleased = false;
                // System.out.println("That's the LEFT button");
                 break;
             }
@@ -50,6 +51,7 @@ public class GameMouseListener implements MouseListener, MouseWheelListener {
         isRightMousePressed = false;
         isLeftMouseClicked = false;
         isRightMouseClicked = false;
+        isLeftMouseReleased = true;
     }
 
     @Override
@@ -83,8 +85,8 @@ public class GameMouseListener implements MouseListener, MouseWheelListener {
     }
 
     public static Point getMouseCoordinates(){
-        return new Point((MouseInfo.getPointerInfo().getLocation().x- GameMouseListener.refs.GetGame().GetGameWindow().GetWndFrame().getX()),
-                MouseInfo.getPointerInfo().getLocation().y - GameMouseListener.refs.GetGame().GetGameWindow().GetWndFrame().getY());
+        return new Point((MouseInfo.getPointerInfo().getLocation().x - GameMouseListener.refs.GetGame().GetGameWindow().GetWndFrame().getX() + (int)refs.GetGame().getCamera().getXOffset()),
+                MouseInfo.getPointerInfo().getLocation().y - GameMouseListener.refs.GetGame().GetGameWindow().GetWndFrame().getY()  + (int) refs.GetGame().getCamera().getYOffset());
     }
 
     public void mouseClicked(MouseEvent e) {

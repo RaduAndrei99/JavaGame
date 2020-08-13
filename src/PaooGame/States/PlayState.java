@@ -2,14 +2,11 @@ package PaooGame.States;
 
 import PaooGame.Graphics.Assets;
 import PaooGame.Items.Hero;
-import PaooGame.Maps.LevelFactory;
 import PaooGame.RefLinks;
 import PaooGame.Maps.Map;
 import PaooGame.Sound.Music;
-import PaooGame.Sound.Sound;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 
 /*! \class public class PlayState extends State
     \brief Implementeaza/controleaza jocul.
@@ -30,7 +27,7 @@ public class PlayState extends State
             ///Apel al constructorului clasei de baza
         super(refLink);
             ///Construieste harta jocului
-        currentMap = LevelFactory.getMap(2,refLink);
+        currentMap = new Map(refLink);
             ///Referinta catre harta construita este setata si in obiectul shortcut pentru a fi accesibila si in alte clase ale programului.
         refLink.SetMap(currentMap);
             ///Construieste eroul
