@@ -14,8 +14,8 @@ public class PlayButton extends AbstractButton {
         this.static_image = Assets.playButton_static;
         this.mouse_over = Assets.playButton_mouseOver;
 
-        this.x = Toolkit.getDefaultToolkit().getScreenSize().width/2 - Assets.playButton_static.getWidth()/2;
-        this.y = 400;
+        //this.x = Toolkit.getDefaultToolkit().getScreenSize().width/2 - Assets.playButton_static.getWidth()/2;
+       // this.y = 400;
 
         current_image = static_image;
     }
@@ -41,7 +41,7 @@ public class PlayButton extends AbstractButton {
 
     @Override
     public void Draw(Graphics g) {
-        g.drawImage(current_image, x,y, null);
+        g.drawImage(current_image, x,y, w,h,null);
     }
 
     @Override

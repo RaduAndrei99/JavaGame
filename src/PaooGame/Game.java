@@ -210,9 +210,14 @@ public class Game implements Runnable {
                 /// Metoda join() pune un thread in asteptare panca cand un altul isi termina executie.
                 /// Totusi, in situatia de fata efectul apelului este de oprire a threadului.
                 Music.stopLastSong();
+                System.exit(0);
+
                 gameThread.join();
-            } catch (InterruptedException ex) {
-                /// In situatia in care apare o exceptie pe ecran vor fi afisate informatii utile pentru depanare.
+
+            }
+            catch(InterruptedException ex)
+            {
+                    /// In situatia in care apare o exceptie pe ecran vor fi afisate informatii utile pentru depanare.
                 ex.printStackTrace();
             }
         }

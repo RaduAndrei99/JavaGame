@@ -7,10 +7,7 @@ public class Main
 {
     public static void main(String[] args)
     {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth();
-        double height = screenSize.getHeight();
-        Game paooGame = new Game("PaooGame", (int)width, (int)height);
+        Game paooGame = new Game("PaooGame",Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
         paooGame.StartGame();
     }
 }

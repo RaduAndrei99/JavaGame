@@ -22,6 +22,7 @@ public class KeyManager implements KeyListener
     public boolean q;   /*!< Flag pentru tasta "Q" apasata.*/
     public boolean p;   /*!< Flag pentru tasta "P" apasata.*/
     public boolean r;   /*!< Flag pentru tasta "P" apasata.*/
+    public boolean t;   /*!< Flag pentru tasta "P" apasata.*/
 
     public boolean esc;
 
@@ -46,6 +47,7 @@ public class KeyManager implements KeyListener
         q = keys[KeyEvent.VK_Q];
         p = keys[KeyEvent.VK_P];
         r = keys[KeyEvent.VK_R];
+        t = keys[KeyEvent.VK_T];
 
         esc = keys[KeyEvent.VK_ESCAPE];
     }
