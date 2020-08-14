@@ -56,7 +56,7 @@ public class Camera {
 
 
     public void draw(Graphics g){
-        //g.setColor(Color.CYAN);
+       // g.setColor(Color.CYAN);
         //g.drawRect(this.x,this.y ,this.width,this.height);
     }
 

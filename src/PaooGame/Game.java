@@ -9,7 +9,6 @@ import PaooGame.Maps.PathFinderBFS;
 import PaooGame.Sound.Music;
 import PaooGame.Sound.Sound;
 import PaooGame.States.*;
-import PaooGame.Tiles.Tile;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -73,6 +72,9 @@ public class Game implements Runnable
     private State menuState;            /*!< Referinta catre menu.*/
     private State settingsState;        /*!< Referinta catre setari.*/
     private State aboutState;           /*!< Referinta catre about.*/
+
+    private State lastState;
+
     private KeyManager keyManager;      /*!< Referinta catre obiectul care gestioneaza intrarile din partea utilizatorului.*/
     private GameMouseListener mouseManager;
     private RefLinks refLink;            /*!< Referinta catre un obiect a carui sarcina este doar de a retine diverse referinte pentru a fi usor accesibile.*/
@@ -126,7 +128,7 @@ public class Game implements Runnable
         wnd.GetCanvas().addMouseWheelListener(mouseManager);
 
 
-        camera = new Camera(this.refLink,210,240,1500,600);
+        camera = new Camera(this.refLink, (int)(0.11 *Toolkit.getDefaultToolkit().getScreenSize().width), (int)(0.22 * Toolkit.getDefaultToolkit().getScreenSize().height), (int)(0.78 *  Toolkit.getDefaultToolkit().getScreenSize().width), (int)(0.55 *  Toolkit.getDefaultToolkit().getScreenSize().height));
 
 
         pathFinder = new PathFinderBFS(refLink);

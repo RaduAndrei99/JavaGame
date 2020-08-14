@@ -13,10 +13,13 @@ public abstract class Item
     protected int width;                /*!< Latimea imaginii entitatii.*/
     protected int height;               /*!< Inaltimea imaginii entitatii.*/
     protected Rectangle normalBounds;   /*!< Dreptunghiul de coliziune aferent starii obisnuite(spatiul ocupat de entitate in mod normal), poate fi mai mic sau mai mare decat dimensiunea imaginii sale.*/
+    protected Rectangle droopedBounds;
     protected RefLinks refLink;         /*!< O referinte catre un obiect "shortcut", obiect ce contine o serie de referinte utile in program.*/
 
     protected int collision_offset_x = 0;
     protected int collision_offset_y = 0;
+
+    protected boolean isDrooped = true;
 
     protected BufferedImage image;
 
@@ -86,6 +89,26 @@ public abstract class Item
 
     public BufferedImage getImage(){
         return this.image;
+    }
+
+    public Rectangle getDroppedBounds(){
+        return droopedBounds;
+    }
+
+    public void setDroppedBoundsX(int x){
+        this.droopedBounds.x = x;
+    }
+
+    public void setDroppedBoundsY(int y){
+        this.droopedBounds.y = y;
+    }
+
+    public void dropItem(){
+        isDrooped = true;
+    }
+
+    public void pickItem(){
+        isDrooped = false;
     }
 
 }
