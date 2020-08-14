@@ -218,7 +218,7 @@ public class Map {
             isRightReleased = true;
         }
         if (!(State.GetState() instanceof MenuState) && isRightReleased) {
-            
+
             isRightReleased = false;
         }
 
