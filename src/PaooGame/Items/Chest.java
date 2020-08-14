@@ -13,7 +13,6 @@ public class Chest extends Item {
     protected Item stored_item;
     protected boolean isOpened;
 
-    protected Rectangle stored_item_bounds;
 
     public Chest(RefLinks refLink, float x, float y, int width, int height) {
         super(refLink, x, y, width, height);
@@ -43,6 +42,7 @@ public class Chest extends Item {
         isOpened = true;
 
         refLink.GetMap().addDiscardedItem(stored_item);
+        stored_item = null;
     }
 
     public void putItem(Item item){
@@ -53,7 +53,4 @@ public class Chest extends Item {
         return isOpened;
     }
 
-    public Rectangle getStoredItemBounds(){
-        return stored_item_bounds;
-    }
 }

@@ -83,7 +83,7 @@ public class PlayState extends State
     @Override
     public void reset() {
         Music.stopLastSong();
-        Music.playSound(Music.dungeaon_cave);
+        Music.playSound(Music.dungeon_cave);
     }
 
     public void setHeroDead(boolean v){

@@ -52,7 +52,7 @@ public class Hero extends Character///SINGLETON
 
         actionPerformed = false;
 
-        collision_offset_y = 0;
+        //collision_offset_y = 50;
     }
 
 
@@ -146,9 +146,9 @@ public class Hero extends Character///SINGLETON
                     }
                 }
 
-            if (!actionPerformed)
-                for (Item item : refLink.GetMap().getDiscardedItems()) {
-                    if (item != null && RectangleCollisionDetector.checkCollision(this.normalBounds, item.getNormalBounds())) {
+            if(!actionPerformed)
+                for(Item item : refLink.GetMap().getDiscardedItems()) {
+                    if (item != null && RectangleCollisionDetector.checkCollision(this.normalBounds, item.getDroppedBounds())) {
                         this.inventory.putItemInInventory(item);
                         this.setWeapon();
                         refLink.GetMap().removeItemFromDiscarded(item);

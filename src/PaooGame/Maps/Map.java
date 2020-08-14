@@ -2,7 +2,6 @@ package PaooGame.Maps;
 
 import PaooGame.Input.GameMouseListener;
 import PaooGame.Items.Chest;
-import PaooGame.Items.Enemies.BigDemon;
 import PaooGame.Items.Enemies.Enemy;
 import PaooGame.Items.Item;
 import PaooGame.Items.Weapons.BasicSword;
@@ -16,7 +15,7 @@ import PaooGame.States.State;
 import PaooGame.Tiles.Tile;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -62,9 +61,7 @@ public class Map {
         width = 40;
         height = 20;
         enemies = new ArrayList<>();
-        //enemies.add(new BigDemon(r,500,500));
-
-        levelSpawner = new LevelSpawner();
+        // enemies.add(new BigDemon(r,500,500));
 
         levelSpawner = new LevelSpawner();
 
@@ -262,24 +259,13 @@ public class Map {
             if (item != null) {
                 item.Draw(g);
             }
-
         }
-        for (Item item : discarded_items) {
-            float angle = 90;
-
-            if (item != null) {
-                AffineTransform at = AffineTransform.getTranslateInstance(item.GetX() - refs.GetGame().getCamera().getXOffset(), item.GetY() - refs.GetGame().getCamera().getYOffset() + 50);
-                at.rotate(Math.toRadians(angle), (float) this.width / 2, this.height / 2);
-                at.scale(3, 3);
-                Graphics2D g2d = (Graphics2D) g;
-
-                g2d.drawImage(item.getImage(), at, null);
-                g2d.drawRect((int) (item.getNormalBounds().x - refs.GetGame().getCamera().getXOffset()), (int) (item.getNormalBounds().y - refs.GetGame().getCamera().getYOffset()), item.getNormalBounds().width, item.getNormalBounds().height);
-            }
-        }
-
         for (Chest chest : chests)
             chest.Draw(g);
+
+        for (Item item : discarded_items) {
+            item.Draw(g);
+        }
 
         for (Enemy enemy : enemies)
             enemy.Draw(g);

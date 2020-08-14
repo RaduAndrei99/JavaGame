@@ -61,6 +61,7 @@ public class Inventory extends UIElement {
         if(!isInventoryFull() && item != null)
             for(InventoryCell cell : inventory_slots) {
                 if (!cell.isSlotOccupied()) {
+                    item.pickItem();
                     cell.putItemInSlot(item);
                     stored_items++;
                     break;
@@ -90,8 +91,7 @@ public class Inventory extends UIElement {
         if(stored_items>0) {
             Item temp = this.inventory_slots[selected_slot].removeStoredItem();
             if (temp != null) {
-                temp.SetX(Hero.GetInstance().GetX());
-                temp.SetY(Hero.GetInstance().GetY());
+                temp.dropItem();
                 refs.GetMap().addDiscardedItem(temp);
 
                 stored_items--;

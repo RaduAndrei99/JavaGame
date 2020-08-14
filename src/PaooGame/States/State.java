@@ -52,4 +52,7 @@ public abstract class State
     public void setHeroDead(boolean v){
         isHeroDead = v;
     }
+    public static void setPreviousState(){
+        currentState = previousState;
+    }
 }

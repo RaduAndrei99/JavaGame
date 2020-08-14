@@ -30,7 +30,7 @@ public class GameMouseListener implements MouseListener, MouseWheelListener {
             case InputEvent.BUTTON1_MASK: {
                 isLeftMousePressed = true;
                 isLeftMouseReleased = false;
-               // System.out.println("That's the LEFT button");
+                // System.out.println("That's the LEFT button");
                 break;
             }
             case InputEvent.BUTTON2_MASK: {

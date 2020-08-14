@@ -1,13 +1,9 @@
 package PaooGame.States;
 
 import PaooGame.Graphics.Assets;
-import PaooGame.Items.Chest;
-import PaooGame.Menu.PlayButton;
-import PaooGame.Menu.QuitButton;
-import PaooGame.Menu.SettingsButton;
+import PaooGame.UI.Menu.*;
 import PaooGame.RefLinks;
 import PaooGame.Sound.Music;
-import PaooGame.Sound.Sound;
 
 import java.awt.*;
 
@@ -16,22 +12,24 @@ import java.awt.*;
  */
 public class MenuState extends State
 {
-    PlayButton playButton;
-    SettingsButton settingsButton;
-    QuitButton quitButton;
+    MenuElement mainMenu;
+
+    MainMenuWallpaper wallpaper;
+    MainMenuTitle title;
+
     long oldTime ;
 
-    public MenuState(RefLinks refLink)
-    {
-            ///Apel al constructorului clasei de baza.
+    public MenuState(RefLinks refLink) {
+        ///Apel al constructorului clasei de baza.
         super(refLink);
 
-     //   g.drawImage(Assets.mainMenuTitle, (int) (Toolkit.getDefaultToolkit().getScreenSize().width/2 - (0.78*Toolkit.getDefaultToolkit().getScreenSize().width/2)),(int)(0.0925*Toolkit.getDefaultToolkit().getScreenSize().height),(int)(0.78*Toolkit.getDefaultToolkit().getScreenSize().width),(int)(0.1111*Toolkit.getDefaultToolkit().getScreenSize().height), null);
+        mainMenu = new MainMenu(refLink);
 
+        wallpaper = new MainMenuWallpaper();
 
-        playButton = new PlayButton(refLink,(int) (Toolkit.getDefaultToolkit().getScreenSize().width/2 - (0.17*Toolkit.getDefaultToolkit().getScreenSize().width/2)), (int)(0.37*Toolkit.getDefaultToolkit().getScreenSize().height), (int)(0.17*Toolkit.getDefaultToolkit().getScreenSize().width), (int)(0.07*Toolkit.getDefaultToolkit().getScreenSize().height));
-        settingsButton = new SettingsButton(refLink, (int) (Toolkit.getDefaultToolkit().getScreenSize().width/2 - (0.3312*Toolkit.getDefaultToolkit().getScreenSize().width/2)),(int)(0.5555*Toolkit.getDefaultToolkit().getScreenSize().height), (int)(0.3312*Toolkit.getDefaultToolkit().getScreenSize().width), (int)(0.07*Toolkit.getDefaultToolkit().getScreenSize().height));
-        quitButton = new QuitButton(refLink, (int) (Toolkit.getDefaultToolkit().getScreenSize().width/2 - (0.15*Toolkit.getDefaultToolkit().getScreenSize().width/2)),(int)(0.74*Toolkit.getDefaultToolkit().getScreenSize().height),(int)(0.15*Toolkit.getDefaultToolkit().getScreenSize().width) , (int)(0.07*Toolkit.getDefaultToolkit().getScreenSize().height));
+        title = new MainMenuTitle();
+
+        //   g.drawImage(Assets.mainMenuTitle, (int) (Toolkit.getDefaultToolkit().getScreenSize().width/2 - (0.78*Toolkit.getDefaultToolkit().getScreenSize().width/2)),(int)(0.0925*Toolkit.getDefaultToolkit().getScreenSize().height),(int)(0.78*Toolkit.getDefaultToolkit().getScreenSize().width),(int)(0.1111*Toolkit.getDefaultToolkit().getScreenSize().height), null);
     }
     /*! \fn public void Update()
         \brief Actualizeaza starea curenta a meniului.
@@ -39,9 +37,7 @@ public class MenuState extends State
     @Override
     public void Update()
     {
-        playButton.Update();
-        settingsButton.Update();
-        quitButton.Update();
+        mainMenu.Update();
 
         long currentTime =  System.currentTimeMillis()/1000;
         //System.out.println(currentTime - oldTime);
@@ -64,14 +60,16 @@ public class MenuState extends State
     @Override
     public void Draw(Graphics g)
     {
-        g.drawImage(Assets.mainMenuWallpaper,0,0,refLink.GetWidth(), refLink.GetHeight(),null);
-        g.drawImage(Assets.mainMenuTitle, (int) (Toolkit.getDefaultToolkit().getScreenSize().width/2 - (0.78*Toolkit.getDefaultToolkit().getScreenSize().width/2)),(int)(0.0925*Toolkit.getDefaultToolkit().getScreenSize().height),(int)(0.78*Toolkit.getDefaultToolkit().getScreenSize().width),(int)(0.1111*Toolkit.getDefaultToolkit().getScreenSize().height), null);
-        playButton.Draw(g);
-        settingsButton.Draw(g);
-        quitButton.Draw(g);
+        wallpaper.Draw(g);
+        title.Draw(g);
+        mainMenu.Draw(g);
 
-        //g.drawImage(Assets.inventory_cell_selected,500,500,50,50,null);
-       // g.setColor(Color.GREEN);
-       // g.drawRect(500,500,50,50);
+        //g.drawImage(Assets.minusButton,500,500,20,20,null);
+        //g.setColor(Color.GREEN);
+        //g.drawRect(500,500,20,20);
+    }
+
+    public void setSettingsMenu(){
+
     }
 }

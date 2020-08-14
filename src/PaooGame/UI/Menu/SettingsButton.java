@@ -1,4 +1,4 @@
-package PaooGame.Menu;
+package PaooGame.UI.Menu;
 
 import PaooGame.Graphics.Assets;
 import PaooGame.Input.GameMouseListener;
@@ -25,24 +25,6 @@ public class SettingsButton extends AbstractButton {
     }
 
     @Override
-    public void Update() {
-        if(MouseOver()) {
-            this.current_image = mouse_over;
-            if(!sound_played) {
-                Sound.playSound(Sound.mouse_over);
-                sound_played = true;
-            }
-        }
-        else {
-            this.current_image = static_image;
-            sound_played = false;
-        }
-
-        if(GameMouseListener.isLeftMousePressed && MouseOver())
-            drawElements = true;
-    }
-
-    @Override
     public void Draw(Graphics g) {
         if(!drawElements)
             g.drawImage(current_image,x,y,w,h ,null);
@@ -54,15 +36,7 @@ public class SettingsButton extends AbstractButton {
 
     @Override
     void isClicked() {
-
-    }
-
-    @Override
-    boolean MouseOver() {
-        int mX = GameMouseListener.getMouseCoordinates().x;
-        int mY = GameMouseListener.getMouseCoordinates().y;
-
-        return (this.x < mX) && (mX < (this.x + this.w)) && (this.y < mY) && (mY < (this.y + this.h));
+        refs.GetGame().SetSettingsState();
     }
 
     public void addElement(AbstractButton b){

@@ -92,10 +92,12 @@ public class Assets
 
     public static BufferedImage water;
 
-    public static BufferedImage tree;
 
     public static BufferedImage mainMenuWallpaper;
     public static BufferedImage mainMenuTitle;
+
+    public static BufferedImage settingsWallpaper;
+
 
     public static BufferedImage hero;
 
@@ -107,6 +109,18 @@ public class Assets
 
     public static BufferedImage quitButton_static;
     public static BufferedImage quitButton_mouseOver;
+
+    public static BufferedImage plusButton_static;
+    public static BufferedImage plusButton_mouseOver;
+
+    public static BufferedImage minusButton_static;
+    public static BufferedImage minusButton_mouseOver;
+
+    public static BufferedImage backButton_static;
+    public static BufferedImage backButton_mouseOver;
+
+    public static BufferedImage volumeButton_static;
+
 
     public static BufferedImage chest_closed;
     public static BufferedImage chest_nearly_opened;
@@ -179,6 +193,8 @@ public class Assets
         mainMenuWallpaper = ImageLoader.LoadImage("/Textures/wallpaper.png");
         mainMenuTitle = ImageLoader.LoadImage("/Textures/title1.png");
 
+        settingsWallpaper = ImageLoader.LoadImage("/Textures/wallpaper_settings.png");
+
         playButton_static = ImageLoader.LoadImage("/Textures/play_static.png");
         playButton_mouseOver = ImageLoader.LoadImage("/Textures/play_mouse_over.png");
 
@@ -187,6 +203,9 @@ public class Assets
 
         quitButton_static = ImageLoader.LoadImage("/Textures/quit_static.png");
         quitButton_mouseOver = ImageLoader.LoadImage("/Textures/quit_mouse_over.png");
+
+        backButton_static = ImageLoader.LoadImage("/Textures/back_static.png");
+        backButton_mouseOver = ImageLoader.LoadImage("/Textures/back_mouse_over.png");
 
         blood0 = ImageLoader.LoadImage("/Textures/1/1_0.png");
         blood1 = ImageLoader.LoadImage("/Textures/1/1_1.png");
@@ -226,7 +245,6 @@ public class Assets
         wallWithCross = ImageLoader.LoadImage("/Textures/wall_with_cross.png");
         wallWithCrossReversed = ImageLoader.LoadImage("/Textures/wall_with_cross_reversed.png");
 
-
         pillarTop = sheet.crop( 96, 80, 16 ,16);
         pillarMid = sheet.crop( 96, 96, 16 ,16);
         pillarFloor = sheet.crop( 96, 112, 16 ,16);
@@ -234,5 +252,12 @@ public class Assets
         slimeMid = sheet.crop( 64, 80, 16, 16);
         slimeFloor = sheet.crop( 64, 96, 16, 16);
 
+        plusButton_static = ImageLoader.LoadImage("/Textures/plus.png");
+        plusButton_mouseOver = ImageLoader.LoadImage("/Textures/plus_mouse_over.png");
+
+        minusButton_static = ImageLoader.LoadImage("/Textures/minus.png");
+        minusButton_mouseOver = ImageLoader.LoadImage("/Textures/minus_mouse_over.png");
+
+        volumeButton_static =  ImageLoader.LoadImage("/Textures/volume_static.png");
     }
 }
