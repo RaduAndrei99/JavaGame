@@ -24,8 +24,7 @@ import java.util.List;
 /*! \class public class Map
     \brief Implementeaza notiunea de harta a jocului.
  */
-public  class Map
-{
+public class Map {
     protected final int width;          /*!< Latimea hartii in numar de dale.*/
     protected final int height;         /*!< Inaltimea hartii in numar de dale.*/
     public static int[][] tiles;     /*!< Referinta catre o matrice cu codurile dalelor ce vor construi harta.*/
@@ -49,8 +48,10 @@ public  class Map
 
     protected Point currentPosition;
 
-    private Boolean isClicked = false;
-    private Boolean isReleased = false;
+    private Boolean isLeftClicked = false;
+    private Boolean isLeftReleased = false;
+    private Boolean isRightClicked = false;
+    private Boolean isRightReleased = false;
 
     /*! \fn public Map()
         \brief Constructorul de initializare al clasei.
@@ -61,7 +62,7 @@ public  class Map
         width = 40;
         height = 20;
         enemies = new ArrayList<>();
-        enemies.add(new BigDemon(r,500,500));
+        //enemies.add(new BigDemon(r,500,500));
 
         levelSpawner = new LevelSpawner();
 
@@ -195,21 +196,38 @@ public  class Map
 
     public void Update() {
         if (GameMouseListener.isLeftMousePressed) {
-            isClicked = true;
-            isReleased = false;
+            isLeftClicked = true;
+            isLeftReleased = false;
         }
-        if (GameMouseListener.isLeftMouseReleased && isClicked) {
-            isClicked = false;
-            isReleased = true;
+        if (GameMouseListener.isLeftMouseReleased && isLeftClicked) {
+            isLeftClicked = false;
+            isLeftReleased = true;
         }
-        if (!(State.GetState() instanceof MenuState) && isReleased) {
-            System.out.println(GameMouseListener.getMouseCoordinates().x + " " + GameMouseListener.getMouseCoordinates().y);
-            getRoom().addChest(new Chest(refs, GameMouseListener.getMouseCoordinates().x, GameMouseListener.getMouseCoordinates().y, 50, 50));
-            isReleased = false;
+        if (!(State.GetState() instanceof MenuState) && isLeftReleased) {
+            Chest temp_chest = new Chest(refs, GameMouseListener.getMouseCoordinates().x, GameMouseListener.getMouseCoordinates().y, 50, 50);
+            temp_chest.putItem(new MightySword(refs, temp_chest.GetX(), temp_chest.GetY() + 10));
+            getRoom().addChest(temp_chest);
+            isLeftReleased = false;
         }
+        if (GameMouseListener.isRightMousePressed) {
+            isRightClicked = true;
+            isRightReleased = false;
+        }
+        if (GameMouseListener.isRightMouseReleased && isRightClicked) {
+            isRightClicked = false;
+            isRightReleased = true;
+        }
+        if (!(State.GetState() instanceof MenuState) && isRightReleased) {
+            
+            isRightReleased = false;
+        }
+
         resetSolidTiles();
         for (Enemy enemy : enemies)
             enemy.Update();
+        for (Item item : getRoom().getItemList()) {
+            item.Update();
+        }
     }
 
     public void Draw(Graphics g) {
@@ -268,14 +286,14 @@ public  class Map
     }
 
     int currentLevelMap(int x, int y) {
-        if(firstTime) {
+        if (firstTime) {
             this.currentMapLayout = levelSpawner.getLevel();
             firstTime = false;
         }
         return currentMapLayout[currentPosition.x][currentPosition.y].getLayout()[x][y];
     }
 
-    Room getRoom() {
+    public Room getRoom() {
         return currentMapLayout[currentPosition.x][currentPosition.y];
     }
 

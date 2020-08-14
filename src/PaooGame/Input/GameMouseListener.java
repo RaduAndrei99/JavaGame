@@ -14,6 +14,7 @@ public class GameMouseListener implements MouseListener, MouseWheelListener {
     static public boolean isRightMouseClicked = false;
     static public boolean isLeftMouseClicked = false;
     static public boolean isLeftMouseReleased = true;
+    static public boolean isRightMouseReleased = true;
 
 
 
@@ -38,6 +39,7 @@ public class GameMouseListener implements MouseListener, MouseWheelListener {
             }
             case InputEvent.BUTTON3_MASK: {
                 isRightMousePressed = true;
+                isRightMouseReleased = false;
                // System.out.println("That's the RIGHT button");
                 break;
             }
@@ -52,6 +54,7 @@ public class GameMouseListener implements MouseListener, MouseWheelListener {
         isLeftMouseClicked = false;
         isRightMouseClicked = false;
         isLeftMouseReleased = true;
+        isRightMouseReleased = true;
     }
 
     @Override
