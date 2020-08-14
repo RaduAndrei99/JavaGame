@@ -35,10 +35,6 @@ public  class Map
 
     protected boolean firstTime = true;
 
-    Room [][]currentMapLayout;
-
-    protected boolean firstTime = true;
-
     protected final List<Enemy> enemies;
 
     protected RefLinks refs;
@@ -53,12 +49,9 @@ public  class Map
 
     protected Point currentPosition;
 
-<<<<<<< HEAD
     private Boolean isClicked = false;
     private Boolean isReleased = false;
 
-=======
->>>>>>> 4fcd587a980f96456e6198420a709264088d63d1
     /*! \fn public Map()
         \brief Constructorul de initializare al clasei.
 
@@ -76,18 +69,13 @@ public  class Map
 
         refs = r;
 
-<<<<<<< HEAD
         currentPosition = new Point(LevelSpawner.DEFAULT_ROOMS_HEIGHT / 2, LevelSpawner.DEFAULT_ROOMS_WIDTH / 2);
-=======
-        currentPosition = new Point(LevelSpawner.DEFAULT_ROOMS_HEIGHT /2, LevelSpawner.DEFAULT_ROOMS_WIDTH /2);
->>>>>>> 4fcd587a980f96456e6198420a709264088d63d1
 
         LoadWorld();
 
         chests = new LinkedList<>();
 
         discarded_items = new LinkedList<>();
-<<<<<<< HEAD
 /*
         Chest temp_chest = new Chest(r,1100,3*48,50,50);
         temp_chest.putItem(new BasicSword(r,temp_chest.GetX(),temp_chest.GetY() + 10));
@@ -103,23 +91,6 @@ public  class Map
 */
     }
 
-=======
-
-        Chest temp_chest = new Chest(r,1100,3*48,50,50);
-        temp_chest.putItem(new BasicSword(r,temp_chest.GetX(),temp_chest.GetY() + 10));
-        chests.add(temp_chest);
-
-        temp_chest = new Chest(r,1200,3*48,50,50);
-        temp_chest.putItem(new GoldenSword(r,temp_chest.GetX(),temp_chest.GetY() + 10));
-        chests.add(temp_chest);
-
-        temp_chest = new Chest(r,1300,3*48,50,50);
-        temp_chest.putItem(new MightySword(r,temp_chest.GetX(),temp_chest.GetY() + 10));
-        chests.add(temp_chest);
-
-    }
-
->>>>>>> 4fcd587a980f96456e6198420a709264088d63d1
 
     /*! \fn public Tile GetTile(int x, int y)
         \brief Intoarce o referinta catre dala aferenta codului din matrice de dale.
@@ -221,7 +192,6 @@ public  class Map
         return height;
     }
 
-<<<<<<< HEAD
 
     public void Update() {
         if (GameMouseListener.isLeftMousePressed) {
@@ -260,44 +230,6 @@ public  class Map
                         g.setColor(Color.BLUE);
 
                     } else {
-=======
-    public void Update() {
-        resetSolidTiles();
-        for(Enemy enemy : enemies)
-            enemy.Update();
-        if(refs.GetGame().GetKeyManager().t) {
-            firstTime = true;
-            LoadWorld(); }
-/*
-        if(GameMouseListener.isLeftMousePressed)
-            System.out.println(GameMouseListener.getMouseCoordinates().x + " " + GameMouseListener.getMouseCoordinates().y);*/
-    }
-
-    public void Draw(Graphics g)
-    {
-        Tile t;
-
-        int xStart = (int) Math.max(0, refs.GetGame().getCamera().getXOffset()/Tile.TILE_WIDTH);
-        int xEnd = (int) Math.min(width,(refs.GetGame().getCamera().getXOffset() + refs.GetGame().GetWidth()) / Tile.TILE_WIDTH +1);
-        int yStart = (int) Math.max(0,refs.GetGame().getCamera().getYOffset()/Tile.TILE_HEIGHT);
-        int yEnd  = (int) Math.min(height,(refs.GetGame().getCamera().getYOffset() + refs.GetGame().GetHeight()) / Tile.TILE_WIDTH + 1);
-
-        ///Se parcurge matricea de dale (codurile aferente) si se deseneaza harta respectiva
-        for(int y = yStart; y < yEnd; y++)
-        {
-            for(int x = xStart; x <xEnd; x++)
-            {
-                t = GetTile(y,x);
-                if(t != null) {
-                    t.Draw(g, (int)(x * Tile.TILE_HEIGHT - this.refs.GetGame().getCamera().getXOffset()), (int)(y * Tile.TILE_WIDTH - this.refs.GetGame().getCamera().getYOffset()));
-                    if(refs.GetMap().isTileSolid(y,x))
-                    {
-                        g.setColor(Color.BLUE);
-
-                    }
-                    else
-                    {
->>>>>>> 4fcd587a980f96456e6198420a709264088d63d1
                         g.setColor(Color.GREEN);
                     }
 
@@ -307,7 +239,6 @@ public  class Map
                 //g.drawString(String.valueOf(y*this.width+x), (int)(x *Tile.TILE_HEIGHT - this.refs.GetGame().getCamera().getXOffset()), (int)((y+1) * Tile.TILE_WIDTH  - this.refs.GetGame().getCamera().getYOffset()));
             }
         }
-<<<<<<< HEAD
         for (Item item : getRoom().getItemList()) {
             //Chest chest = (Chest)item;
             if (item != null) {
@@ -319,13 +250,6 @@ public  class Map
             float angle = 90;
 
             if (item != null) {
-=======
-
-        for(Item item : discarded_items){
-            float angle = 90;
-
-            if(item != null) {
->>>>>>> 4fcd587a980f96456e6198420a709264088d63d1
                 AffineTransform at = AffineTransform.getTranslateInstance(item.GetX() - refs.GetGame().getCamera().getXOffset(), item.GetY() - refs.GetGame().getCamera().getYOffset() + 50);
                 at.rotate(Math.toRadians(angle), (float) this.width / 2, this.height / 2);
                 at.scale(3, 3);
@@ -336,37 +260,23 @@ public  class Map
             }
         }
 
-<<<<<<< HEAD
         for (Chest chest : chests)
             chest.Draw(g);
 
         for (Enemy enemy : enemies)
-=======
-        for(Chest chest : chests)
-            chest.Draw(g);
-
-        for(Enemy enemy : enemies)
->>>>>>> 4fcd587a980f96456e6198420a709264088d63d1
             enemy.Draw(g);
     }
 
     int currentLevelMap(int x, int y) {
-<<<<<<< HEAD
-        if (firstTime) {
-=======
         if(firstTime) {
->>>>>>> 4fcd587a980f96456e6198420a709264088d63d1
             this.currentMapLayout = levelSpawner.getLevel();
             firstTime = false;
         }
         return currentMapLayout[currentPosition.x][currentPosition.y].getLayout()[x][y];
     }
 
-<<<<<<< HEAD
     Room getRoom() {
         return currentMapLayout[currentPosition.x][currentPosition.y];
     }
-=======
->>>>>>> 4fcd587a980f96456e6198420a709264088d63d1
 
 }
