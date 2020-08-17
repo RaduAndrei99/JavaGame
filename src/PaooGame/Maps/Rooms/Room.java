@@ -23,12 +23,6 @@ public abstract class Room {
 
     protected int[][] room_layout;
 
-    public void addChest(Chest chest) {
-        entities.add(chest);
-    }
-    public List<Item> getItemList(){
-        return entities;
-    }
     public Room() {
         rand = new Random();
         doors = new Door[4];
@@ -156,5 +150,17 @@ public abstract class Room {
 
     public int[][] getLayout() {
         return this.room_layout;
+    }
+
+    public void addEntity(Item item) {
+        entities.add(item);
+    }
+
+    public List<Item> getItemList(){
+        return entities;
+    }
+
+    public void resetItems(){
+        this.entities = new ArrayList<>();
     }
 }

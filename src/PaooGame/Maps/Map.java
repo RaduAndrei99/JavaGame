@@ -1,12 +1,10 @@
 package PaooGame.Maps;
 
 import PaooGame.Input.GameMouseListener;
-import PaooGame.Items.Chest;
+import PaooGame.Input.KeyManager;
+import PaooGame.Items.*;
 import PaooGame.Items.Enemies.BigDemon;
 import PaooGame.Items.Enemies.Enemy;
-import PaooGame.Items.Item;
-import PaooGame.Items.SpikeTrap;
-import PaooGame.Items.Trap;
 import PaooGame.Items.Weapons.BasicSword;
 import PaooGame.Items.Weapons.BigHammer;
 import PaooGame.Items.Weapons.GoldenSword;
@@ -68,7 +66,6 @@ public class Map {
         width = 40;
         height = 20;
         enemies = new ArrayList<>();
-        //enemies.add(new BigDemon(r,500,500));
 
         levelSpawner = new LevelSpawner();
 
@@ -82,8 +79,6 @@ public class Map {
 
         discarded_items = new LinkedList<>();
 
-        traps = new LinkedList<>();
-        traps.add(new SpikeTrap(refs, 15*48,15*48,48,48));
 /*
         Chest temp_chest = new Chest(r,1100,3*48,50,50);
         temp_chest.putItem(new BasicSword(r,temp_chest.GetX(),temp_chest.GetY() + 10));
@@ -155,19 +150,6 @@ public class Map {
     public void makeNonSolid(int x, int y) {
         solidTiles[x][y] = false;
     }
-
-    public void resetSolidTiles() {
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                try {
-                    solidTiles[y][x] = Tile.tiles[tiles[y][x]].IsSolid();
-                } catch (IndexOutOfBoundsException | NullPointerException e) {
-                    solidTiles[y][x] = true;
-                }
-            }
-        }
-    }
-
     public boolean isTileSolid(int x, int y) {
         return this.solidTiles[x][y];
     }
@@ -210,11 +192,16 @@ public class Map {
             isLeftClicked = false;
             isLeftReleased = true;
         }
+
+        int pos_x = (int)(GameMouseListener.getMouseCoordinates().x/Tile.TILE_HEIGHT)*Tile.TILE_HEIGHT;
+        int pos_y = (int)(GameMouseListener.getMouseCoordinates().y/Tile.TILE_HEIGHT)*Tile.TILE_WIDTH;
+
         if (!(State.GetState() instanceof MenuState) && isLeftReleased) {
-            Chest temp_chest = new Chest(refs, GameMouseListener.getMouseCoordinates().x, GameMouseListener.getMouseCoordinates().y, 50, 50);
+            Chest temp_chest = new Chest(refs, pos_x, pos_y, 50, 50);
             temp_chest.putItem(new BigHammer(refs, temp_chest.GetX(), temp_chest.GetY() + 10));
-            getRoom().addChest(temp_chest);
+            getRoom().addEntity(temp_chest);
             isLeftReleased = false;
+            System.out.println(pos_x + " " + pos_y + " - chest");
         }
         if (GameMouseListener.isRightMousePressed) {
             isRightClicked = true;
@@ -225,11 +212,11 @@ public class Map {
             isRightReleased = true;
         }
         if (!(State.GetState() instanceof MenuState) && isRightReleased) {
-
             isRightReleased = false;
-        }
 
-        resetSolidTiles();
+            getRoom().addEntity(new SpikeTrap(refs,pos_x, pos_y,Tile.TILE_WIDTH,Tile.TILE_HEIGHT));
+            System.out.println(pos_x + " " + pos_y+ " - SpikeTrap");
+        }
 
         for (int i=0;i<enemies.size();++i)
             enemies.get(i).Update();
@@ -238,8 +225,10 @@ public class Map {
             item.Update();
         }
 
-        for(Trap trap: traps)
-            trap.Update();
+        if(refs.GetKeyManager().t) {
+            System.out.println("\n\n");
+            getRoom().resetItems();
+        }
     }
 
     public void Draw(Graphics g) {
@@ -284,9 +273,6 @@ public class Map {
 
         for (Enemy enemy : enemies)
             enemy.Draw(g);
-
-        for(Trap trap: traps)
-            trap.Draw(g);
     }
 
     int currentLevelMap(int x, int y) {

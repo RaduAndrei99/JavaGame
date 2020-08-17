@@ -33,8 +33,6 @@ public class Hero extends Character///SINGLETON
 
     protected Inventory inventory;
 
-    protected boolean damaged = false;
-
     protected boolean drawOpacity = false;
 
     long oldTime = System.currentTimeMillis()/1000;
@@ -51,8 +49,6 @@ public class Hero extends Character///SINGLETON
         image[2] = Assets.hero3;
         image[3] = Assets.hero4;
         currentPos = 0;
-
-        UpdateBoundsRectangle();
 
         observers = new ArrayList<>();
         this.life = 6;
@@ -128,23 +124,26 @@ public class Hero extends Character///SINGLETON
                 oldTime = System.currentTimeMillis() / 1000;
             }
 
-        for (Trap trap : refLink.GetMap().getTraps() ) {
-            if (RectangleCollisionDetector.checkCollision(trap.getNormalBounds(), this.normalBounds))
-                trap.activate();
+        for (Item trap : refLink.GetMap().getRoom().getItemList() ) {
+            if(trap instanceof Trap) {
+                Trap tempTrap = (Trap) trap;
+                if (RectangleCollisionDetector.checkCollision(trap.getNormalBounds(), this.normalBounds))
+                    tempTrap.activate();
 
-            if (RectangleCollisionDetector.checkCollision(trap.getNormalBounds(), this.normalBounds) && trap.isGivingDamage() && trap instanceof SpikeTrap &&  !damaged) {
-                this.life -= trap.getDamage();
-                this.damaged = true;
-                drawOpacity = true;
-                oldTime = System.currentTimeMillis() / 1000;
+                if (RectangleCollisionDetector.checkCollision(trap.getNormalBounds(), this.normalBounds) && tempTrap.isGivingDamage() && tempTrap instanceof SpikeTrap && !damaged) {
+                    this.life -= tempTrap.getDamage();
+                    this.damaged = true;
+                    drawOpacity = true;
+                    oldTime = System.currentTimeMillis() / 1000;
 
-            }
+                }
 
-            if (RectangleCollisionDetector.checkCollision(trap.getNormalBounds(), this.normalBounds) && trap instanceof HoleTrap &&  !damaged){
-                this.life = 0;
-                this.damaged = true;
-                drawOpacity = true;
-                oldTime = System.currentTimeMillis() / 1000;
+                if (RectangleCollisionDetector.checkCollision(tempTrap.getNormalBounds(), this.normalBounds) && tempTrap instanceof HoleTrap && !damaged) {
+                    this.life = 0;
+                    this.damaged = true;
+                    drawOpacity = true;
+                    oldTime = System.currentTimeMillis() / 1000;
+                }
             }
 
         }

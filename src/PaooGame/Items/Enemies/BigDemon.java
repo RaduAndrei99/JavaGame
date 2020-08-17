@@ -1,8 +1,7 @@
 package PaooGame.Items.Enemies;
 
 import PaooGame.Graphics.Assets;
-import PaooGame.Items.Hero;
-import PaooGame.Items.RectangleCollisionDetector;
+import PaooGame.Items.*;
 import PaooGame.Maps.Map;
 import PaooGame.RefLinks;
 import PaooGame.Sound.Sound;
@@ -37,15 +36,28 @@ public class BigDemon extends Enemy {
         collision_offset_y = 20;
     }
 
+
     @Override
     public void Update() {
         if(!isDead) {
             for(Enemy other : this.refLink.GetMap().getEnemies()){
                 if(RectangleCollisionDetector.checkCollision(other.getNormalBounds(), this.normalBounds) && other != this){
-                    this.makeMapSolid();
-                    Hero.GetInstance().notifyObservers();
+                    if(this.x <= other.GetX()) {
+                        this.x -= 5;
+                    }
+                    else {
+                        this.x += 5;
+                    }
+                    if(this.y <= other.GetY()) {
+                        this.y -= 5;
+                    }
+                    else {
+                        this.y += 5;
+                    }
                 }
             }
+            UpdateBoundsRectangle();
+
 
             int start = (int) ((x + width / 2) / Tile.TILE_WIDTH) + (int) ((y + height / 2)  / Tile.TILE_HEIGHT) *  refLink.GetMap().getWidth();
             int end =(int)(Hero.GetInstance().GetX() + Hero.GetInstance().GetWidth()/2)/Tile.TILE_HEIGHT +  (int)((Hero.GetInstance().GetY() + Hero.GetInstance().GetHeight()/2)/Tile.TILE_HEIGHT)* refLink.GetMap().getWidth();
@@ -54,9 +66,6 @@ public class BigDemon extends Enemy {
 
             if((path != null && path.size() > 0))
                 goToTile(path.remove(0));
-
-            UpdateBoundsRectangle();
-
 
             if ( RectangleCollisionDetector.checkCollision(this.normalBounds,Hero.GetInstance().getWeaponBounds()) && Hero.GetInstance().getWeapon().isInAttackMode() && !Hero.GetInstance().getWeapon().damageAlreadyGiven()) {
                 this.life -= Hero.GetInstance().getWeapon().getSwordDamage();
@@ -145,17 +154,4 @@ public class BigDemon extends Enemy {
          }
     }
 
-    void makeMapSolid(){
-        refLink.GetMap().setTileSolid(this.normalBounds.y/48,this.normalBounds.x/48);
-        refLink.GetMap().setTileSolid(this.normalBounds.y/48 + 1,this.normalBounds.x/48);
-        refLink.GetMap().setTileSolid(this.normalBounds.y/48 + 2,this.normalBounds.x/48);
-
-        refLink.GetMap().setTileSolid(this.normalBounds.y/48,this.normalBounds.x/48 + 1);
-        refLink.GetMap().setTileSolid(this.normalBounds.y/48 + 1,this.normalBounds.x/48 + 1);
-        refLink.GetMap().setTileSolid(this.normalBounds.y/48 + 2,this.normalBounds.x/48 + 1);
-
-        refLink.GetMap().setTileSolid(this.normalBounds.y/48,this.normalBounds.x/48 + 2);
-        refLink.GetMap().setTileSolid(this.normalBounds.y/48+1,this.normalBounds.x/48 + 2);
-        refLink.GetMap().setTileSolid(this.normalBounds.y/48+2,this.normalBounds.x/48 + 2);
-    }
 }

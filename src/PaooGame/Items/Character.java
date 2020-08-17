@@ -24,6 +24,7 @@ public abstract class Character extends Item
 
     protected boolean isDead = false;
 
+    protected boolean damaged = false;
 
     protected int life;
     protected float xSpeed;
