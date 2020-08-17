@@ -3,6 +3,7 @@ package PaooGame.Maps.Rooms;
 import PaooGame.Items.Chest;
 import PaooGame.Items.Door;
 import PaooGame.Items.Item;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,8 @@ public abstract class Room {
     protected Door[] doors;
     protected ArrayList<Item> entities;
     Random rand;
+
+    protected ArrayList<Pair<String ,Pair<Float, Float>>> potentialEntities;
 
     protected int[][] room_layout;
 

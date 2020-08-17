@@ -5,7 +5,6 @@ public class RoomFactory {
     public static final int ROOM_TYPES = 3;
 
     public static Room getRoom(int room) throws Exception {
-        room = 1;
         if (room > 0 && room <= ROOM_TYPES) {
             switch (room) {
                 case 1:
