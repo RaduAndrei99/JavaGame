@@ -1,6 +1,7 @@
 package PaooGame.Items;
 
 import PaooGame.Graphics.Assets;
+import PaooGame.Items.Enemies.Enemy;
 import PaooGame.Items.Weapons.Weapon;
 import PaooGame.Observer.GameObserver;
 import PaooGame.Particles.BloodParticle;
@@ -31,6 +32,14 @@ public class Hero extends Character///SINGLETON
     protected boolean actionPerformed;
 
     protected Inventory inventory;
+
+    protected boolean damaged = false;
+
+    protected boolean drawOpacity = false;
+
+    long oldTime = System.currentTimeMillis()/1000;
+
+    protected final long DEFAULT_NO_DAMAGE_TIME_IN_SECONDS = (long) 1.5;
 
     private Hero(RefLinks refLink, float x, float y) {
         super(refLink, x, y, Character.DEFAULT_CREATURE_WIDTH, Character.DEFAULT_CREATURE_HEIGHT);
@@ -103,6 +112,42 @@ public class Hero extends Character///SINGLETON
                 weapon.Update();
             }
         }
+        long currentTime = System.currentTimeMillis() / 1000;
+        if (damaged){
+            if (currentTime - oldTime > DEFAULT_NO_DAMAGE_TIME_IN_SECONDS) {
+                damaged = false;
+            }
+        }
+
+
+        for(Enemy enemy : refLink.GetMap().getEnemies())
+            if ( RectangleCollisionDetector.checkCollision(this.normalBounds,enemy.getNormalBounds())  && !damaged){
+                this.life -= enemy.getDamage();
+                this.damaged = true;
+                drawOpacity = true;
+                oldTime = System.currentTimeMillis() / 1000;
+            }
+
+        for (Trap trap : refLink.GetMap().getTraps() ) {
+            if (RectangleCollisionDetector.checkCollision(trap.getNormalBounds(), this.normalBounds))
+                trap.activate();
+
+            if (RectangleCollisionDetector.checkCollision(trap.getNormalBounds(), this.normalBounds) && trap.isGivingDamage() && trap instanceof SpikeTrap &&  !damaged) {
+                this.life -= trap.getDamage();
+                this.damaged = true;
+                drawOpacity = true;
+                oldTime = System.currentTimeMillis() / 1000;
+
+            }
+
+            if (RectangleCollisionDetector.checkCollision(trap.getNormalBounds(), this.normalBounds) && trap instanceof HoleTrap &&  !damaged){
+                this.life = 0;
+                this.damaged = true;
+                drawOpacity = true;
+                oldTime = System.currentTimeMillis() / 1000;
+            }
+
+        }
     }
 
     private void GetInput() {
@@ -165,7 +210,7 @@ public class Hero extends Character///SINGLETON
             this.weapon = null;
         }
 
-        if (refLink.GetKeyManager().p) {
+        if (refLink.GetKeyManager().esc) {
             refLink.GetGame().SetMenuState();
         }
 
@@ -173,7 +218,30 @@ public class Hero extends Character///SINGLETON
 
     @Override
     public void Draw(Graphics g) {
-        g.drawImage(image[nextPos()], (int) (x - refLink.GetGame().getCamera().getXOffset() + width_offset), (int) (y - refLink.GetGame().getCamera().getYOffset()), position * width, height, null);
+
+        int next = nextPos();
+
+        BufferedImage tmpImg;
+        if(damaged) {
+            if(drawOpacity) {
+                tmpImg = new BufferedImage(image[next].getWidth(), image[next].getHeight(), BufferedImage.TYPE_INT_ARGB);
+                Graphics2D g2d = (Graphics2D) tmpImg.getGraphics();
+                g2d.setComposite(AlphaComposite.SrcOver.derive(0.2f));
+                g2d.drawImage(image[next], 0, 0, null);
+                image[next] = tmpImg;
+                drawOpacity = false;
+            }
+
+        }
+        else{
+            image[0] = Assets.hero1;
+            image[1] = Assets.hero2;
+            image[2] = Assets.hero3;
+            image[3] = Assets.hero4;
+        }
+
+        g.drawImage(image[next], (int) (x - refLink.GetGame().getCamera().getXOffset() + width_offset), (int) (y - refLink.GetGame().getCamera().getYOffset()), position * width, height, null);
+
         g.setColor(Color.RED);
         if (weapon != null)
             weapon.Draw(g);
@@ -248,5 +316,6 @@ public class Hero extends Character///SINGLETON
     public void reset() {
         instance = null;
     }
+
 
 }

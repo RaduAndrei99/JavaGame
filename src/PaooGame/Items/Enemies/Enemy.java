@@ -17,4 +17,8 @@ public abstract class  Enemy extends Character {
     protected void getHit(){
         Sound.playSound(Sound.stab);
     }
+
+    public int  getDamage(){
+        return this.damage;
+    }
 }

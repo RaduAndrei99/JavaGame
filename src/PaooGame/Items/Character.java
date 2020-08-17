@@ -24,7 +24,6 @@ public abstract class Character extends Item
 
     protected boolean isDead = false;
 
-    protected int attackSpeed;
 
     protected int life;
     protected float xSpeed;
@@ -59,7 +58,6 @@ public abstract class Character extends Item
         isMovingUp = false;
         isMovingRight = false;
 
-        attackSpeed = DEFAULT_ATTACK_SPEED;
         blood = new BloodParticle();
     }
 

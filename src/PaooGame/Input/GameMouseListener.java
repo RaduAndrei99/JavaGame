@@ -2,6 +2,9 @@ package PaooGame.Input;
 
 import PaooGame.Items.Hero;
 import PaooGame.RefLinks;
+import PaooGame.States.MenuState;
+import PaooGame.States.State;
+import PaooGame.UI.Menu.MainMenu;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -88,7 +91,11 @@ public class GameMouseListener implements MouseListener, MouseWheelListener {
     }
 
     public static Point getMouseCoordinates(){
-        return new Point((MouseInfo.getPointerInfo().getLocation().x - GameMouseListener.refs.GetGame().GetGameWindow().GetWndFrame().getX() + (int)refs.GetGame().getCamera().getXOffset()),
+        if (State.GetState() instanceof MenuState)
+            return new Point((MouseInfo.getPointerInfo().getLocation().x - GameMouseListener.refs.GetGame().GetGameWindow().GetWndFrame().getX()),
+                    MouseInfo.getPointerInfo().getLocation().y - GameMouseListener.refs.GetGame().GetGameWindow().GetWndFrame().getY() );
+        else
+            return new Point((MouseInfo.getPointerInfo().getLocation().x - GameMouseListener.refs.GetGame().GetGameWindow().GetWndFrame().getX() + (int)refs.GetGame().getCamera().getXOffset()),
                 MouseInfo.getPointerInfo().getLocation().y - GameMouseListener.refs.GetGame().GetGameWindow().GetWndFrame().getY()  + (int) refs.GetGame().getCamera().getYOffset());
     }
 

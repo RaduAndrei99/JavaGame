@@ -240,8 +240,6 @@ public class Game implements Runnable {
 
             State.GetState().Update();
         }
-        if (refLink.GetKeyManager().esc)
-            System.exit(0);
     }
 
     /*! \fn private void Draw()

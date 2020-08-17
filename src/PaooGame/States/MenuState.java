@@ -40,7 +40,6 @@ public class MenuState extends State
         mainMenu.Update();
 
         long currentTime =  System.currentTimeMillis()/1000;
-        //System.out.println(currentTime - oldTime);
         if(reset || currentTime - oldTime > 60){
             reset = false;
             reset();

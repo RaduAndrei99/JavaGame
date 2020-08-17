@@ -2,9 +2,13 @@ package PaooGame.Maps;
 
 import PaooGame.Input.GameMouseListener;
 import PaooGame.Items.Chest;
+import PaooGame.Items.Enemies.BigDemon;
 import PaooGame.Items.Enemies.Enemy;
 import PaooGame.Items.Item;
+import PaooGame.Items.SpikeTrap;
+import PaooGame.Items.Trap;
 import PaooGame.Items.Weapons.BasicSword;
+import PaooGame.Items.Weapons.BigHammer;
 import PaooGame.Items.Weapons.GoldenSword;
 import PaooGame.Items.Weapons.MightySword;
 import PaooGame.Maps.Rooms.LevelSpawner;
@@ -52,6 +56,9 @@ public class Map {
     private Boolean isRightClicked = false;
     private Boolean isRightReleased = false;
 
+    protected List<Trap> traps;
+
+
     /*! \fn public Map()
         \brief Constructorul de initializare al clasei.
 
@@ -61,7 +68,7 @@ public class Map {
         width = 40;
         height = 20;
         enemies = new ArrayList<>();
-        // enemies.add(new BigDemon(r,500,500));
+        //enemies.add(new BigDemon(r,500,500));
 
         levelSpawner = new LevelSpawner();
 
@@ -74,6 +81,9 @@ public class Map {
         chests = new LinkedList<>();
 
         discarded_items = new LinkedList<>();
+
+        traps = new LinkedList<>();
+        traps.add(new SpikeTrap(refs, 15*48,15*48,48,48));
 /*
         Chest temp_chest = new Chest(r,1100,3*48,50,50);
         temp_chest.putItem(new BasicSword(r,temp_chest.GetX(),temp_chest.GetY() + 10));
@@ -202,7 +212,7 @@ public class Map {
         }
         if (!(State.GetState() instanceof MenuState) && isLeftReleased) {
             Chest temp_chest = new Chest(refs, GameMouseListener.getMouseCoordinates().x, GameMouseListener.getMouseCoordinates().y, 50, 50);
-            temp_chest.putItem(new MightySword(refs, temp_chest.GetX(), temp_chest.GetY() + 10));
+            temp_chest.putItem(new BigHammer(refs, temp_chest.GetX(), temp_chest.GetY() + 10));
             getRoom().addChest(temp_chest);
             isLeftReleased = false;
         }
@@ -220,11 +230,16 @@ public class Map {
         }
 
         resetSolidTiles();
-        for (Enemy enemy : enemies)
-            enemy.Update();
+
+        for (int i=0;i<enemies.size();++i)
+            enemies.get(i).Update();
+
         for (Item item : getRoom().getItemList()) {
             item.Update();
         }
+
+        for(Trap trap: traps)
+            trap.Update();
     }
 
     public void Draw(Graphics g) {
@@ -269,6 +284,9 @@ public class Map {
 
         for (Enemy enemy : enemies)
             enemy.Draw(g);
+
+        for(Trap trap: traps)
+            trap.Draw(g);
     }
 
     int currentLevelMap(int x, int y) {
@@ -282,5 +300,15 @@ public class Map {
     public Room getRoom() {
         return currentMapLayout[currentPosition.x][currentPosition.y];
     }
+
+    public List<Trap> getTraps(){
+        return traps;
+
+    }
+
+    public void removeEnemy(Enemy e){
+        this.enemies.remove(e);
+    }
+
 
 }

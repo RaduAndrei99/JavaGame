@@ -29,7 +29,7 @@ public abstract class Item {
         this.height = height;
         this.refLink = refLink;
 
-        normalBounds = new Rectangle((int) x, (int) y + height, width, height);
+        normalBounds = new Rectangle((int) x, (int) y, width, height);
 
     }
 

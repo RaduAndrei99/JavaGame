@@ -19,6 +19,8 @@ public class GameWindow
 
     private Canvas  canvas;         /*!< "panza/tablou" in care se poate desena*/
 
+    private boolean fullscreenMode = true;
+
     /*! \fn GameWindow(String title, int width, int height)
             \brief Constructorul cu parametri al clasei GameWindow
 
@@ -56,8 +58,10 @@ public class GameWindow
             /// ce apare in bara de titlu
         wndFrame = new JFrame(wndTitle);
 
-        wndFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        wndFrame.setUndecorated(true);
+        if(fullscreenMode) {
+            wndFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            wndFrame.setUndecorated(true);
+        }
 
 
         /// Seteaza dimensiunile ferestrei in pixeli
@@ -136,5 +140,13 @@ public class GameWindow
     public JFrame GetWndFrame()
     {
         return wndFrame;
+    }
+
+    public void setWindowedMode(){
+ 
+    }
+
+    public void setFullscreenMode(){
+
     }
 }

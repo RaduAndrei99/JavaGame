@@ -18,7 +18,6 @@ public class BigDemon extends Enemy {
     public static int DEFAULT_HEIGHT = 36*4;
     public static int DEFAULT_SPEED = 2;
 
-    private long oldTime = System.currentTimeMillis()/1000;
 
     List<Integer> path;
 
@@ -71,13 +70,9 @@ public class BigDemon extends Enemy {
                 Sound.playSound(Sound.death_big_demon);
             }
 
-            long currentTime = System.currentTimeMillis()/1000;
-            if ( RectangleCollisionDetector.checkCollision(this.normalBounds,Hero.GetInstance().getNormalBounds()) && currentTime - oldTime > 1){
-                Hero.GetInstance().getDamage(damage);
-                oldTime = System.currentTimeMillis()/1000;
-            }
-
         }
+        else
+            refLink.GetMap().removeEnemy(this);
     }
 
     @Override

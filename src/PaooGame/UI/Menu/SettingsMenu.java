@@ -18,7 +18,9 @@ public class SettingsMenu extends MenuElement {
         elements.add(new VolumeDownButton(refLink,(int)(0.7*Toolkit.getDefaultToolkit().getScreenSize().width),(int)(0.38*Toolkit.getDefaultToolkit().getScreenSize().height), (int)(0.026*Toolkit.getDefaultToolkit().getScreenSize().width), (int)(0.046*Toolkit.getDefaultToolkit().getScreenSize().height)));
         elements.add(new VolumeText(refLink, (int) (Toolkit.getDefaultToolkit().getScreenSize().width/2 - (0.286*Toolkit.getDefaultToolkit().getScreenSize().width/2)), (int)(0.37*Toolkit.getDefaultToolkit().getScreenSize().height),(int)(0.286*Toolkit.getDefaultToolkit().getScreenSize().width),(int)(0.07*Toolkit.getDefaultToolkit().getScreenSize().height)));
 
-        elements.add(new BackButton(refLink,(int) (Toolkit.getDefaultToolkit().getScreenSize().width/2 - (0.17*Toolkit.getDefaultToolkit().getScreenSize().width/2)), (int)(0.5*Toolkit.getDefaultToolkit().getScreenSize().height), (int)(0.17*Toolkit.getDefaultToolkit().getScreenSize().width), (int)(0.07*Toolkit.getDefaultToolkit().getScreenSize().height)));
+        elements.add(new FullscreenButton(refLink, (int) (Toolkit.getDefaultToolkit().getScreenSize().width/2 - (0.6*Toolkit.getDefaultToolkit().getScreenSize().width/2)), (int)(0.55*Toolkit.getDefaultToolkit().getScreenSize().height),(int)(0.6*Toolkit.getDefaultToolkit().getScreenSize().width),(int)(0.07*Toolkit.getDefaultToolkit().getScreenSize().height)));
+
+        elements.add(new BackButton(refLink,(int) (Toolkit.getDefaultToolkit().getScreenSize().width/2 - (0.17*Toolkit.getDefaultToolkit().getScreenSize().width/2)), (int)(0.7*Toolkit.getDefaultToolkit().getScreenSize().height), (int)(0.17*Toolkit.getDefaultToolkit().getScreenSize().width), (int)(0.07*Toolkit.getDefaultToolkit().getScreenSize().height)));
 
         wallpaper = new SettingsWallpaper();
     }

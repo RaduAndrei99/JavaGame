@@ -11,7 +11,7 @@ public class Music {
 
     static float currentVolume;
     static final float DEFAULT_VOLUME_SCALE = (float) 0.1;
-    static final float DEFAULT_VOLUME = (float) 0.8;
+    static final float DEFAULT_VOLUME = (float) 0.6;
 
     public static final float MIN_VOLUME = (float) 0.0;
     public static final float MAX_VOLUME = (float) 1.0;
@@ -36,7 +36,7 @@ public class Music {
 
             FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             float dB = (float) (Math.log(DEFAULT_VOLUME) / Math.log(10) * 20);
-            volume.setValue((float)dB);
+            volume.setValue((float)-80);
 
             lastPlayedMusic = clip;
 

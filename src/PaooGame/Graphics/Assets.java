@@ -90,8 +90,12 @@ public class Assets
     public static BufferedImage big_hammer;
 
 
-    public static BufferedImage water;
+    public static BufferedImage spikeAsset1;
+    public static BufferedImage spikeAsset2;
+    public static BufferedImage spikeAsset3;
+    public static BufferedImage spikeAsset4;
 
+    public static BufferedImage floorHole;
 
     public static BufferedImage mainMenuWallpaper;
     public static BufferedImage mainMenuTitle;
@@ -121,6 +125,11 @@ public class Assets
 
     public static BufferedImage volumeButton_static;
 
+    public static BufferedImage fullscreenOff_static;
+    public static BufferedImage fullscreenOff_mouseOver;
+
+    public static BufferedImage fullscreenOn_static;
+    public static BufferedImage fullscreenOn_mouseOver;
 
     public static BufferedImage chest_closed;
     public static BufferedImage chest_nearly_opened;
@@ -231,7 +240,7 @@ public class Assets
 
 
         inventory_cell = ui_sheet.crop(189,291,40,40);
-        inventory_cell_selected  = ui_sheet.crop(479,292,39,39);
+        inventory_cell_selected  = ui_sheet.crop(480,292,38,39);
 
         game_over = ImageLoader.LoadImage("/Textures/game_over.png");
 
@@ -259,5 +268,19 @@ public class Assets
         minusButton_mouseOver = ImageLoader.LoadImage("/Textures/minus_mouse_over.png");
 
         volumeButton_static =  ImageLoader.LoadImage("/Textures/volume_static.png");
+
+        fullscreenOff_static =  ImageLoader.LoadImage("/Textures/fullscreen_off_static.png");
+        fullscreenOff_mouseOver =  ImageLoader.LoadImage("/Textures/fullscreen_off_mouse_over.png");
+
+        fullscreenOn_static =  ImageLoader.LoadImage("/Textures/fullscreen_on_static.png");
+        fullscreenOn_mouseOver =  ImageLoader.LoadImage("/Textures/fullscreen_on_mouse_over.png");
+
+        spikeAsset1 = sheet.crop( 16, 176 ,16 ,16 );
+        spikeAsset2 = sheet.crop( 16 + 16, 176 ,16 ,16 );
+        spikeAsset3 = sheet.crop( 16 + 2*16, 176 ,16 ,16 );
+        spikeAsset4 = sheet.crop( 16 + 3*16, 176 ,16 ,16 );
+
+        floorHole = sheet.crop( 96, 144, 16, 16);
+
     }
 }
