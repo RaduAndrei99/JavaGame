@@ -1,5 +1,7 @@
 package PaooGame.Maps.Rooms;
 
+import PaooGame.RefLinks;
+
 import java.util.Random;
 import java.util.Scanner;
 
@@ -15,10 +17,12 @@ public class LevelSpawner {
     protected final int MAX_ROOM_NUMBER = 20;
 
     protected int no_of_rooms;
+    protected RefLinks refs;
 
-
-    public LevelSpawner(){
+    public LevelSpawner(RefLinks refs){
         rand = new Random();
+
+        this.refs = refs;
 
         no_of_rooms = 0;
 
@@ -28,28 +32,23 @@ public class LevelSpawner {
     public void createLevel(int i, int j, int came_from)  {
         try {
 
-            Room room = RoomFactory.getRoom(rand.nextInt(3) + 1);
+            Room room = RoomFactory.getRoom(rand.nextInt(5) + 1,refs);
 
             switch (came_from){
                 case 0:
                     room.openSouthDoorTo(i+1,j);
-                    room.getDoors()[2].openDoor();
                     break;
                 case 1:
                     room.openWestDoorTo(i,j-1);
-                    room.getDoors()[3].openDoor();
                     break;
 
                 case 2:
                     room.openNorthDoorTo(i-1,j);
-                    room.getDoors()[0].openDoor();
                     break;
 
                 case 3:
                     room.openEastDoorTo(i,j+1);
-                    room.getDoors()[1].openDoor();
             }
-
 
 
             rooms_position[i][j] = room;
@@ -61,15 +60,13 @@ public class LevelSpawner {
                         int new_i = i + room.getDoors()[k].getI();
                         int new_j = j + room.getDoors()[k].getJ();
 
-                        if(0<new_i && new_i < DEFAULT_ROOMS_HEIGHT)
+                        if(isPositionValid(new_i,new_j)){
                             room.getDoors()[k].setI(new_i);
+                            room.getDoors()[k].setJ(new_j);
+                        }
                         else
                             continue;
 
-                        if(0< new_j && new_j < DEFAULT_ROOMS_WIDTH)
-                            room.getDoors()[k].setJ(new_j);
-                        else
-                            continue;
 
                         room.getDoors()[k].openDoor();
 
@@ -78,27 +75,24 @@ public class LevelSpawner {
                             switch (k) {
                                     case 0:
                                         rooms_position[new_i][new_j].openSouthDoorTo(i, j);
-                                        rooms_position[new_i][new_j].getDoors()[2].openDoor();
                                         break;
                                     case 1:
                                         rooms_position[new_i][new_j].openWestDoorTo(i, j);
-                                        rooms_position[new_i][new_j].getDoors()[3].openDoor();
                                         break;
 
                                     case 2:
                                         rooms_position[new_i][new_j].openNorthDoorTo(i, j);
-                                        rooms_position[new_i][new_j].getDoors()[0].openDoor();
                                         break;
 
                                     case 3:
                                         rooms_position[new_i][new_j].openEastDoorTo(i, j);
-                                        rooms_position[new_i][new_j].getDoors()[1].openDoor();
                             }
 
                             continue;
                         }
 
-                            createLevel(new_i, new_j, k);
+                        createLevel(new_i, new_j, k);
+
                         }
                 }
             }
@@ -171,7 +165,7 @@ public class LevelSpawner {
     }
 
     public static void main(String []args) throws  Exception{
-        LevelSpawner a = new LevelSpawner();
+        LevelSpawner a = new LevelSpawner(null);
         a.createLevel(a.DEFAULT_ROOMS_WIDTH/2, DEFAULT_ROOMS_HEIGHT/2, -1);
         a.rearrangeTheDoors();
 
@@ -216,10 +210,12 @@ public class LevelSpawner {
             }
 
         }while(true);
+
     }
 
     public Room[][] getLevel(){
         this.createLevel(DEFAULT_ROOMS_WIDTH/2, DEFAULT_ROOMS_HEIGHT/2, -1);
+        rearrangeTheDoors();
 
         return this.rooms_position;
     }

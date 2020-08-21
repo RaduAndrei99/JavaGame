@@ -14,7 +14,13 @@ public class Tile
         /// De remarcat ca urmatoarele dale sunt statice si publice. Acest lucru imi permite sa le am incarcate
         /// o singura data in memorie
     public static Tile floorTile     = new FloorTile(2);
+    public static Tile floorLittleCrackTile   = new FloorLittleCrackTile(3);
+    public static Tile floorBigCrack1   = new FloorCrack1(4);
+    public static Tile floorBigCrack2   = new FloorCrack2(5);
+    public static Tile floorBigCrack3   = new FloorCrack3(6);
+    public static Tile floorBigCrack4   = new FloorCrack4(7);
 
+    public static Tile wallWithHole        = new WallWithHole(9);
     public static Tile wallTile        = new WallTile(10);
     public static Tile wallTopTile        = new WallTopTile(11);
     public static Tile wallTopReversedTile        = new WallTopReversedTile(12);
@@ -42,11 +48,8 @@ public class Tile
     public static Tile pillarFloor = new PillarFloor(34);
     public static Tile slimeMid = new SlimeMid(35);
     public static Tile slimeFloor = new SlimeFloor(36);
-
-
-
-    public static Tile floorLittleCrackTile   = new FloorLittleCrackTile(3);
-
+    public static Tile waterMid = new WaterFountainMid1(37);
+    public static Tile waterFloor = new WaterFountainFloor1(38);
 
 
     public static final int TILE_WIDTH  = 48;                       /*!< Latimea unei dale.*/

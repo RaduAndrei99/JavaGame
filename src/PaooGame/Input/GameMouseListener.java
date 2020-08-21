@@ -3,6 +3,7 @@ package PaooGame.Input;
 import PaooGame.Items.Hero;
 import PaooGame.RefLinks;
 import PaooGame.States.MenuState;
+import PaooGame.States.SettingsState;
 import PaooGame.States.State;
 import PaooGame.UI.Menu.MainMenu;
 
@@ -86,12 +87,12 @@ public class GameMouseListener implements MouseListener, MouseWheelListener {
             }
         }
 
-        Hero.GetInstance().setWeapon();
+        Hero.GetInstance().setHeldItem();
 
     }
 
     public static Point getMouseCoordinates(){
-        if (State.GetState() instanceof MenuState)
+        if (State.GetState() instanceof MenuState || State.GetState() instanceof SettingsState)
             return new Point((MouseInfo.getPointerInfo().getLocation().x - GameMouseListener.refs.GetGame().GetGameWindow().GetWndFrame().getX()),
                     MouseInfo.getPointerInfo().getLocation().y - GameMouseListener.refs.GetGame().GetGameWindow().GetWndFrame().getY() );
         else

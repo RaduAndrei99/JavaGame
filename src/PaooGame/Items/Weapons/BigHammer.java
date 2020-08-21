@@ -11,7 +11,7 @@ public class BigHammer extends Weapon {
     public BigHammer(RefLinks refLink, float x, float y) {
         super(refLink, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT);
         this.image = Assets.big_hammer;
-        this.damage = 10;
+        this.damage = 20;
     }
 
 }

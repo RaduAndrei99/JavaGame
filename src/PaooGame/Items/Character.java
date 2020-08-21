@@ -12,10 +12,11 @@ import java.awt.image.BufferedImage;
 public abstract class Character extends Item
 {
     public static final int DEFAULT_LIFE            = 2;
-    public static final float DEFAULT_SPEED         = 5.0f;
+    public static final float DEFAULT_SPEED         = 5;
     public static final int DEFAULT_CREATURE_WIDTH  = 16*4;
     public static final int DEFAULT_CREATURE_HEIGHT = 28*4;
-    public static final int DEFAULT_ATTACK_SPEED = 10;
+
+    protected float speed;
 
     protected boolean isMovingRight;
     protected boolean isMovingLeft;
@@ -29,28 +30,24 @@ public abstract class Character extends Item
     protected int life;
     protected float xSpeed;
     protected float ySpeed;
-    protected float xMove;
-    protected float yMove;
 
     protected int wait = 0;
 
-    protected int position = 1;
 
     protected int currentPos;
 
     protected int width_offset;
-    protected int height_offset;
 
     protected BufferedImage[] image;
 
-    protected Rectangle move;
+    protected Point move;
 
     protected BloodParticle blood;
 
     public Character(RefLinks refLink, float x, float y, int width, int height)
     {
         super(refLink, x,y, width, height);
-        this.move = new Rectangle((int)x,(int)y,0,0);
+        this.move = new Point((int)x,(int)y);
         life    = DEFAULT_LIFE;
         xSpeed   = 0;
         ySpeed  = 0;

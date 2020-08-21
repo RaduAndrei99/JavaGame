@@ -61,7 +61,7 @@ public class PathFinderBFS implements GameObserver {
             int r = i %  refs.GetMap().getWidth();
 
             if(!refs.GetMap().isTileSolid(c,r)){
-                if (i%refs.GetMap().getWidth() != refs.GetMap().getWidth() - 1 &&  MiddleEastMap(i+1)==2) {
+                if (i%refs.GetMap().getWidth() != refs.GetMap().getWidth() - 1 &&  !Map.isSolid(MiddleEastMap(i+1))) {
                     l[i].add(i+1);
                 }
 
@@ -69,28 +69,28 @@ public class PathFinderBFS implements GameObserver {
                     l[i].add(i-1);
                 }
 
-                if (isValid(i-refs.GetMap().getWidth()) && MiddleEastMap(i-refs.GetMap().getWidth())==2) {
+                if (isValid(i-refs.GetMap().getWidth()) && !Map.isSolid(MiddleEastMap(i+1))) {
                     l[i].add(i-refs.GetMap().getWidth());
                 }
 
-                if (isValid(i+refs.GetMap().getWidth()) && MiddleEastMap(i+refs.GetMap().getWidth())==2) {
+                if (isValid(i+refs.GetMap().getWidth()) && !Map.isSolid(MiddleEastMap(i+1))) {
                     l[i].add(i+refs.GetMap().getWidth());
                 }
 
 
-                if (isValid(i-refs.GetMap().getWidth() + 1) && i  % refs.GetMap().getWidth() != 0 && MiddleEastMap(i-refs.GetMap().getWidth() + 1)==2) {
+                if (isValid(i-refs.GetMap().getWidth() + 1) && i  % refs.GetMap().getWidth() != 0 && !Map.isSolid(MiddleEastMap(i+1))) {
                     l[i].add(i-refs.GetMap().getWidth() + 1);
                 }
 
-                if (isValid(i-refs.GetMap().getWidth() - 1) && i  % refs.GetMap().getWidth() != 0 && MiddleEastMap(i-refs.GetMap().getWidth() - 1)==2) {
+                if (isValid(i-refs.GetMap().getWidth() - 1) && i  % refs.GetMap().getWidth() != 0 &&!Map.isSolid(MiddleEastMap(i+1))) {
                     l[i].add(i-refs.GetMap().getWidth() - 1);
                 }
 
-                if (isValid(i + refs.GetMap().getWidth() - 1)&& i  % refs.GetMap().getWidth() != 0 && MiddleEastMap(i+refs.GetMap().getWidth() - 1)==2) {
+                if (isValid(i + refs.GetMap().getWidth() - 1)&& i  % refs.GetMap().getWidth() != 0 && !Map.isSolid(MiddleEastMap(i+1))) {
                     l[i].add(i+refs.GetMap().getWidth() - 1);
                 }
 
-                if (isValid(i + refs.GetMap().getWidth() + 1)&& i  % refs.GetMap().getWidth() != 0 && MiddleEastMap(i+refs.GetMap().getWidth() + 1)==2) {
+                if (isValid(i + refs.GetMap().getWidth() + 1)&& i  % refs.GetMap().getWidth() != 0 && !Map.isSolid(MiddleEastMap(i+1))) {
                     l[i].add(i+refs.GetMap().getWidth() + 1);
                 }
             }

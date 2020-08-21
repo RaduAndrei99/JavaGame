@@ -1,4 +1,4 @@
-package PaooGame.Items;
+package PaooGame.Items.Traps;
 
 import PaooGame.Graphics.Assets;
 import PaooGame.RefLinks;

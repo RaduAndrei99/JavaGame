@@ -1,7 +1,6 @@
 package PaooGame.Particles;
 
 import PaooGame.Graphics.Assets;
-import PaooGame.Items.Hero;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -18,7 +17,6 @@ public class BloodParticle {
 
 
         image[0] = Assets.blood0;
-        image[0].setRGB(60,60,69);
         image[1] = Assets.blood1;
         image[2] = Assets.blood2;
         image[3] = Assets.blood3;
@@ -51,14 +49,10 @@ public class BloodParticle {
                 return currentPos = 0;
         }
 
-        return  currentPos;
+        return currentPos;
     }
 
     public void resetAnimation(){
         this.currentPos = 0;
-    }
-
-    public int getCurrentPos(){
-        return this.currentPos;
     }
 }

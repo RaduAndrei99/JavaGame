@@ -1,13 +1,9 @@
 package PaooGame.UI;
 
-import PaooGame.Graphics.Assets;
-import PaooGame.Items.Hero;
 import PaooGame.Items.Item;
-import PaooGame.Items.Weapons.Weapon;
 import PaooGame.RefLinks;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class Inventory extends UIElement {
     protected float x, y;
@@ -48,17 +44,17 @@ public class Inventory extends UIElement {
     }
 
     public void selectSlot(int slot){
-        inventory_slots[selected_slot].setCellDiscarded();
+        inventory_slots[selected_slot].setCellNormal();
         inventory_slots[slot].setCellSelected();
         selected_slot = slot;
     }
 
     public boolean isInventoryFull(){
-        return stored_items == NO_OF_SLOTS;
+        return stored_items != NO_OF_SLOTS;
     }
 
     public void putItemInInventory(Item item){
-        if(!isInventoryFull() && item != null)
+        if(isInventoryFull() && item != null)
             for(InventoryCell cell : inventory_slots) {
                 if (!cell.isSlotOccupied()) {
                     item.pickItem();
@@ -97,5 +93,10 @@ public class Inventory extends UIElement {
                 stored_items--;
             }
         }
+    }
+
+    public void removeSelectedItem() {
+        this.inventory_slots[selected_slot].removeStoredItem();
+        stored_items --;
     }
 }

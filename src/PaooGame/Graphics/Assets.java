@@ -30,7 +30,6 @@ public class Assets
     public static BufferedImage blood10;
     public static BufferedImage blood11;
 
-
     public static BufferedImage bigDemon1;
     public static BufferedImage bigDemon2;
     public static BufferedImage bigDemon3;
@@ -45,6 +44,11 @@ public class Assets
     public static BufferedImage littleSkeleton2;
     public static BufferedImage littleSkeleton3;
     public static BufferedImage littleSkeleton4;
+
+    public static BufferedImage littleWizard1;
+    public static BufferedImage littleWizard2;
+    public static BufferedImage littleWizard3;
+    public static BufferedImage littleWizard4;
 
     public static BufferedImage wall;
     public static BufferedImage wallTop;
@@ -61,6 +65,7 @@ public class Assets
     public static BufferedImage wallLeftTopReversedCorner;
     public static BufferedImage floorWallTop;
     public static BufferedImage wallWithBrickTop;
+    public static BufferedImage wallWithHole;
 
     public static BufferedImage wallSideRight;
     public static BufferedImage wallSideLeft;
@@ -74,6 +79,9 @@ public class Assets
     public static BufferedImage lavaFountainMid1;
     public static BufferedImage lavaFountainFloor1;
 
+    public static BufferedImage waterFountainMid1;
+    public static BufferedImage waterFountainFloor1;
+
     public static BufferedImage pillarTop;
     public static BufferedImage pillarMid;
     public static BufferedImage pillarFloor;
@@ -83,11 +91,22 @@ public class Assets
 
     public static BufferedImage floor;
     public static BufferedImage floorLittleCrack;
+    public static BufferedImage floorBigCrack1;
+    public static BufferedImage floorBigCrack2;
+    public static BufferedImage floorBigCrack3;
+    public static BufferedImage floorBigCrack4;
+
+
 
     public static BufferedImage basic_sword;
     public static BufferedImage golden_sword;
     public static BufferedImage mighty_sword;
     public static BufferedImage big_hammer;
+    public static BufferedImage rusty_sword;
+
+
+    public static BufferedImage lifePotion;
+    public static BufferedImage speedPotion;
 
 
     public static BufferedImage spikeAsset1;
@@ -138,6 +157,11 @@ public class Assets
     public static BufferedImage inventory_cell;
     public static BufferedImage inventory_cell_selected;
 
+    public static BufferedImage fireBall1;
+    public static BufferedImage fireBall2;
+    public static BufferedImage fireBall3;
+    public static BufferedImage fireBall4;
+    public static BufferedImage fireBall5;
 
     /*! \fn public static void Init()
         \brief Functia initializaza referintele catre elementele grafice utilizate.
@@ -157,6 +181,13 @@ public class Assets
         wallTopReversed = ImageLoader.LoadImage("/Textures/wall_reversed.png");
         floor = sheet.crop(16, 64, 16, 16);
         floorLittleCrack = sheet.crop(32, 64, 16, 16);
+
+        floorBigCrack1 = sheet.crop(48, 80, 16, 16);
+        floorBigCrack2 = sheet.crop(16, 80, 16, 16);
+        floorBigCrack3 = sheet.crop(16, 96, 16, 16);
+        floorBigCrack4 = sheet.crop(32, 96, 16, 16);
+
+
         wallRightSide = sheet.crop(0, 128 ,16, 16);
         wallLeftSide = sheet.crop(16,128,16,16);
         wallTopRightCross = ImageLoader.LoadImage("/Textures/wall_top_right_cross.png");
@@ -173,6 +204,7 @@ public class Assets
 
         wallWithBrickTop = ImageLoader.LoadImage("/Textures/ajut.png");
 
+        wallWithHole = sheet.crop(48, 48 ,16, 16);
 
         hero1 = sheet.crop(128, 100 ,16, 28);
         hero2 = sheet.crop(128 + 16, 100 ,16, 28);
@@ -183,6 +215,10 @@ public class Assets
         golden_sword = sheet.crop(291, 153, 10, 22);
         mighty_sword = sheet.crop(307 ,145, 10, 30);
         big_hammer = sheet.crop(291, 42, 10, 37);
+        rusty_sword = sheet.crop(307, 26, 10, 21);
+
+        lifePotion = sheet.crop(288, 224, 16, 16);
+        speedPotion = sheet.crop(320, 224, 16, 16);
 
         bigDemon1 = sheet.crop(16, 364, 32, 36);
         bigDemon2 = sheet.crop(16 + 32, 364, 32, 36);
@@ -198,6 +234,11 @@ public class Assets
         littleSkeleton2 = sheet.crop(368 + 16, 80, 16, 16);
         littleSkeleton3 = sheet.crop(368 + 16 * 2, 80, 16, 16);
         littleSkeleton4 = sheet.crop(368 + 16 * 3, 80, 16, 16);
+
+        littleWizard1 = sheet.crop(368, 268 ,16, 20);
+        littleWizard2 = sheet.crop(368 + 16, 268, 16, 20);
+        littleWizard3 = sheet.crop(368 + 16 * 2, 268, 16, 20);
+        littleWizard4 = sheet.crop(368 + 16 * 3, 268, 16, 20);
 
         mainMenuWallpaper = ImageLoader.LoadImage("/Textures/wallpaper.png");
         mainMenuTitle = ImageLoader.LoadImage("/Textures/title1.png");
@@ -248,6 +289,9 @@ public class Assets
         lavaFountainMid1 = sheet.crop( 64, 16, 16, 16);
         lavaFountainFloor1 = sheet.crop( 64, 32, 16, 16);
 
+        waterFountainMid1 = sheet.crop( 64, 48, 16, 16);
+        waterFountainFloor1 = sheet.crop( 64, 64, 16, 16);
+
         wallSideRight = ImageLoader.LoadImage("/Textures/wall_side.png");
         wallSideLeft = ImageLoader.LoadImage("/Textures/wall_side_left.png");
 
@@ -281,6 +325,12 @@ public class Assets
         spikeAsset4 = sheet.crop( 16 + 3*16, 176 ,16 ,16 );
 
         floorHole = sheet.crop( 96, 144, 16, 16);
+
+        fireBall1 =  ImageLoader.LoadImage("/Textures/Fireball/FB001.png");
+        fireBall2 =  ImageLoader.LoadImage("/Textures/Fireball/FB002.png");
+        fireBall3 =  ImageLoader.LoadImage("/Textures/Fireball/FB003.png");
+        fireBall4 =  ImageLoader.LoadImage("/Textures/Fireball/FB004.png");
+        fireBall5 =  ImageLoader.LoadImage("/Textures/Fireball/FB005.png");
 
     }
 }

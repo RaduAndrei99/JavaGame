@@ -1,11 +1,13 @@
-package PaooGame.Items;
+package PaooGame.UI;
 
 import PaooGame.Graphics.Assets;
+import PaooGame.Items.Hero;
+import PaooGame.Items.Item;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class LifeBar extends Item{
+public class LifeBar extends Item {
 
     int numberOfLives;
 
@@ -18,10 +20,8 @@ public class LifeBar extends Item{
 
         numberOfLives = l;
 
-
         fullHeart = Assets.full_heart;
         emptyHeart = Assets.empty_heart;
-
 
     }
 

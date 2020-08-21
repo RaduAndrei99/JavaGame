@@ -22,6 +22,10 @@ public abstract class Item {
 
     protected BufferedImage image;
 
+    protected int position = 1;
+    protected int x_mirror_offset;
+
+
     public Item(RefLinks refLink, float x, float y, int width, int height) {
         this.x = x;
         this.y = y;
@@ -75,7 +79,8 @@ public abstract class Item {
     }
 
     public Rectangle getNormalBounds() {
-        return this.normalBounds;
+        return new Rectangle(this.normalBounds.x + collision_offset_x,this.normalBounds.y + collision_offset_y,
+                this.normalBounds.width,this.normalBounds.height);
     }
 
     public BufferedImage getImage() {

@@ -1,6 +1,7 @@
 package PaooGame.States;
 
 import PaooGame.Graphics.Assets;
+import PaooGame.Particles.Fireball;
 import PaooGame.UI.Menu.*;
 import PaooGame.RefLinks;
 import PaooGame.Sound.Music;

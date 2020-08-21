@@ -1,34 +1,59 @@
 package PaooGame.Maps.Rooms;
 
+import PaooGame.RefLinks;
+import javafx.util.Pair;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+
 public class RoomModel2 extends Room {
 
-    public RoomModel2(){
+    public RoomModel2(RefLinks refs){
+        super(refs);
+        potentialEntities = new ArrayList<>();
 
-        super();
+        room_layout = new int[NO_OF_TILES_HEIGHT][NO_OF_TILES_WIDTH];
+        try {
+            File myObj = new File("res/Rooms/room_2.txt");
+            Scanner myReader = new Scanner(myObj);
 
+            for(int i=0;i<NO_OF_TILES_HEIGHT;++i){
+                for(int j=0;j<NO_OF_TILES_WIDTH;++j){
+                    room_layout[i][j] = myReader.nextInt();
+                }
+            }
 
-        this.room_layout = new int [][]  {
+            int read_x = myReader.nextInt();
+            int read_y = myReader.nextInt();
 
-                {0,0,0,19,11,11,11,21,0,19,11,11,11,11,21,19,32,11,11,11,11,11,11,32,21,19,11,11,11,11,21,19,11,11,11,11,21,0,0,0},
-                {19,11,11,16,10,10,10,18,11,16,10,10,10,10,18,16,33,10,10,10,10,10,10,33,18,16,10,10,10,10,18,16,10,10,10,10,18,11,11,21},
-                {13,10,10,10,2,2,2,10,10,10,2,2,2,2,10,10,34,2,2,2,2,2,2,34,10,10,2,2,2,2,10,10,2,2,2,2,10,10,10,14},
-                {13,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,14},
-                {13,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,14},
-                {13,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,14},
-                {13,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,14},
-                {28,24,24,24,30,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,31,24,24,24,29},
-                {0,0,0,0,13,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,14,0,0,0,0},
-                {0,0,0,0,13,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,14,0,0,0,0},
-                {0,0,0,0,13,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,14,0,0,0,0},
-                {0,0,0,0,13,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,14,0,0,0,0},
-                {19,11,11,11,16,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,18,11,11,11,21},
-                {13,10,10,10,10,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,10,10,10,10,14},
-                {13,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,14},
-                {13,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,14},
-                {13,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,14},
-                {13,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,14},
-                {13,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,14},
-                {28,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,29}
-        };
+            while(read_x != -1 || read_y != -1 ){
+                potentialEntities.add(new Pair("chest", new Pair(read_x,read_y)));
+
+                read_x = myReader.nextInt();
+                read_y = myReader.nextInt();
+            }
+
+            read_x = myReader.nextInt();
+            read_y = myReader.nextInt();
+
+            while(read_x != -1 || read_y != -1){
+                potentialEntities.add(new Pair("spike", new Pair(read_x,read_y)));
+
+                read_x = myReader.nextInt();
+                read_y = myReader.nextInt();
+            }
+        }catch (FileNotFoundException e){
+            System.out.println("There is no file for room_model_2 ");
+            e.printStackTrace();
+        }catch (NoSuchElementException e){
+            System.out.println("The file room_model_2 is corrupt!");
+        }
+/*
+        for(int i =0;i<this.potentialEntities.size();++i) {
+            System.out.println(potentialEntities.get(i).getKey() + " " + potentialEntities.get(i).getValue());
+        }*/
     }
 }

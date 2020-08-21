@@ -1,10 +1,12 @@
 package PaooGame.Maps.Rooms;
 
-import PaooGame.Items.Chest;
-import PaooGame.Items.Door;
-import PaooGame.Items.Item;
+import PaooGame.Items.*;
+import PaooGame.Items.Doors.*;
+import PaooGame.Items.Enemies.Enemy;
+import PaooGame.RefLinks;
 import javafx.util.Pair;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -23,35 +25,44 @@ public abstract class Room {
 
     protected int[][] room_layout;
 
-    public Room() {
+    protected final List<Enemy> enemies;
+
+
+    RefLinks refs;
+
+    public Room(RefLinks refs) {
         rand = new Random();
         doors = new Door[4];
         boolean door_created = false;
         entities = new ArrayList<>();
+
+        this.refs = refs;
+
+        enemies = new ArrayList<>();
         while (!door_created) {
             for (int i = 0; i < 4; ++i) {
                 if (rand.nextInt(2) == 1) {
                     switch (i) {
                         case 0://North
-                            doors[0] = new Door(null, NO_OF_TILES_WIDTH / 2 - 2, 0, 4 * TILE_SIZE, 2 * TILE_SIZE);
+                            doors[0] = new NorthDoor(refs);
                             doors[0].setI(-1);
                             doors[0].setJ(0);
                             break;
 
                         case 1://East
-                            doors[1] = new Door(null, 1920 - 2 * TILE_SIZE, NO_OF_TILES_HEIGHT / 2 - 2, 2 * TILE_SIZE, 4 * TILE_SIZE);
+                            doors[1] = new EastDoor(refs);
                             doors[1].setI(0);
                             doors[1].setJ(1);
                             break;
 
                         case 2://South
-                            doors[2] = new Door(null, 1920 - 2 * TILE_SIZE, 1080 - 2 / TILE_SIZE, 4 * TILE_SIZE, 2 * TILE_SIZE);
+                            doors[2] = new SouthDoor(refs);
                             doors[2].setI(1);
                             doors[2].setJ(0);
                             break;
 
                         case 3://West
-                            doors[3] = new Door(null, 0, NO_OF_TILES_HEIGHT / 2 - 2, 4 * TILE_SIZE, 2 * TILE_SIZE);
+                            doors[3] = new WestDoor(refs);
                             doors[3].setI(0);
                             doors[3].setJ(-1);
                             break;
@@ -99,35 +110,42 @@ public abstract class Room {
 
     public void openNorthDoorTo(int i, int j) {
         if (this.doors[0] == null)
-            this.doors[0] = new Door(null, NO_OF_TILES_WIDTH / 2 - 2, 0, 4 * TILE_SIZE, 2 * TILE_SIZE);
+            this.doors[0] = new NorthDoor(refs);
 
         this.doors[0].setI(i);
         this.doors[0].setJ(j);
+        this.doors[0].openDoor();
     }
 
     public void openEastDoorTo(int i, int j) {
         if (this.doors[1] == null)
-            this.doors[1] = new Door(null, 1920 - 2 * TILE_SIZE, NO_OF_TILES_HEIGHT / 2 - 2, 2 * TILE_SIZE, 4 * TILE_SIZE);
+            this.doors[1] = new EastDoor(refs);
 
         this.doors[1].setI(i);
         this.doors[1].setJ(j);
+        this.doors[1].openDoor();
+
     }
 
     public void openSouthDoorTo(int i, int j) {
         if (this.doors[2] == null)
-            this.doors[2] = new Door(null, 1920 - 2 * TILE_SIZE, 1080 - 2 / TILE_SIZE, 4 * TILE_SIZE, 2 * TILE_SIZE);
+            this.doors[2] = new SouthDoor(refs);
 
         this.doors[2].setI(i);
         this.doors[2].setJ(j);
+        this.doors[2].openDoor();
+
     }
 
     public void openWestDoorTo(int i, int j) {
 
         if (this.doors[3] == null)
-            this.doors[3] = new Door(null, 0, NO_OF_TILES_HEIGHT / 2 - 2, 4 * TILE_SIZE, 2 * TILE_SIZE);
+            this.doors[3] = new WestDoor(this.refs);
 
         this.doors[3].setI(i);
         this.doors[3].setJ(j);
+        this.doors[3].openDoor();
+
     }
 
     public void closeDoor(int k) {
@@ -135,7 +153,6 @@ public abstract class Room {
             case 0:
                 this.doors[0] = null;
                 break;
-
             case 1:
                 this.doors[1] = null;
                 break;
@@ -162,5 +179,35 @@ public abstract class Room {
 
     public void resetItems(){
         this.entities = new ArrayList<>();
+    }
+
+    public void Draw(Graphics g){
+        for(Enemy enemy : enemies)
+            enemy.Draw(g);
+    }
+
+    public void Update() {
+
+        for(int i = 0; i<enemies.size();++i)
+            enemies.get(i).Update();
+
+        for(int i = 0; i<entities.size();++i)
+            entities.get(i).Update();
+    }
+
+    public List<Enemy> getEnemies(){
+        return enemies;
+    }
+
+    public void removeEnemy(Enemy e){
+        this.enemies.remove(e);
+    }
+
+    public boolean isContainingEnemies(){
+        return !enemies.isEmpty();
+    }
+
+    public void removeItem(Item i){
+        entities.remove(i);
     }
 }

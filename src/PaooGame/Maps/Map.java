@@ -1,12 +1,12 @@
 package PaooGame.Maps;
 
 import PaooGame.Input.GameMouseListener;
-import PaooGame.Input.KeyManager;
-import PaooGame.Items.*;
-import PaooGame.Items.Enemies.BigDemon;
-import PaooGame.Items.Enemies.Enemy;
-import PaooGame.Items.Weapons.BasicSword;
-import PaooGame.Items.Weapons.BigHammer;
+import PaooGame.Items.Chest;
+import PaooGame.Items.Doors.*;
+import PaooGame.Items.Hero;
+import PaooGame.Items.Item;
+import PaooGame.Items.RectangleCollisionDetector;
+import PaooGame.Items.Traps.HoleTrap;
 import PaooGame.Items.Weapons.GoldenSword;
 import PaooGame.Items.Weapons.MightySword;
 import PaooGame.Maps.Rooms.LevelSpawner;
@@ -17,8 +17,6 @@ import PaooGame.States.State;
 import PaooGame.Tiles.Tile;
 
 import java.awt.*;
-
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,15 +33,11 @@ public class Map {
 
     protected boolean firstTime = true;
 
-    protected final List<Enemy> enemies;
-
     protected RefLinks refs;
 
     protected List<Chest> chests;
 
     protected List<Item> discarded_items;
-
-    protected LevelSpawner spawner;
 
     protected LevelSpawner levelSpawner;
 
@@ -54,8 +48,6 @@ public class Map {
     private Boolean isRightClicked = false;
     private Boolean isRightReleased = false;
 
-    protected List<Trap> traps;
-
 
     /*! \fn public Map()
         \brief Constructorul de initializare al clasei.
@@ -65,11 +57,9 @@ public class Map {
     public Map(RefLinks r) {
         width = 40;
         height = 20;
-        enemies = new ArrayList<>();
-
-        levelSpawner = new LevelSpawner();
 
         refs = r;
+        levelSpawner = new LevelSpawner(refs);
 
         currentPosition = new Point(LevelSpawner.DEFAULT_ROOMS_HEIGHT / 2, LevelSpawner.DEFAULT_ROOMS_WIDTH / 2);
 
@@ -78,20 +68,6 @@ public class Map {
         chests = new LinkedList<>();
 
         discarded_items = new LinkedList<>();
-
-/*
-        Chest temp_chest = new Chest(r,1100,3*48,50,50);
-        temp_chest.putItem(new BasicSword(r,temp_chest.GetX(),temp_chest.GetY() + 10));
-        chests.add(temp_chest);
-
-        temp_chest = new Chest(r,1200,3*48,50,50);
-        temp_chest.putItem(new GoldenSword(r,temp_chest.GetX(),temp_chest.GetY() + 10));
-        chests.add(temp_chest);
-
-        temp_chest = new Chest(r,1300,3*48,50,50);
-        temp_chest.putItem(new MightySword(r,temp_chest.GetX(),temp_chest.GetY() + 10));
-        chests.add(temp_chest);
-*/
     }
 
 
@@ -121,13 +97,13 @@ public class Map {
     private void LoadWorld() {
         tiles = new int[height][width];
         solidTiles = new boolean[height][width];
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                tiles[y][x] = currentLevelMap(y, x);
+        for (int x = 0; x < height; x++) {
+            for (int y = 0; y < width; y++) {
+                tiles[x][y] = currentLevelMap(x, y);
                 try {
-                    solidTiles[y][x] = Tile.tiles[tiles[y][x]].IsSolid();
+                    solidTiles[x][y] = Tile.tiles[tiles[x][y]].IsSolid();
                 } catch (IndexOutOfBoundsException | NullPointerException e) {
-                    solidTiles[y][x] = true;
+                    solidTiles[x][y] = true;
                 }
             }
         }
@@ -139,27 +115,8 @@ public class Map {
         return Tile.tiles[tileID].IsSolid();
     }
 
-    public List<Enemy> getEnemies() {
-        return this.enemies;
-    }
-
-    public void makeSolid(int x, int y) {
-        solidTiles[x][y] = true;
-    }
-
-    public void makeNonSolid(int x, int y) {
-        solidTiles[x][y] = false;
-    }
     public boolean isTileSolid(int x, int y) {
         return this.solidTiles[x][y];
-    }
-
-    public void setTileSolid(int x, int y) {
-        this.solidTiles[x][y] = true;
-    }
-
-    public List<Chest> getChests() {
-        return this.chests;
     }
 
     public void addDiscardedItem(Item i) {
@@ -193,16 +150,17 @@ public class Map {
             isLeftReleased = true;
         }
 
-        int pos_x = (int)(GameMouseListener.getMouseCoordinates().x/Tile.TILE_HEIGHT)*Tile.TILE_HEIGHT;
-        int pos_y = (int)(GameMouseListener.getMouseCoordinates().y/Tile.TILE_HEIGHT)*Tile.TILE_WIDTH;
+        int pos_x = (GameMouseListener.getMouseCoordinates().x/Tile.TILE_HEIGHT) *Tile.TILE_HEIGHT;
+        int pos_y = (GameMouseListener.getMouseCoordinates().y/Tile.TILE_HEIGHT) *Tile.TILE_WIDTH;
 
         if (!(State.GetState() instanceof MenuState) && isLeftReleased) {
             Chest temp_chest = new Chest(refs, pos_x, pos_y, 50, 50);
-            temp_chest.putItem(new BigHammer(refs, temp_chest.GetX(), temp_chest.GetY() + 10));
+            temp_chest.putItem(new GoldenSword(refs, temp_chest.GetX(), temp_chest.GetY() + 10));
             getRoom().addEntity(temp_chest);
             isLeftReleased = false;
             System.out.println(pos_x + " " + pos_y + " - chest");
         }
+
         if (GameMouseListener.isRightMousePressed) {
             isRightClicked = true;
             isRightReleased = false;
@@ -214,21 +172,70 @@ public class Map {
         if (!(State.GetState() instanceof MenuState) && isRightReleased) {
             isRightReleased = false;
 
-            getRoom().addEntity(new SpikeTrap(refs,pos_x, pos_y,Tile.TILE_WIDTH,Tile.TILE_HEIGHT));
+            getRoom().addEntity(new HoleTrap(refs,pos_x, pos_y,Tile.TILE_WIDTH,Tile.TILE_HEIGHT));
             System.out.println(pos_x + " " + pos_y+ " - SpikeTrap");
         }
 
-        for (int i=0;i<enemies.size();++i)
-            enemies.get(i).Update();
-
-        for (Item item : getRoom().getItemList()) {
-            item.Update();
-        }
 
         if(refs.GetKeyManager().t) {
             System.out.println("\n\n");
             getRoom().resetItems();
         }
+
+        for(Door door : currentMapLayout[currentPosition.x][currentPosition.y].getDoors()) {
+            if (door != null) {
+                if (RectangleCollisionDetector.checkIfSecondRectangleContainsFirst(Hero.GetInstance().getNormalBounds(), door.getNormalBounds())) {
+                    if (door instanceof EastDoor) {
+                        currentPosition.y = door.getJ();
+                        Hero.GetInstance().SetX(2 * Tile.TILE_HEIGHT);
+                        Hero.GetInstance().SetY(9 * Tile.TILE_WIDTH);
+                    }
+
+                    if (door instanceof WestDoor) {
+                        currentPosition.y = door.getJ();
+                        Hero.GetInstance().SetX(37 * Tile.TILE_HEIGHT);
+                        Hero.GetInstance().SetY(9 * Tile.TILE_WIDTH);
+                    }
+
+                    if (door instanceof NorthDoor) {
+                        currentPosition.x = door.getI();
+                        Hero.GetInstance().SetX(19 * Tile.TILE_HEIGHT);
+                        Hero.GetInstance().SetY(15 * Tile.TILE_WIDTH);
+                    }
+
+                    if (door instanceof SouthDoor) {
+                        currentPosition.x = door.getI();
+                        Hero.GetInstance().SetX(19 * Tile.TILE_HEIGHT);
+                        Hero.GetInstance().SetY(2 * Tile.TILE_WIDTH);
+                    }
+                    System.out.println(currentPosition.x + " " + currentPosition.y);
+                    LoadWorld();
+                    Hero.GetInstance().updateObservers();
+                    Hero.GetInstance().Update();
+
+
+                    for (int i = 0; i < currentMapLayout.length; ++i) {
+                        for (int j = 0; j < currentMapLayout[0].length; ++j) {
+                            if (i == currentPosition.x && j == currentPosition.y)
+                                System.out.print("* ");
+                            else {
+                                if (currentMapLayout[i][j] != null)
+                                    System.out.print("# ");
+                                else
+                                    System.out.print("0 ");
+                            }
+                        }
+                        System.out.println();
+                    }
+                    System.out.println();
+
+
+                }
+            }
+        }
+
+        getRoom().Update();
+
     }
 
     public void Draw(Graphics g) {
@@ -252,7 +259,7 @@ public class Map {
                         g.setColor(Color.GREEN);
                     }
 
-                    // g.drawRect((int)(x * Tile.TILE_HEIGHT - this.refs.GetGame().getCamera().getXOffset()), (int)(y * Tile.TILE_WIDTH - this.refs.GetGame().getCamera().getYOffset()),48,48);
+                     //g.drawRect((int)(x * Tile.TILE_HEIGHT - this.refs.GetGame().getCamera().getXOffset()), (int)(y * Tile.TILE_WIDTH - this.refs.GetGame().getCamera().getYOffset()),48,48);
                 }
                 //g.setColor(Color.GREEN);
                 //g.drawString(String.valueOf(y*this.width+x), (int)(x *Tile.TILE_HEIGHT - this.refs.GetGame().getCamera().getXOffset()), (int)((y+1) * Tile.TILE_WIDTH  - this.refs.GetGame().getCamera().getYOffset()));
@@ -271,8 +278,12 @@ public class Map {
             item.Draw(g);
         }
 
-        for (Enemy enemy : enemies)
-            enemy.Draw(g);
+
+        for(Door door : currentMapLayout[currentPosition.x][currentPosition.y].getDoors())
+            if(door!=null)
+                door.Draw(g);
+
+        getRoom().Draw(g);
     }
 
     int currentLevelMap(int x, int y) {
@@ -286,15 +297,4 @@ public class Map {
     public Room getRoom() {
         return currentMapLayout[currentPosition.x][currentPosition.y];
     }
-
-    public List<Trap> getTraps(){
-        return traps;
-
-    }
-
-    public void removeEnemy(Enemy e){
-        this.enemies.remove(e);
-    }
-
-
 }

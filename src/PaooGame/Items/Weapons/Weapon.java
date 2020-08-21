@@ -45,20 +45,19 @@ public abstract class Weapon extends Item {
         this.damage = damage;
     }
 
-    public void setX(int x){
-        this.x = x;
-        this.droopedBounds.x = x;
+    @Override
+    public void SetX(float x){
+        this.x = (int) x;
+        this.droopedBounds.x = (int) x;
     }
 
-    public void setY(int y){
-        this.y = y;
-        this.droopedBounds.y = y;
-
+    @Override
+    public void SetY(float y){
+        this.y = (int) y;
+        this.droopedBounds.y = (int) y;
     }
 
     protected void updateBounds(){
-        //this.normalBounds.x = (int)(x );
-        //this.normalBounds.y = (int)(y );
 
         boundsUp.x = x;
         boundsUp.y = y;
@@ -77,7 +76,6 @@ public abstract class Weapon extends Item {
     public void Update() {
 
         updateBounds();
-
 
         float angle = (float)Math.toDegrees(Math.atan2(GameMouseListener.getMouseCoordinates().y - y ,GameMouseListener.getMouseCoordinates().x - x ));
 

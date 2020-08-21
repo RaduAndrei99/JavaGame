@@ -1,8 +1,8 @@
-package PaooGame.Items;
+package PaooGame.Items.Traps;
 
-import PaooGame.GameWindow.Camera;
 import PaooGame.Graphics.Assets;
 import PaooGame.RefLinks;
+import PaooGame.Sound.Sound;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -37,6 +37,7 @@ public class SpikeTrap extends Trap{
     public void Update() {
         setIsGivingDamage();
 
+
         if(current_sprite_index == sprites.length - 1)
             isActivated = false;
     }
@@ -60,6 +61,9 @@ public class SpikeTrap extends Trap{
             wait++;
             if (wait > 10) {
                 wait = 0;
+
+                if(current_sprite_index == 1)
+                    Sound.playSound(Sound.spike_trap);
                 if (current_sprite_index < sprites.length - 1)
                     return current_sprite_index++;
                 else

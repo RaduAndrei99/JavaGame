@@ -18,6 +18,7 @@ public class Sound {
 
 
     public static File sword_dash;
+    public static File spike_trap;
 
 
     public static File mouse_over;
@@ -29,7 +30,7 @@ public class Sound {
         death_little_skeleton = new File("res/Sounds/death_little_skeleton.wav");
         mouse_over = new File("res/Sounds/mouse_over.wav");
         sword_dash = new File("res/Sounds/sword_dash.wav");
-
+        spike_trap = new File("res/Sounds/spike.wav");
 
     }
 

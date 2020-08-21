@@ -1,5 +1,6 @@
-package PaooGame.Items;
+package PaooGame.Items.Traps;
 
+import PaooGame.Items.Item;
 import PaooGame.RefLinks;
 
 import java.awt.*;
