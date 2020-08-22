@@ -1,9 +1,7 @@
 package PaooGame.Maps.Rooms;
 
-import PaooGame.Items.Enemies.BigDemon;
-import PaooGame.Items.Enemies.BigZombie;
-import PaooGame.Items.Enemies.LittleSkeleton;
-import PaooGame.Items.Enemies.LittleWizard;
+
+import PaooGame.Items.Enemies.*;
 import PaooGame.RefLinks;
 import javafx.util.Pair;
 
@@ -19,10 +17,8 @@ public class RoomModel5 extends Room {
         super(refs);
         potentialEntities = new ArrayList<>();
 
-        enemies.add(new LittleWizard(refs,200,200));
-        //enemies.add(new LittleSkeleton(refs,200,250));
-       // enemies.add(new LittleSkeleton(refs,200,300));
-      //  enemies.add(new LittleSkeleton(refs,200,350));
+        //enemies.add(new BigOrc(refs,200,150));
+
 
 
         room_layout = new int[NO_OF_TILES_HEIGHT][NO_OF_TILES_WIDTH];

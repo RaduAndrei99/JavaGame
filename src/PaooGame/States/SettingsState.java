@@ -2,6 +2,7 @@ package PaooGame.States;
 
 import PaooGame.RefLinks;
 import PaooGame.UI.Menu.SettingsMenu;
+import PaooGame.UI.Menu.Wallpapers.SettingsWallpaper;
 
 import java.awt.*;
 
@@ -14,6 +15,9 @@ public class SettingsState extends State
 {
     SettingsMenu settingsMenu;
 
+    SettingsWallpaper wallpaper;
+
+
     /*! \fn public SettingsState(RefLinks refLink)
         \brief Constructorul de initializare al clasei.
 
@@ -25,6 +29,8 @@ public class SettingsState extends State
         super(refLink);
 
         settingsMenu = new SettingsMenu(refLink);
+
+        wallpaper = new SettingsWallpaper();
     }
 
     /*! \fn public void Update()
@@ -44,6 +50,8 @@ public class SettingsState extends State
     @Override
     public void Draw(Graphics g)
     {
+        wallpaper.Draw(g);
+
         settingsMenu.Draw(g);
 
     }

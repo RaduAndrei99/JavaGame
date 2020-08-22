@@ -2,15 +2,13 @@ package PaooGame.Graphics;
 
 import java.awt.image.BufferedImage;
 
-public class Assets
-{
+public class Assets {
 
     public static BufferedImage full_heart;
     public static BufferedImage half_heart;
     public static BufferedImage empty_heart;
 
     public static BufferedImage game_over;
-
 
     public static BufferedImage hero1;
     public static BufferedImage hero2;
@@ -40,6 +38,11 @@ public class Assets
     public static BufferedImage bigZombie3;
     public static BufferedImage bigZombie4;
 
+    public static BufferedImage bigOrc1;
+    public static BufferedImage bigOrc2;
+    public static BufferedImage bigOrc3;
+    public static BufferedImage bigOrc4;
+
     public static BufferedImage littleSkeleton1;
     public static BufferedImage littleSkeleton2;
     public static BufferedImage littleSkeleton3;
@@ -49,6 +52,31 @@ public class Assets
     public static BufferedImage littleWizard2;
     public static BufferedImage littleWizard3;
     public static BufferedImage littleWizard4;
+
+    public static BufferedImage oldWizard1;
+    public static BufferedImage oldWizard2;
+    public static BufferedImage oldWizard3;
+    public static BufferedImage oldWizard4;
+
+    public static BufferedImage littleOrc1;
+    public static BufferedImage littleOrc2;
+    public static BufferedImage littleOrc3;
+    public static BufferedImage littleOrc4;
+
+    public static BufferedImage orcWithMask1;
+    public static BufferedImage orcWithMask2;
+    public static BufferedImage orcWithMask3;
+    public static BufferedImage orcWithMask4;
+
+    public static BufferedImage middleOrc1;
+    public static BufferedImage middleOrc2;
+    public static BufferedImage middleOrc3;
+    public static BufferedImage middleOrc4;
+
+    public static BufferedImage littleDemon1;
+    public static BufferedImage littleDemon2;
+    public static BufferedImage littleDemon3;
+    public static BufferedImage littleDemon4;
 
     public static BufferedImage wall;
     public static BufferedImage wallTop;
@@ -97,7 +125,6 @@ public class Assets
     public static BufferedImage floorBigCrack4;
 
 
-
     public static BufferedImage basic_sword;
     public static BufferedImage golden_sword;
     public static BufferedImage mighty_sword;
@@ -120,6 +147,8 @@ public class Assets
     public static BufferedImage mainMenuTitle;
 
     public static BufferedImage settingsWallpaper;
+
+    public static BufferedImage preGameWallpaper;
 
 
     public static BufferedImage hero;
@@ -150,6 +179,18 @@ public class Assets
     public static BufferedImage fullscreenOn_static;
     public static BufferedImage fullscreenOn_mouseOver;
 
+    public static BufferedImage newGame_static;
+    public static BufferedImage newGame_mouseOver;
+
+    public static BufferedImage saveGame_static;
+    public static BufferedImage saveGame_mouseOver;
+
+    public static BufferedImage loadLastSave_static;
+    public static BufferedImage loadLastSave_mouseOver;
+
+    public static BufferedImage mainMenu_static;
+    public static BufferedImage mainMenuMouseOver;
+
     public static BufferedImage chest_closed;
     public static BufferedImage chest_nearly_opened;
     public static BufferedImage chest_opened;
@@ -163,21 +204,26 @@ public class Assets
     public static BufferedImage fireBall4;
     public static BufferedImage fireBall5;
 
+    public static BufferedImage blueSpell1;
+    public static BufferedImage blueSpell2;
+    public static BufferedImage blueSpell3;
+    public static BufferedImage blueSpell4;
+    public static BufferedImage blueSpell5;
+
     /*! \fn public static void Init()
         \brief Functia initializaza referintele catre elementele grafice utilizate.
 
         Aceasta functie poate fi rescrisa astfel incat elementele grafice incarcate/utilizate
         sa fie parametrizate. Din acest motiv referintele nu sunt finale.
      */
-    public static void Init()
-    {
-            /// Se creaza temporar un obiect SpriteSheet initializat prin intermediul clasei ImageLoader
+    public static void Init() {
+        /// Se creaza temporar un obiect SpriteSheet initializat prin intermediul clasei ImageLoader
         SpriteSheet sheet = new SpriteSheet(ImageLoader.LoadImage("/Textures/textures.png"));
         SpriteSheet ui_sheet = new SpriteSheet(ImageLoader.LoadImage("/Textures/ui_big_pieces.png"));
 
-            /// Se obtin subimaginile corespunzatoare elementelor necesare.
+        /// Se obtin subimaginile corespunzatoare elementelor necesare.
         wall = sheet.crop(32, 160, 16, 16);
-        wallTop = sheet.crop(32,0,16,16);
+        wallTop = sheet.crop(32, 0, 16, 16);
         wallTopReversed = ImageLoader.LoadImage("/Textures/wall_reversed.png");
         floor = sheet.crop(16, 64, 16, 16);
         floorLittleCrack = sheet.crop(32, 64, 16, 16);
@@ -188,32 +234,32 @@ public class Assets
         floorBigCrack4 = sheet.crop(32, 96, 16, 16);
 
 
-        wallRightSide = sheet.crop(0, 128 ,16, 16);
-        wallLeftSide = sheet.crop(16,128,16,16);
+        wallRightSide = sheet.crop(0, 128, 16, 16);
+        wallLeftSide = sheet.crop(16, 128, 16, 16);
         wallTopRightCross = ImageLoader.LoadImage("/Textures/wall_top_right_cross.png");
-        wallTopRightCrossReversed =  sheet.crop(64, 128 ,16, 16);
+        wallTopRightCrossReversed = sheet.crop(64, 128, 16, 16);
 
-        wallBottomRightCross =  sheet.crop(80, 128 ,16, 16);
-        wallBottomRightCrossReversed =  ImageLoader.LoadImage("/Textures/wall_bottom_cross_reversed.png");
+        wallBottomRightCross = sheet.crop(80, 128, 16, 16);
+        wallBottomRightCrossReversed = ImageLoader.LoadImage("/Textures/wall_bottom_cross_reversed.png");
 
-        wallRightTopCorner = sheet.crop(0, 112 ,16, 16);
+        wallRightTopCorner = sheet.crop(0, 112, 16, 16);
         wallRightTopReversedCorner = ImageLoader.LoadImage("/Textures/wall_side_top_right.png");
-        wallLeftTopCorner =  ImageLoader.LoadImage("/Textures/wall_side_ceva.png");
-        wallLeftTopReversedCorner =  ImageLoader.LoadImage("/Textures/wall_side_ceva_reversed.png");
-        floorWallTop =  ImageLoader.LoadImage("/Textures/floor_3.png");
+        wallLeftTopCorner = ImageLoader.LoadImage("/Textures/wall_side_ceva.png");
+        wallLeftTopReversedCorner = ImageLoader.LoadImage("/Textures/wall_side_ceva_reversed.png");
+        floorWallTop = ImageLoader.LoadImage("/Textures/floor_3.png");
 
         wallWithBrickTop = ImageLoader.LoadImage("/Textures/ajut.png");
 
-        wallWithHole = sheet.crop(48, 48 ,16, 16);
+        wallWithHole = sheet.crop(48, 48, 16, 16);
 
-        hero1 = sheet.crop(128, 100 ,16, 28);
-        hero2 = sheet.crop(128 + 16, 100 ,16, 28);
-        hero3 = sheet.crop(128 + 2 * 16, 100 ,16, 28);
-        hero4 = sheet.crop(128 + 3 * 16, 100 ,16, 28);
+        hero1 = sheet.crop(128, 100, 16, 28);
+        hero2 = sheet.crop(128 + 16, 100, 16, 28);
+        hero3 = sheet.crop(128 + 2 * 16, 100, 16, 28);
+        hero4 = sheet.crop(128 + 3 * 16, 100, 16, 28);
 
         basic_sword = sheet.crop(323, 26, 10, 21);
         golden_sword = sheet.crop(291, 153, 10, 22);
-        mighty_sword = sheet.crop(307 ,145, 10, 30);
+        mighty_sword = sheet.crop(307, 145, 10, 30);
         big_hammer = sheet.crop(291, 42, 10, 37);
         rusty_sword = sheet.crop(307, 26, 10, 21);
 
@@ -225,37 +271,77 @@ public class Assets
         bigDemon3 = sheet.crop(16 + 2 * 32, 364, 32, 36);
         bigDemon4 = sheet.crop(16 + 3 * 32, 364, 32, 36);
 
-        bigZombie1 = sheet.crop(16, 270 ,32, 34);
-        bigZombie2 = sheet.crop(16 + 32, 270 ,32, 34);
-        bigZombie3 = sheet.crop(16 + 2 * 32, 270 ,32, 34);
-        bigZombie4 = sheet.crop(16 + 3 * 32, 270 ,32, 34);
+        bigZombie1 = sheet.crop(16, 270, 32, 34);
+        bigZombie2 = sheet.crop(16 + 32, 270, 32, 34);
+        bigZombie3 = sheet.crop(16 + 2 * 32, 270, 32, 34);
+        bigZombie4 = sheet.crop(16 + 3 * 32, 270, 32, 34);
 
         littleSkeleton1 = sheet.crop(368, 80, 16, 16);
         littleSkeleton2 = sheet.crop(368 + 16, 80, 16, 16);
         littleSkeleton3 = sheet.crop(368 + 16 * 2, 80, 16, 16);
         littleSkeleton4 = sheet.crop(368 + 16 * 3, 80, 16, 16);
 
-        littleWizard1 = sheet.crop(368, 268 ,16, 20);
+        littleWizard1 = sheet.crop(368, 268, 16, 20);
         littleWizard2 = sheet.crop(368 + 16, 268, 16, 20);
         littleWizard3 = sheet.crop(368 + 16 * 2, 268, 16, 20);
         littleWizard4 = sheet.crop(368 + 16 * 3, 268, 16, 20);
+
+        littleWizard1 = sheet.crop(368, 268, 16, 20);
+        littleWizard2 = sheet.crop(368 + 16, 268, 16, 20);
+        littleWizard3 = sheet.crop(368 + 16 * 2, 268, 16, 20);
+        littleWizard4 = sheet.crop(368 + 16 * 3, 268, 16, 20);
+
+        oldWizard1 = ImageLoader.LoadImage("/Textures/OldWizard/wiz1.png");
+        oldWizard2 = ImageLoader.LoadImage("/Textures/OldWizard/wiz2.png");
+        oldWizard3 = ImageLoader.LoadImage("/Textures/OldWizard/wiz3.png");
+        oldWizard4 = ImageLoader.LoadImage("/Textures/OldWizard/wiz4.png");
+
+        littleOrc1 = sheet.crop(368, 32, 16, 16);
+        littleOrc2 = sheet.crop(368 + 16, 32, 16, 16);
+        littleOrc3 = sheet.crop(368 + 2 * 16, 32, 16, 16);
+        littleOrc4 = sheet.crop(368 + 3 * 16, 32, 16, 16);
+
+        orcWithMask1 = sheet.crop(368, 172, 16, 20);
+        orcWithMask2 = sheet.crop(368 + 16, 172, 16, 20);
+        orcWithMask3 = sheet.crop(368 + 2 * 16, 172, 16, 20);
+        orcWithMask4 = sheet.crop(368 + 3 * 16, 172, 16, 20);
+
+        middleOrc1 = sheet.crop(368, 204, 16, 20);
+        middleOrc2 = sheet.crop(368 + 16, 204, 16, 20);
+        middleOrc3 = sheet.crop(368 + 2 * 16, 204, 16, 20);
+        middleOrc4 = sheet.crop(368 + 3 * 16, 204, 16, 20);
 
         mainMenuWallpaper = ImageLoader.LoadImage("/Textures/wallpaper.png");
         mainMenuTitle = ImageLoader.LoadImage("/Textures/title1.png");
 
         settingsWallpaper = ImageLoader.LoadImage("/Textures/wallpaper_settings.png");
 
-        playButton_static = ImageLoader.LoadImage("/Textures/play_static.png");
-        playButton_mouseOver = ImageLoader.LoadImage("/Textures/play_mouse_over.png");
+        preGameWallpaper = ImageLoader.LoadImage("/Textures/pre_game_wallpaper.png");
 
-        settingsButton_static = ImageLoader.LoadImage("/Textures/settings_static.png");
-        settingsButton_mouseOver = ImageLoader.LoadImage("/Textures/settings_mouse_over.png");
 
-        quitButton_static = ImageLoader.LoadImage("/Textures/quit_static.png");
-        quitButton_mouseOver = ImageLoader.LoadImage("/Textures/quit_mouse_over.png");
+        playButton_static = ImageLoader.LoadImage("/Textures/Buttons/play_static.png");
+        playButton_mouseOver = ImageLoader.LoadImage("/Textures/Buttons/play_mouse_over.png");
 
-        backButton_static = ImageLoader.LoadImage("/Textures/back_static.png");
-        backButton_mouseOver = ImageLoader.LoadImage("/Textures/back_mouse_over.png");
+        settingsButton_static = ImageLoader.LoadImage("/Textures/Buttons/settings_static.png");
+        settingsButton_mouseOver = ImageLoader.LoadImage("/Textures/Buttons/settings_mouse_over.png");
+
+        quitButton_static = ImageLoader.LoadImage("/Textures/Buttons/quit_static.png");
+        quitButton_mouseOver = ImageLoader.LoadImage("/Textures/Buttons/quit_mouse_over.png");
+
+        backButton_static = ImageLoader.LoadImage("/Textures/Buttons/back_static.png");
+        backButton_mouseOver = ImageLoader.LoadImage("/Textures/Buttons/back_mouse_over.png");
+
+        newGame_static = ImageLoader.LoadImage("/Textures/Buttons/new_game_static.png");
+        newGame_mouseOver = ImageLoader.LoadImage("/Textures/Buttons/new_game_mouse_over.png");
+
+        saveGame_static = ImageLoader.LoadImage("/Textures/Buttons/save_game_static.png");
+        saveGame_mouseOver = ImageLoader.LoadImage("/Textures/Buttons/save_game_mouse_over.png");
+
+        loadLastSave_static = ImageLoader.LoadImage("/Textures/Buttons/load_last_game_static.png");
+        loadLastSave_mouseOver = ImageLoader.LoadImage("/Textures/Buttons/load_last_game_mouse_over.png");
+
+        mainMenu_static = ImageLoader.LoadImage("/Textures/Buttons/main_menu_static.png");
+        mainMenuMouseOver = ImageLoader.LoadImage("/Textures/Buttons/main_menu_mouse_over.png");
 
         blood0 = ImageLoader.LoadImage("/Textures/1/1_0.png");
         blood1 = ImageLoader.LoadImage("/Textures/1/1_1.png");
@@ -270,27 +356,27 @@ public class Assets
         blood10 = ImageLoader.LoadImage("/Textures/1/1_10.png");
         blood11 = ImageLoader.LoadImage("/Textures/1/1_11.png");
 
-        full_heart = sheet.crop( 288, 256, 16, 16);
-        half_heart = sheet.crop( 304 ,256 ,16 ,16);
-        empty_heart = sheet.crop( 320, 256, 16, 16);
+        full_heart = sheet.crop(288, 256, 16, 16);
+        half_heart = sheet.crop(304, 256, 16, 16);
+        empty_heart = sheet.crop(320, 256, 16, 16);
 
 
-        chest_closed = sheet.crop( 304,288,16,16);
-        chest_nearly_opened = sheet.crop(304 + 16,288,16,16);
-        chest_opened = sheet.crop(304 + 2*16,288,16,16);
+        chest_closed = sheet.crop(304, 288, 16, 16);
+        chest_nearly_opened = sheet.crop(304 + 16, 288, 16, 16);
+        chest_opened = sheet.crop(304 + 2 * 16, 288, 16, 16);
 
 
-        inventory_cell = ui_sheet.crop(189,291,40,40);
-        inventory_cell_selected  = ui_sheet.crop(480,292,38,39);
+        inventory_cell = ui_sheet.crop(189, 291, 40, 40);
+        inventory_cell_selected = ui_sheet.crop(480, 292, 38, 39);
 
         game_over = ImageLoader.LoadImage("/Textures/game_over.png");
 
-        fountainTop = sheet.crop( 64,0,16,16);
-        lavaFountainMid1 = sheet.crop( 64, 16, 16, 16);
-        lavaFountainFloor1 = sheet.crop( 64, 32, 16, 16);
+        fountainTop = sheet.crop(64, 0, 16, 16);
+        lavaFountainMid1 = sheet.crop(64, 16, 16, 16);
+        lavaFountainFloor1 = sheet.crop(64, 32, 16, 16);
 
-        waterFountainMid1 = sheet.crop( 64, 48, 16, 16);
-        waterFountainFloor1 = sheet.crop( 64, 64, 16, 16);
+        waterFountainMid1 = sheet.crop(64, 48, 16, 16);
+        waterFountainFloor1 = sheet.crop(64, 64, 16, 16);
 
         wallSideRight = ImageLoader.LoadImage("/Textures/wall_side.png");
         wallSideLeft = ImageLoader.LoadImage("/Textures/wall_side_left.png");
@@ -298,39 +384,48 @@ public class Assets
         wallWithCross = ImageLoader.LoadImage("/Textures/wall_with_cross.png");
         wallWithCrossReversed = ImageLoader.LoadImage("/Textures/wall_with_cross_reversed.png");
 
-        pillarTop = sheet.crop( 96, 80, 16 ,16);
-        pillarMid = sheet.crop( 96, 96, 16 ,16);
-        pillarFloor = sheet.crop( 96, 112, 16 ,16);
+        pillarTop = sheet.crop(96, 80, 16, 16);
+        pillarMid = sheet.crop(96, 96, 16, 16);
+        pillarFloor = sheet.crop(96, 112, 16, 16);
 
-        slimeMid = sheet.crop( 64, 80, 16, 16);
-        slimeFloor = sheet.crop( 64, 96, 16, 16);
+        slimeMid = sheet.crop(64, 80, 16, 16);
+        slimeFloor = sheet.crop(64, 96, 16, 16);
 
-        plusButton_static = ImageLoader.LoadImage("/Textures/plus.png");
-        plusButton_mouseOver = ImageLoader.LoadImage("/Textures/plus_mouse_over.png");
+        plusButton_static = ImageLoader.LoadImage("/Textures/Buttons/plus.png");
+        plusButton_mouseOver = ImageLoader.LoadImage("/Textures/Buttons/plus_mouse_over.png");
 
-        minusButton_static = ImageLoader.LoadImage("/Textures/minus.png");
-        minusButton_mouseOver = ImageLoader.LoadImage("/Textures/minus_mouse_over.png");
+        minusButton_static = ImageLoader.LoadImage("/Textures/Buttons/minus.png");
+        minusButton_mouseOver = ImageLoader.LoadImage("/Textures/Buttons/minus_mouse_over.png");
 
-        volumeButton_static =  ImageLoader.LoadImage("/Textures/volume_static.png");
+        volumeButton_static = ImageLoader.LoadImage("/Textures/Buttons/volume_static.png");
 
-        fullscreenOff_static =  ImageLoader.LoadImage("/Textures/fullscreen_off_static.png");
-        fullscreenOff_mouseOver =  ImageLoader.LoadImage("/Textures/fullscreen_off_mouse_over.png");
+        fullscreenOff_static = ImageLoader.LoadImage("/Textures/Buttons/fullscreen_off_static.png");
+        fullscreenOff_mouseOver = ImageLoader.LoadImage("/Textures/Buttons/fullscreen_off_mouse_over.png");
 
-        fullscreenOn_static =  ImageLoader.LoadImage("/Textures/fullscreen_on_static.png");
-        fullscreenOn_mouseOver =  ImageLoader.LoadImage("/Textures/fullscreen_on_mouse_over.png");
+        fullscreenOn_static = ImageLoader.LoadImage("/Textures/Buttons/fullscreen_on_static.png");
+        fullscreenOn_mouseOver = ImageLoader.LoadImage("/Textures/Buttons/fullscreen_on_mouse_over.png");
 
-        spikeAsset1 = sheet.crop( 16, 176 ,16 ,16 );
-        spikeAsset2 = sheet.crop( 16 + 16, 176 ,16 ,16 );
-        spikeAsset3 = sheet.crop( 16 + 2*16, 176 ,16 ,16 );
-        spikeAsset4 = sheet.crop( 16 + 3*16, 176 ,16 ,16 );
+        spikeAsset1 = sheet.crop(16, 176, 16, 16);
+        spikeAsset2 = sheet.crop(16 + 16, 176, 16, 16);
+        spikeAsset3 = sheet.crop(16 + 2 * 16, 176, 16, 16);
+        spikeAsset4 = sheet.crop(16 + 3 * 16, 176, 16, 16);
 
-        floorHole = sheet.crop( 96, 144, 16, 16);
+        floorHole = sheet.crop(96, 144, 16, 16);
 
-        fireBall1 =  ImageLoader.LoadImage("/Textures/Fireball/FB001.png");
-        fireBall2 =  ImageLoader.LoadImage("/Textures/Fireball/FB002.png");
-        fireBall3 =  ImageLoader.LoadImage("/Textures/Fireball/FB003.png");
-        fireBall4 =  ImageLoader.LoadImage("/Textures/Fireball/FB004.png");
-        fireBall5 =  ImageLoader.LoadImage("/Textures/Fireball/FB005.png");
+        fireBall1 = ImageLoader.LoadImage("/Textures/Fireball/FB001.png");
+        fireBall2 = ImageLoader.LoadImage("/Textures/Fireball/FB002.png");
+        fireBall3 = ImageLoader.LoadImage("/Textures/Fireball/FB003.png");
+        fireBall4 = ImageLoader.LoadImage("/Textures/Fireball/FB004.png");
+        fireBall5 = ImageLoader.LoadImage("/Textures/Fireball/FB005.png");
 
+        littleDemon1 = sheet.crop(368, 328, 16, 24);
+        littleDemon2 = sheet.crop(368 + 16, 328, 16, 24);
+        littleDemon3 = sheet.crop(368 + 2 * 16, 328, 16, 24);
+        littleDemon4 = sheet.crop(368 + 3 * 16, 328, 16, 24);
+
+        bigOrc1 = sheet.crop(16, 320, 32, 32);
+        bigOrc2 = sheet.crop(16 + 32, 320, 32, 32);
+        bigOrc3 = sheet.crop(16 + 2 * 32, 320, 32, 32);
+        bigOrc4 = sheet.crop(16 + 3 * 32, 320, 32, 32);
     }
 }

@@ -35,6 +35,7 @@ public abstract class State
     {
         previousState = currentState;
         currentState = state;
+
     }
 
     public static State GetState()

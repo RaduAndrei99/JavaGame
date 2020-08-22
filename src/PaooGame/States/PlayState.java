@@ -49,7 +49,6 @@ public class PlayState extends State
             reset();
         }
 
-
         if(isHeroDead && refLink.GetKeyManager().r) {
             isHeroDead = false;
             Hero.GetInstance().reset();
@@ -62,6 +61,11 @@ public class PlayState extends State
         currentMap.Update();
 
         hero.Update();
+
+        if (refLink.GetKeyManager().esc) {
+            refLink.GetGame().SetPreGameState();
+        }
+
 
     }
 

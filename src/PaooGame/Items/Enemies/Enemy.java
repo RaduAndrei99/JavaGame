@@ -7,15 +7,21 @@ import PaooGame.Items.Weapons.Weapon;
 import PaooGame.RefLinks;
 import PaooGame.Sound.Sound;
 import PaooGame.Tiles.Tile;
+
+import java.io.File;
 import java.util.List;
 
 
 import java.awt.*;
+import java.util.Random;
 
 public abstract class  Enemy extends Character {
     protected final int BASE_DAMAGE = 10;
 
     protected int damage;
+
+    public static File []moans; //referinta catre sunetul pe care il prodece monstrul
+
     public Enemy(RefLinks refLink, float x, float y, int width, int height) {
         super(refLink, x, y, width, height);
 
@@ -34,10 +40,8 @@ public abstract class  Enemy extends Character {
     public void Draw(Graphics g) {
         g.setColor(Color.GREEN);
         if (!isDead) {
-            //g.drawImage(image[next], (int) (x - refLink.GetGame().getCamera().getXOffset() + x_mirror_offset), (int) (y - refLink.GetGame().getCamera().getYOffset()), position * width, height, null);
-
             g.drawImage(image[nextPos()], (int) (x  - refLink.GetGame().getCamera().getXOffset() + x_mirror_offset), (int)( y -  refLink.GetGame().getCamera().getYOffset()), position * width, height, null);
-            //g.drawRect((int) (getNormalBounds().x - refLink.GetGame().getCamera().getXOffset()), (int) (getNormalBounds().y - refLink.GetGame().getCamera().getYOffset() ) , getNormalBounds().width , getNormalBounds().height );
+            g.drawRect((int) (getNormalBounds().x - refLink.GetGame().getCamera().getXOffset()), (int) (getNormalBounds().y - refLink.GetGame().getCamera().getYOffset() ) , getNormalBounds().width , getNormalBounds().height );
         }
         blood.Draw(g, (int) (x - refLink.GetGame().getCamera().getXOffset()), (int) (y - refLink.GetGame().getCamera().getYOffset()), width, height);
     }
@@ -67,6 +71,15 @@ public abstract class  Enemy extends Character {
 
             this.Move();
 
+            if(moans != null) {
+                Random rand = new Random();
+                int r = rand.nextInt(150) + 1;
+                int soundIndex = rand.nextInt(moans.length);
+
+                if (r == 1) {
+                    Sound.playSound(moans[soundIndex]);
+                }
+            }
 
             int start = (int) ((x + width / 2) / Tile.TILE_WIDTH) + (int) ((y + height / 2)  / Tile.TILE_HEIGHT) *  refLink.GetMap().getWidth();
             int end =(int)(Hero.GetInstance().GetX() + Hero.GetInstance().GetWidth()/2)/Tile.TILE_HEIGHT +  (int)((Hero.GetInstance().GetY() + Hero.GetInstance().GetHeight()/2)/Tile.TILE_HEIGHT)* refLink.GetMap().getWidth();
@@ -95,7 +108,8 @@ public abstract class  Enemy extends Character {
 
             if (life < 0) {
                 isDead = true;
-                Sound.playSound(Sound.death_big_demon);
+                if(moans != null)
+                    Sound.playSound(moans[0]);
             }
 
         }

@@ -11,9 +11,9 @@ public class Music {
 
     static float currentVolume;
     static final float DEFAULT_VOLUME_SCALE = (float) 0.1;
-    static final float DEFAULT_VOLUME = (float) 0.6;
+    static final float DEFAULT_VOLUME = (float) 0.0;
 
-    public static final float MIN_VOLUME = (float) 0.0;
+    public static final float MIN_VOLUME = (float) 0.1;
     public static final float MAX_VOLUME = (float) 1.0;
 
 
@@ -35,8 +35,13 @@ public class Music {
             clip.open(AudioSystem.getAudioInputStream(sound));
 
             FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            float dB = (float) (Math.log(DEFAULT_VOLUME) / Math.log(10) * 20);
-            volume.setValue((float)-80);
+
+            if(currentVolume > MIN_VOLUME) {
+                float dB = (float) (Math.log(currentVolume) / Math.log(10) * 20);
+                volume.setValue(dB);
+            }else
+                volume.setValue(-80);
+
 
             lastPlayedMusic = clip;
 
@@ -60,9 +65,16 @@ public class Music {
 
                 FloatControl volume = (FloatControl) lastPlayedMusic.getControl(FloatControl.Type.MASTER_GAIN);
                 float dB = (float) (Math.log(currentVolume) / Math.log(10) * 20);
-                volume.setValue((float)dB);
+                try {
+                    if (dB >= -80)
+                        volume.setValue(dB);
+                    else
+                        volume.setValue(-80);
+                }catch (IllegalArgumentException e){
+                    volume.setValue(0);
+                }
 
-                System.out.println("Music up with " + DEFAULT_VOLUME_SCALE + " - current " + currentVolume);
+                System.out.println("Music down with " + DEFAULT_VOLUME_SCALE + " - current " + currentVolume);
             }
 
         }
@@ -76,9 +88,9 @@ public class Music {
 
                 FloatControl volume = (FloatControl) lastPlayedMusic.getControl(FloatControl.Type.MASTER_GAIN);
                 float dB = (float) (Math.log(currentVolume) / Math.log(10) * 20);
-                volume.setValue((float)dB);
+                volume.setValue(dB);
 
-                System.out.println("Music down " + DEFAULT_VOLUME_SCALE + " - current " + currentVolume);
+                System.out.println("Music up " + DEFAULT_VOLUME_SCALE + " - current " + currentVolume);
             }
 
         }

@@ -1,6 +1,7 @@
 package PaooGame.Maps.Rooms;
 
 import PaooGame.Items.Enemies.BigDemon;
+import PaooGame.Items.Enemies.BigZombie;
 import PaooGame.RefLinks;
 import javafx.util.Pair;
 
@@ -16,6 +17,8 @@ public class RoomModel1 extends Room {
         super(refs);
 
         enemies.add(new BigDemon(refs,200,200));
+        enemies.add(new BigDemon(refs,300,200));
+        enemies.add(new BigZombie(refs,300,400));
 
 
         potentialEntities = new ArrayList<>();

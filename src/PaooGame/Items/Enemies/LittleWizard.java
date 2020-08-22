@@ -6,6 +6,7 @@ import PaooGame.Items.Hero;
 import PaooGame.Items.Item;
 import PaooGame.Items.RectangleCollisionDetector;
 import PaooGame.Items.Weapons.Weapon;
+import PaooGame.Maps.Map;
 import PaooGame.Particles.Fireball;
 import PaooGame.RefLinks;
 import PaooGame.Sound.Sound;
@@ -15,7 +16,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-public class LittleWizard extends Enemy {
+public class LittleWizard extends Enemy implements Wizard  {
 
     public static int DEFAULT_WIDTH = 16*4;
     public static int DEFAULT_HEIGHT = 16*5;
@@ -27,7 +28,6 @@ public class LittleWizard extends Enemy {
     protected long attackSpeed = 1;
     protected long lastFireballTime;
 
-    Fireball fireball;
 
     public LittleWizard(RefLinks refLink, float x, float y) {
         super(refLink, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT);
@@ -39,7 +39,7 @@ public class LittleWizard extends Enemy {
         image[2] = Assets.littleWizard3;
         image[3] = Assets.littleWizard4;
 
-        this.life = 150;
+        this.life = 100;
         this.damage = 1;
 
         collision_offset_y = 20;
@@ -69,9 +69,35 @@ public class LittleWizard extends Enemy {
                 }
             }
 
+            UpdateBoundsRectangle();
+            Move();
+
+            int start = (int) ((x + width / 2) / Tile.TILE_WIDTH) + (int) ((y + height / 2)  / Tile.TILE_HEIGHT) *  refLink.GetMap().getWidth();
+            int end =(int)(Hero.GetInstance().GetX() + Hero.GetInstance().GetWidth()/2)/Tile.TILE_HEIGHT +  (int)((Hero.GetInstance().GetY() + Hero.GetInstance().GetHeight()/2)/Tile.TILE_HEIGHT)* refLink.GetMap().getWidth();
+            List<Integer> path = refLink.GetGame().getPathFinder().GetPath(end, start);
+            //System.out.println(path);
+            //System.out.println(start + " " + end);
+
+            if((path != null && path.size() > 0))
+                goToTile(path.remove(0));
+            else {
+                if (start != end) {
+                    goToTile(end);
+                }
+            }
+
+            if(Hero.GetInstance().getNormalBounds().x + Hero.GetInstance().getNormalBounds().width < getNormalBounds().x){
+                position = -1;
+                x_mirror_offset = width;
+            }else {
+                position = 1;
+                x_mirror_offset = 0;
+            }
+
             long currentTime = System.currentTimeMillis()/1000;
             if(currentTime - lastFireballTime > attackSpeed){
-                throwFireball();
+                throwSpell();
+                Sound.playSound(Sound.fireBall);
                 lastFireballTime = System.currentTimeMillis()/1000;
             }
 
@@ -88,7 +114,7 @@ public class LittleWizard extends Enemy {
 
             if (life < 0) {
                 isDead = true;
-                Sound.playSound(Sound.death_big_demon);
+                Sound.playSound(Sound.death_little_wizard);
             }
 
         }
@@ -96,8 +122,64 @@ public class LittleWizard extends Enemy {
             refLink.GetMap().getRoom().removeEnemy(this);
     }
 
-    public void throwFireball(){
-        refLink.GetMap().getRoom().addEntity(new Fireball(refLink,getNormalBounds().x,getNormalBounds().y));
+    @Override
+    public void Move(){
+        move.x = (int) (normalBounds.x + xSpeed);
+        move.y = (int) (normalBounds.y + ySpeed);
+/*
+        if(xSpeed <= 0) {//merg la stanga
+            if (Map.isSolid(Map.tiles[(int) ((normalBounds.y + collision_offset_y)  / Tile.TILE_HEIGHT)][(int) (normalBounds.x / Tile.TILE_HEIGHT)])  || Map.isSolid(Map.tiles[(int) (((normalBounds.y + collision_offset_y) + 0.9 * (height  - collision_offset_y)) / Tile.TILE_HEIGHT)][(int) (move.x / Tile.TILE_HEIGHT)])) {
+                move.x =(int) (move.x - xSpeed);
+                xSpeed = 0;
+            }
+        }
+        else{//merg la dreapta
+            if (Map.isSolid(Map.tiles[(int) ((normalBounds.y + collision_offset_y)  / Tile.TILE_HEIGHT)][(int) ((move.x + width) / Tile.TILE_HEIGHT)])|| Map.isSolid(Map.tiles[(int) (((normalBounds.y + collision_offset_y) + (height - collision_offset_y)*0.9) / Tile.TILE_HEIGHT)][(int) ((move.x + width) / Tile.TILE_HEIGHT)]) ) {
+                move.x = (int)(move.x - xSpeed);
+                xSpeed = 0;
+            }
+        }
+
+
+        if(ySpeed <= 0){//merg sus
+            if(Map.isSolid(Map.tiles[(int) ((move.y + collision_offset_y) /Tile.TILE_HEIGHT)][(int) (move.x/Tile.TILE_HEIGHT)])  || Map.isSolid(Map.tiles[(int) ((move.y + collision_offset_y)/Tile.TILE_HEIGHT)][(int) ((move.x + width*0.9)/Tile.TILE_HEIGHT)])){
+                move.y = (int) (move.y - ySpeed);
+                ySpeed = 0;
+            }
+        }
+        else{//merg jos
+            if(Map.isSolid(Map.tiles[(int) (((move.y + collision_offset_y) + (height - collision_offset_y))/Tile.TILE_HEIGHT)][(int) (move.x/Tile.TILE_HEIGHT)]) || Map.isSolid(Map.tiles[(int) (((move.y + collision_offset_y) + (height - collision_offset_y))/Tile.TILE_HEIGHT)][(int) ((move.x + 0.9 * width)/Tile.TILE_HEIGHT)])){
+                move.y = (int) (move.y - ySpeed);
+                ySpeed = 0;
+            }
+        }*/
+
+        //isMoving = x != xMove || y != yMove;
+
+        x = move.x;
+        y = move.y;
+    }
+
+    public void throwSpell(){
+        if(Hero.GetInstance().getNormalBounds().x + Hero.GetInstance().getNormalBounds().width < getNormalBounds().x){
+            refLink.GetMap().getRoom().addEntity(new Fireball(refLink,getNormalBounds().x,getNormalBounds().y));
+            return;
+        }
+
+        if(Hero.GetInstance().getNormalBounds().x  > getNormalBounds().x + getNormalBounds().width){
+            refLink.GetMap().getRoom().addEntity(new Fireball(refLink,getNormalBounds().x,getNormalBounds().y));
+            return;
+        }
+
+        if(Hero.GetInstance().getNormalBounds().y + Hero.GetInstance().getNormalBounds().height < getNormalBounds().y){
+            refLink.GetMap().getRoom().addEntity(new Fireball(refLink,getNormalBounds().x,getNormalBounds().y));
+            return;
+        }
+
+        if(Hero.GetInstance().getNormalBounds().y  > getNormalBounds().y + getNormalBounds().height ){
+            refLink.GetMap().getRoom().addEntity(new Fireball(refLink,getNormalBounds().x,getNormalBounds().y));
+        }
+
     }
 
 }

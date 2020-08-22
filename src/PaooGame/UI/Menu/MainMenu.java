@@ -1,6 +1,9 @@
 package PaooGame.UI.Menu;
 
 import PaooGame.RefLinks;
+import PaooGame.UI.Menu.Buttons.PlayButton;
+import PaooGame.UI.Menu.Buttons.QuitButton;
+import PaooGame.UI.Menu.Buttons.SettingsButton;
 
 import java.awt.*;
 import java.util.LinkedList;

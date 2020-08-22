@@ -10,7 +10,9 @@ import PaooGame.Items.Traps.SpikeTrap;
 import PaooGame.Items.Traps.Trap;
 import PaooGame.Observer.GameObserver;
 import PaooGame.Particles.BloodParticle;
+import PaooGame.Particles.Fireball;
 import PaooGame.RefLinks;
+import PaooGame.Sound.Sound;
 import PaooGame.UI.Inventory;
 import PaooGame.UI.InventoryCell;
 import PaooGame.UI.LifeBar;
@@ -135,14 +137,30 @@ public class Hero extends Character///SINGLETON
             }
         }
 
+        //verific daca iau damage
+        if(!damaged) {
+            for (Enemy enemy : refLink.GetMap().getRoom().getEnemies())
+                if (RectangleCollisionDetector.checkCollision(this.getNormalBounds(), enemy.getNormalBounds())) {
+                    this.life -= enemy.getDamage();
+                    this.damaged = true;
+                    drawOpacity = true;
+                    oldTime = System.currentTimeMillis() / 1000;
+                }
 
-        for(Enemy enemy : refLink.GetMap().getRoom().getEnemies())
-            if ( RectangleCollisionDetector.checkCollision(this.getNormalBounds(),enemy.getNormalBounds())  && !damaged){
-                this.life -= enemy.getDamage();
-                this.damaged = true;
-                drawOpacity = true;
-                oldTime = System.currentTimeMillis() / 1000;
+            for (int i = 0; i < refLink.GetMap().getRoom().getItemList().size(); ++i) {
+                if (refLink.GetMap().getRoom().getItemList().get(i) instanceof Fireball) {
+                    Fireball tempFireball = (Fireball)refLink.GetMap().getRoom().getItemList().get(i);
+                    if (RectangleCollisionDetector.checkCollision(this.getNormalBounds(), tempFireball.getNormalBounds())) {
+                        this.life -= Fireball.DAMAGE;
+                        this.damaged = true;
+                        drawOpacity = true;
+                        refLink.GetMap().getRoom().removeItem(tempFireball);
+                        Sound.playSound(Sound.fireBallExplosion);
+                        oldTime = System.currentTimeMillis() / 1000;
+                    }
+                }
             }
+        }
 
         for (Item trap : refLink.GetMap().getRoom().getItemList() ) {
             if(trap instanceof Trap) {
@@ -257,9 +275,6 @@ public class Hero extends Character///SINGLETON
             this.heldItem = null;
         }
 
-        if (refLink.GetKeyManager().esc) {
-            refLink.GetGame().SetMenuState();
-        }
 
     }
 

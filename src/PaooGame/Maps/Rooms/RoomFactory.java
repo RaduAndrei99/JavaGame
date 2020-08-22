@@ -7,8 +7,8 @@ public class RoomFactory {
     public static final int ROOM_TYPES = 5;
 
     public static Room getRoom(int room, RefLinks r) throws Exception {
-        room = 5;
         if (room > 0 && room <= ROOM_TYPES) {
+            room = 5;
             switch (room) {
                 case 1:
                     return new RoomModel1(r);

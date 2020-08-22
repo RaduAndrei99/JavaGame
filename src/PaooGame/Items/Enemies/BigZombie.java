@@ -12,6 +12,7 @@ import PaooGame.Tiles.Tile;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.List;
 
 public class BigZombie extends Enemy {
@@ -34,14 +35,22 @@ public class BigZombie extends Enemy {
         image[2] = Assets.bigZombie3;
         image[3] = Assets.bigZombie4;
 
-        this.life = 300;
-        this.damage = 1;
+        this.life = 1000;
+        this.damage = 2;
 
         collision_offset_y = 50;
         collision_offset_x = 40;
 
         this.normalBounds = new Rectangle((int)x , (int)y , DEFAULT_BOUNDS_WIDTH,DEFAULT_BOUNDS_HEIGHT);
         this.speed = DEFAULT_SPEED;
+
+        moans = new File[4];
+
+        moans[0] = Sound.death_big_zombie;
+        moans[1] = Sound.zombie_sound1;
+        moans[2] = Sound.zombie_sound2;
+        moans[3] = Sound.zombie_sound3;
+
     }
 
 }

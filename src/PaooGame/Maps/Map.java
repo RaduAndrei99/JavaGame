@@ -5,6 +5,7 @@ import PaooGame.Items.Chest;
 import PaooGame.Items.Doors.*;
 import PaooGame.Items.Hero;
 import PaooGame.Items.Item;
+import PaooGame.Items.Potions.SpeedPotion;
 import PaooGame.Items.RectangleCollisionDetector;
 import PaooGame.Items.Traps.HoleTrap;
 import PaooGame.Items.Weapons.GoldenSword;

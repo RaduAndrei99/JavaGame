@@ -68,6 +68,7 @@ public class Game implements Runnable {
 
     ///Available states
     private State playState;            /*!< Referinta catre joc.*/
+    private State preGameState;         /*!< Referinta catre partea de new/load game.*/
     private State menuState;            /*!< Referinta catre menu.*/
     private State settingsState;        /*!< Referinta catre setari.*/
     private State aboutState;           /*!< Referinta catre about.*/
@@ -135,6 +136,7 @@ public class Game implements Runnable {
         menuState = new MenuState(refLink);
         settingsState = new SettingsState(refLink);
         aboutState = new AboutState(refLink);
+        preGameState = new PreGameState(refLink);
         ///Seteaza starea implicita cu care va fi lansat programul in executie
         State.SetState(menuState);
     }
@@ -312,6 +314,7 @@ public class Game implements Runnable {
 
     public void SetPlayState() {
         State.SetState(playState);
+
     }
 
     public void SetMenuState() {
@@ -320,6 +323,10 @@ public class Game implements Runnable {
 
     public void SetSettingsState() {
         State.SetState(settingsState);
+    }
+
+    public void SetPreGameState() {
+        State.SetState(preGameState);
     }
 
     public PathFinderBFS getPathFinder() {

@@ -25,7 +25,7 @@ public class LittleSkeleton extends Enemy {
         image[2] = Assets.littleSkeleton3;
         image[3] = Assets.littleSkeleton4;
 
-        this.life = 100;
+        this.life = 80;
         this.damage = 1;
 
         speed = DEFAULT_SPEED;

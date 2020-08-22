@@ -9,6 +9,7 @@ import PaooGame.Tiles.Tile;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.List;
 
 public class BigDemon extends Enemy {
@@ -31,7 +32,7 @@ public class BigDemon extends Enemy {
         image[2] = Assets.bigDemon3;
         image[3] = Assets.bigDemon4;
 
-        this.life = 200;
+        this.life = 1000;
         this.damage = 2;
 
         collision_offset_y = 50;
@@ -39,6 +40,11 @@ public class BigDemon extends Enemy {
 
         this.normalBounds = new Rectangle((int)x , (int)y , DEFAULT_BOUNDS_WIDTH,DEFAULT_BOUNDS_HEIGHT);
         this.speed = DEFAULT_SPEED;
+
+        moans = new File[2];
+
+        moans[0] = Sound.death_big_demon;
+        moans[1] = Sound.big_demon_sound1;
 
     }
 
