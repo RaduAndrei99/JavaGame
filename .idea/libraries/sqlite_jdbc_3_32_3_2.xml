@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="sqlite-jdbc-3.32.3.2">
     <CLASSES>
-      <root url="jar://$USER_HOME$/Desktop/sqlite-jdbc-3.32.3.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/PaooGame/Database/sqlite-jdbc-3.32.3.2.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

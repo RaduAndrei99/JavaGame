@@ -1,5 +1,6 @@
 package PaooGame.States;
 
+import PaooGame.Items.Doors.NextLevelDoor;
 import PaooGame.UI.Menu.*;
 import PaooGame.RefLinks;
 import PaooGame.Sound.Music;
@@ -29,6 +30,7 @@ public class MenuState extends State
 
         title = new MainMenuTitle();
 
+
         //   g.drawImage(Assets.mainMenuTitle, (int) (Toolkit.getDefaultToolkit().getScreenSize().width/2 - (0.78*Toolkit.getDefaultToolkit().getScreenSize().width/2)),(int)(0.0925*Toolkit.getDefaultToolkit().getScreenSize().height),(int)(0.78*Toolkit.getDefaultToolkit().getScreenSize().width),(int)(0.1111*Toolkit.getDefaultToolkit().getScreenSize().height), null);
     }
     /*! \fn public void Update()
@@ -48,7 +50,7 @@ public class MenuState extends State
     }
 
     public void reset(){
-        Music.playSound(Music.menu_music);
+        Music.playSound(Music.menu_music_clip);
     }
 
     /*! \fn public void Draw(Graphics g)

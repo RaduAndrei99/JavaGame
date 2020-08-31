@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class FullscreenButton extends AbstractButton {
 
-    protected boolean isFullscreen = false;
+    protected boolean isFullscreen = true;
 
     public FullscreenButton(RefLinks r,int x, int y, int w, int h){
         super(r,x,y,w,h);
@@ -33,12 +33,11 @@ public class FullscreenButton extends AbstractButton {
             isFullscreen = false;
             static_image = Assets.fullscreenOff_static;
             mouse_over = Assets.fullscreenOff_mouseOver;
-            refs.GetGame().GetGameWindow().setWindowedMode();
+
         }else {
             isFullscreen = true;
             static_image = Assets.fullscreenOn_static;
             mouse_over = Assets.fullscreenOn_mouseOver;
-            refs.GetGame().GetGameWindow().setFullscreenMode();
 
         }
     }

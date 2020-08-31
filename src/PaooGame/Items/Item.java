@@ -26,6 +26,8 @@ public abstract class Item {
     protected int x_mirror_offset;
 
 
+    public int item_ID;
+
     public Item(RefLinks refLink, float x, float y, int width, int height) {
         this.x = x;
         this.y = y;
@@ -105,6 +107,10 @@ public abstract class Item {
 
     public void pickItem(){
         isDrooped = false;
+    }
+
+    public int getItem_ID(){
+        return item_ID;
     }
 
 }

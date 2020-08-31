@@ -1,7 +1,10 @@
 package PaooGame.UI.Menu.Buttons;
 
 import PaooGame.Graphics.Assets;
+import PaooGame.Items.Hero;
 import PaooGame.RefLinks;
+import PaooGame.States.State;
+import PaooGame.UI.Scoreboard;
 
 import java.awt.*;
 
@@ -27,7 +30,12 @@ public class NewGameButton extends AbstractButton {
 
     @Override
     void isClicked() {
+        refs.GetMap().resetMap();
+        Scoreboard.resetScore();
         refs.GetGame().SetPlayState();
+        State.GetState().reset();
+        Hero.GetInstance().reset();
+
     }
 
 }

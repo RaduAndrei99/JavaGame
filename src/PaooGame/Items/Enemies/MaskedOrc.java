@@ -33,6 +33,12 @@ public class MaskedOrc extends Enemy {
 
         this.normalBounds = new Rectangle((int)x , (int)y , DEFAULT_BOUNDS_WIDTH,DEFAULT_BOUNDS_HEIGHT);
         this.speed = DEFAULT_SPEED;
+
+        coins_dropped = 2;
+
+        enemy_id = EnemiesFactory.MASKED_ORC;
+
+
     }
 
 

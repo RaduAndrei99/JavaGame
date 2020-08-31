@@ -1,8 +1,9 @@
 package PaooGame.Items.Enemies;
 
 import PaooGame.Items.Character;
+import PaooGame.Items.Coin;
 import PaooGame.Items.Hero;
-import PaooGame.Items.RectangleCollisionDetector;
+import PaooGame.Items.CollisionDetector;
 import PaooGame.Items.Weapons.Weapon;
 import PaooGame.RefLinks;
 import PaooGame.Sound.Sound;
@@ -18,9 +19,13 @@ import java.util.Random;
 public abstract class  Enemy extends Character {
     protected final int BASE_DAMAGE = 10;
 
+    protected int enemy_id;
+
     protected int damage;
 
-    public static File []moans; //referinta catre sunetul pe care il prodece monstrul
+    public File []moans; //referinta catre sunetul pe care il prodece monstrul
+
+    protected int coins_dropped;
 
     public Enemy(RefLinks refLink, float x, float y, int width, int height) {
         super(refLink, x, y, width, height);
@@ -41,7 +46,7 @@ public abstract class  Enemy extends Character {
         g.setColor(Color.GREEN);
         if (!isDead) {
             g.drawImage(image[nextPos()], (int) (x  - refLink.GetGame().getCamera().getXOffset() + x_mirror_offset), (int)( y -  refLink.GetGame().getCamera().getYOffset()), position * width, height, null);
-            g.drawRect((int) (getNormalBounds().x - refLink.GetGame().getCamera().getXOffset()), (int) (getNormalBounds().y - refLink.GetGame().getCamera().getYOffset() ) , getNormalBounds().width , getNormalBounds().height );
+            //g.drawRect((int) (getNormalBounds().x - refLink.GetGame().getCamera().getXOffset()), (int) (getNormalBounds().y - refLink.GetGame().getCamera().getYOffset() ) , getNormalBounds().width , getNormalBounds().height );
         }
         blood.Draw(g, (int) (x - refLink.GetGame().getCamera().getXOffset()), (int) (y - refLink.GetGame().getCamera().getYOffset()), width, height);
     }
@@ -51,18 +56,18 @@ public abstract class  Enemy extends Character {
     public void Update() {
         if(!isDead) {
             for(Enemy other : this.refLink.GetMap().getRoom().getEnemies()){
-                if(RectangleCollisionDetector.checkCollision(other.getNormalBounds(), this.normalBounds) && other != this){
+                if(CollisionDetector.checkRectanglesCollision(other.getNormalBounds(), this.normalBounds) && other != this){
                     if(this.x <= other.GetX()) {
-                        this.x -= 5;
+                        xSpeed =  -5;
                     }
                     else {
-                        this.x += 5;
+                        xSpeed = 5;
                     }
                     if(this.y <= other.GetY()) {
-                        this.y -= 5;
+                        ySpeed = -5;
                     }
                     else {
-                        this.y += 5;
+                        ySpeed = 5;
                     }
                 }
             }
@@ -73,10 +78,9 @@ public abstract class  Enemy extends Character {
 
             if(moans != null) {
                 Random rand = new Random();
-                int r = rand.nextInt(150) + 1;
+                int r = rand.nextInt(500) + 1;
                 int soundIndex = rand.nextInt(moans.length);
-
-                if (r == 1) {
+               if (r == 1) {
                     Sound.playSound(moans[soundIndex]);
                 }
             }
@@ -84,8 +88,6 @@ public abstract class  Enemy extends Character {
             int start = (int) ((x + width / 2) / Tile.TILE_WIDTH) + (int) ((y + height / 2)  / Tile.TILE_HEIGHT) *  refLink.GetMap().getWidth();
             int end =(int)(Hero.GetInstance().GetX() + Hero.GetInstance().GetWidth()/2)/Tile.TILE_HEIGHT +  (int)((Hero.GetInstance().GetY() + Hero.GetInstance().GetHeight()/2)/Tile.TILE_HEIGHT)* refLink.GetMap().getWidth();
             List<Integer> path = refLink.GetGame().getPathFinder().GetPath(end, start);
-            //System.out.println(path);
-            //System.out.println(start + " " + end);
 
             if((path != null && path.size() > 0))
                 goToTile(path.remove(0));
@@ -97,7 +99,7 @@ public abstract class  Enemy extends Character {
 
             if(Hero.GetInstance().getHeldItem() instanceof Weapon) {
                 Weapon weapon = (Weapon)Hero.GetInstance().getHeldItem();
-                if (RectangleCollisionDetector.checkCollision(getNormalBounds(), Hero.GetInstance().getWeaponBounds()) && weapon.isInAttackMode() && !weapon.damageAlreadyGiven()) {
+                if (CollisionDetector.checkRectanglesCollision(getNormalBounds(), Hero.GetInstance().getWeaponBounds()) && weapon.isInAttackMode() && !weapon.damageAlreadyGiven()) {
                     this.life -=weapon.getSwordDamage();
                     weapon.signalDamage();
                     this.blood.resetAnimation();
@@ -113,8 +115,11 @@ public abstract class  Enemy extends Character {
             }
 
         }
-        else
+        else {
+            for(int i=0;i<coins_dropped;++i)
+                refLink.GetMap().getRoom().addEntity(new Coin(refLink,this.x + i*5, this.y));
             refLink.GetMap().getRoom().removeEnemy(this);
+        }
     }
 
 
@@ -169,5 +174,9 @@ public abstract class  Enemy extends Character {
             this.xSpeed = +speed;
         }
 
+    }
+
+    public int getEnemy_id(){
+        return  enemy_id;
     }
 }

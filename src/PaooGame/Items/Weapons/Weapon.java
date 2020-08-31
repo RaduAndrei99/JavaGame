@@ -39,6 +39,7 @@ public abstract class Weapon extends Item {
         boundsRight = new Rectangle((int)x, (int)y,height,width);
 
         droopedBounds = new Rectangle((int)x,(int)y, width, height);
+
     }
 
     void setDamage(int damage){
@@ -75,57 +76,54 @@ public abstract class Weapon extends Item {
 
     public void Update() {
 
-        updateBounds();
+        if(!isDrooped) {
+            float angle = (float) Math.toDegrees(Math.atan2(GameMouseListener.getMouseCoordinates().y - y, GameMouseListener.getMouseCoordinates().x - x));
 
-        float angle = (float)Math.toDegrees(Math.atan2(GameMouseListener.getMouseCoordinates().y - y ,GameMouseListener.getMouseCoordinates().x - x ));
-
-        if(-135<angle && angle < -45){
-            this.normalBounds = boundsUp;
-            if(GameMouseListener.isLeftMousePressed) {
-                this.y -= DAMAGE_OFFSET;
-                attackMode = true;
-            }
-            else {
-                damageGiven = false;
-                attackMode = false;
-            }
-        }else{
-            if(-45<angle && angle<45){
-                this.normalBounds = boundsRight;
-                if(GameMouseListener.isLeftMousePressed) {
-                    this.x += DAMAGE_OFFSET;
+            if (-135 < angle && angle < -45) {
+                this.normalBounds = boundsUp;
+                if (GameMouseListener.isLeftMousePressed) {
+                    this.y -= DAMAGE_OFFSET;
                     attackMode = true;
-                }
-                else {
+                } else {
                     damageGiven = false;
                     attackMode = false;
                 }
-            }else{
-                if(45<angle && angle<135){
-                    this.normalBounds = boundsDown;
-                    if(GameMouseListener.isLeftMousePressed) {
-                        this.y += DAMAGE_OFFSET;
+            } else {
+                if (-45 < angle && angle < 45) {
+                    this.normalBounds = boundsRight;
+                    if (GameMouseListener.isLeftMousePressed) {
+                        this.x += DAMAGE_OFFSET;
                         attackMode = true;
-                    }
-                    else {
+                    } else {
                         damageGiven = false;
                         attackMode = false;
                     }
-                }else {
-                    this.normalBounds = boundLeft;
-                    if(GameMouseListener.isLeftMousePressed) {
-                        this.x -= DAMAGE_OFFSET;
-                        attackMode = true;
-                    }
-                    else {
-                        damageGiven = false;
-                        attackMode = false;
+                } else {
+                    if (45 < angle && angle < 135) {
+                        this.normalBounds = boundsDown;
+                        if (GameMouseListener.isLeftMousePressed) {
+                            this.y += DAMAGE_OFFSET;
+                            attackMode = true;
+                        } else {
+                            damageGiven = false;
+                            attackMode = false;
+                        }
+                    } else {
+                        this.normalBounds = boundLeft;
+                        if (GameMouseListener.isLeftMousePressed) {
+                            this.x -= DAMAGE_OFFSET;
+                            attackMode = true;
+                        } else {
+                            damageGiven = false;
+                            attackMode = false;
+                        }
                     }
                 }
             }
-        }
 
-        updateBounds();
+            updateBounds();
+
+        }
 
     }
 
@@ -141,8 +139,7 @@ public abstract class Weapon extends Item {
             g2d.setColor(Color.RED);
 
             g2d.drawImage(image, at, null);
-            g2d.drawRect((int) (normalBounds.x - refLink.GetGame().getCamera().getXOffset()), (int) (normalBounds.y - refLink.GetGame().getCamera().getYOffset()), normalBounds.width, normalBounds.height);
-            // System.out.println(normalBounds.x + " " + normalBounds.y);
+            //g2d.drawRect((int) (normalBounds.x - refLink.GetGame().getCamera().getXOffset()), (int) (normalBounds.y - refLink.GetGame().getCamera().getYOffset()), normalBounds.width, normalBounds.height);
         }
         else {
             AffineTransform at = AffineTransform.getTranslateInstance(x - refLink.GetGame().getCamera().getXOffset(), y - refLink.GetGame().getCamera().getYOffset());

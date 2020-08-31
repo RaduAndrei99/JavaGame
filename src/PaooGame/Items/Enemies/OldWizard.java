@@ -1,8 +1,9 @@
 package PaooGame.Items.Enemies;
 
 import PaooGame.Graphics.Assets;
+import PaooGame.Items.Coin;
 import PaooGame.Items.Hero;
-import PaooGame.Items.RectangleCollisionDetector;
+import PaooGame.Items.CollisionDetector;
 import PaooGame.Items.Weapons.Weapon;
 import PaooGame.Particles.BlueSpell;
 import PaooGame.Particles.Fireball;
@@ -14,7 +15,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-public class OldWizard extends Enemy {
+public class OldWizard extends Enemy implements Wizard{
 
     public static int DEFAULT_WIDTH = 16*5;
     public static int DEFAULT_HEIGHT = 16*5;
@@ -44,13 +45,20 @@ public class OldWizard extends Enemy {
 
         this.normalBounds = new Rectangle((int)x , (int)y , DEFAULT_BOUNDS_WIDTH,DEFAULT_BOUNDS_HEIGHT);
         this.speed = DEFAULT_SPEED;
+
+
+        coins_dropped = 4;
+
+        enemy_id = EnemiesFactory.OLD_WIZARD;
+
+
     }
 
     @Override
     public void Update() {
         if(!isDead) {
             for(Enemy other : this.refLink.GetMap().getRoom().getEnemies()){
-                if(RectangleCollisionDetector.checkCollision(other.getNormalBounds(), this.normalBounds) && other != this){
+                if(CollisionDetector.checkRectanglesCollision(other.getNormalBounds(), this.normalBounds) && other != this){
                     if(this.x <= other.GetX()) {
                         this.x -= 5;
                     }
@@ -100,7 +108,7 @@ public class OldWizard extends Enemy {
 
             if(Hero.GetInstance().getHeldItem() instanceof Weapon) {
                 Weapon weapon = (Weapon)Hero.GetInstance().getHeldItem();
-                if (RectangleCollisionDetector.checkCollision(getNormalBounds(), Hero.GetInstance().getWeaponBounds()) && weapon.isInAttackMode() && !weapon.damageAlreadyGiven()) {
+                if (CollisionDetector.checkRectanglesCollision(getNormalBounds(), Hero.GetInstance().getWeaponBounds()) && weapon.isInAttackMode() && !weapon.damageAlreadyGiven()) {
                     this.life -=weapon.getSwordDamage();
                     weapon.signalDamage();
                     this.blood.resetAnimation();
@@ -115,8 +123,11 @@ public class OldWizard extends Enemy {
             }
 
         }
-        else
+        else {
+            for(int i=0;i<coins_dropped;++i)
+                refLink.GetMap().getRoom().addEntity(new Coin(refLink,this.x + i*5, this.y));
             refLink.GetMap().getRoom().removeEnemy(this);
+        }
     }
 
     @Override
@@ -158,24 +169,7 @@ public class OldWizard extends Enemy {
     }
 
     public void throwSpell(){
-        if(Hero.GetInstance().getNormalBounds().x + Hero.GetInstance().getNormalBounds().width < getNormalBounds().x){
-            refLink.GetMap().getRoom().addEntity(new BlueSpell(refLink,getNormalBounds().x,getNormalBounds().y));
-            return;
-        }
-
-        if(Hero.GetInstance().getNormalBounds().x  > getNormalBounds().x + getNormalBounds().width){
-            refLink.GetMap().getRoom().addEntity(new BlueSpell(refLink,getNormalBounds().x,getNormalBounds().y));
-            return;
-        }
-
-        if(Hero.GetInstance().getNormalBounds().y + Hero.GetInstance().getNormalBounds().height < getNormalBounds().y){
-            refLink.GetMap().getRoom().addEntity(new BlueSpell(refLink,getNormalBounds().x,getNormalBounds().y));
-            return;
-        }
-
-        if(Hero.GetInstance().getNormalBounds().y  > getNormalBounds().y + getNormalBounds().height ){
-            refLink.GetMap().getRoom().addEntity(new BlueSpell(refLink,getNormalBounds().x,getNormalBounds().y));
-        }
+        refLink.GetMap().getRoom().addEntity(new BlueSpell(refLink,getNormalBounds().x,getNormalBounds().y, new Point((int)(Hero.GetInstance().getNormalBounds().x + Hero.GetInstance().getNormalBounds().width / 2.0) , (int)(Hero.GetInstance().getNormalBounds().y + Hero.GetInstance().getNormalBounds().height / 2.0 ))));
 
     }
 

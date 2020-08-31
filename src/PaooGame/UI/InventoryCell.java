@@ -3,6 +3,7 @@ package PaooGame.UI;
 import PaooGame.Graphics.Assets;
 import PaooGame.Input.GameMouseListener;
 import PaooGame.Items.Item;
+import PaooGame.Items.Key;
 import PaooGame.Items.Potions.Potion;
 import PaooGame.RefLinks;
 
@@ -14,8 +15,8 @@ import java.awt.image.BufferedImage;
 
 public class InventoryCell extends UIElement {
 
-    public static int CELL_HEIGHT = 60;
-    public static int CELL_WIDTH = 60;
+    public static int CELL_HEIGHT = (int)(Toolkit.getDefaultToolkit().getScreenSize().width * 0.03125);
+    public static int CELL_WIDTH =  (int)(Toolkit.getDefaultToolkit().getScreenSize().height * 0.05555);;
 
     protected boolean isOccupied;
 
@@ -34,12 +35,12 @@ public class InventoryCell extends UIElement {
         g.drawImage(cell_image, (int) (x), (int) (y), CELL_WIDTH, CELL_HEIGHT, null);
         if(stored_item!=null) {
             if (isOccupied) {
-                if(stored_item instanceof Potion){
+                if(stored_item instanceof Potion || stored_item instanceof Key){
                     g.drawImage(stored_item.getImage(),(int)(x + 0.006*Toolkit.getDefaultToolkit().getScreenSize().width),(int)(y + 0.005*Toolkit.getDefaultToolkit().getScreenSize().height),(int) (0.02*Toolkit.getDefaultToolkit().getScreenSize().width),(int) (0.03703*Toolkit.getDefaultToolkit().getScreenSize().height), null);
                 }
                 else {
-                    AffineTransform at = AffineTransform.getTranslateInstance(x + (0.010416 * Toolkit.getDefaultToolkit().getScreenSize().width), y + (0.007 * Toolkit.getDefaultToolkit().getScreenSize().height));
-                    at.scale(2, 1.5);
+                    AffineTransform at = AffineTransform.getTranslateInstance(x + (0.010416 * Toolkit.getDefaultToolkit().getScreenSize().width), y + (0.01 * Toolkit.getDefaultToolkit().getScreenSize().height));
+                    at.scale((Toolkit.getDefaultToolkit().getScreenSize().width * 0.0010416),  (int)(Toolkit.getDefaultToolkit().getScreenSize().height * 0.0013888));
 
                     Graphics2D g2d = (Graphics2D) g;
 

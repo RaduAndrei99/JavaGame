@@ -1,23 +1,29 @@
 package PaooGame.Maps.Rooms;
 
+import PaooGame.Items.Enemies.EnemyBossFactory;
 import PaooGame.RefLinks;
 
+import java.awt.*;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class LevelSpawner {
-
-    private Random rand;
+    private final Random rand;
 
     public static final int DEFAULT_ROOMS_WIDTH = 7;
     public static final int DEFAULT_ROOMS_HEIGHT= 7;
 
     public Room [][]rooms_position;
 
-    protected final int MAX_ROOM_NUMBER = 20;
+    public static final int MAX_ROOM_NUMBER = 20;
+    public static final int MIN_ROOMS_NUMBER = 15;
+
 
     protected int no_of_rooms;
     protected RefLinks refs;
+
+    protected static Stack<Room> roomsStack;
 
     public LevelSpawner(RefLinks refs){
         rand = new Random();
@@ -27,42 +33,56 @@ public class LevelSpawner {
         no_of_rooms = 0;
 
         rooms_position = new Room[DEFAULT_ROOMS_WIDTH][DEFAULT_ROOMS_HEIGHT];
+        roomsStack = new Stack<>();
     }
 
     public void createLevel(int i, int j, int came_from)  {
         try {
 
-            Room room = RoomFactory.getRoom(rand.nextInt(5) + 1,refs);
+            Room room = RoomFactory.getRoom(rand.nextInt(RoomFactory.ROOM_TYPES) + 1, true, refs);
 
-            switch (came_from){
-                case 0:
-                    room.openSouthDoorTo(i+1,j);
-                    break;
-                case 1:
-                    room.openWestDoorTo(i,j-1);
-                    break;
+            if(room!=null) {
+                switch (came_from) {
+                    case 0:
+                        room.openSouthDoorTo(i + 1, j);
+                        break;
 
-                case 2:
-                    room.openNorthDoorTo(i-1,j);
-                    break;
+                    case 1:
+                        room.openWestDoorTo(i, j - 1);
+                        break;
 
-                case 3:
-                    room.openEastDoorTo(i,j+1);
+                    case 2:
+                        room.openNorthDoorTo(i - 1, j);
+                        break;
+
+                    case 3:
+                        room.openEastDoorTo(i, j + 1);
+                        break;
+
+                    default:
+                        break;
+                }
             }
-
 
             rooms_position[i][j] = room;
             no_of_rooms++;
+            roomsStack.add(room);
 
             for (int k = 0; k < 4; ++k) { // 0 - North, 1 - East, 3 - South, 4 - West
                 if(no_of_rooms < MAX_ROOM_NUMBER) {
-                    if (room.getDoors()[k] != null && Math.abs(came_from - k) != 2) {
+                    if (room != null && room.getDoors()[k] != null && Math.abs(came_from - k) != 2) {
                         int new_i = i + room.getDoors()[k].getI();
                         int new_j = j + room.getDoors()[k].getJ();
+                        if( !(room.getDoors()[k].getI() >= -1 &&  room.getDoors()[k].getI() <=1 &&  room.getDoors()[k].getJ() >=-1 &&  room.getDoors()[k].getJ() <= 1)) {
+                               continue;
+                        }
 
                         if(isPositionValid(new_i,new_j)){
                             room.getDoors()[k].setI(new_i);
                             room.getDoors()[k].setJ(new_j);
+                            if(Math.abs( i -new_i) > 1 || Math.abs(j-new_j) > 1)
+                                System.out.println(i + " " + j + " to " + new_i + " " + new_j + " trough " + k + ", came from " + came_from);
+
                         }
                         else
                             continue;
@@ -71,7 +91,6 @@ public class LevelSpawner {
                         room.getDoors()[k].openDoor();
 
                         if( rooms_position[new_i][new_j] != null) {
-
                             switch (k) {
                                     case 0:
                                         rooms_position[new_i][new_j].openSouthDoorTo(i, j);
@@ -95,6 +114,8 @@ public class LevelSpawner {
 
                         }
                 }
+                else
+                    return;
             }
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -106,67 +127,21 @@ public class LevelSpawner {
     }
 
     public void rearrangeTheDoors(){
-        for(int i = 0; i<this.rooms_position.length;++i){
-            for(int j = 0; j<this.rooms_position[0].length;++j){
-                if(rooms_position[i][j] != null){
-                    for(int k = 0; k < 4; ++k){
-                        if(rooms_position[i][j].getDoors()[k] != null && !rooms_position[i][j].getDoors()[k].isLinked())
+        for (int i=0;i<this.rooms_position.length;++i) {
+            for (int j = 0; j < this.rooms_position[0].length; ++j) {
+                if (rooms_position[i][j] != null) {
+                    for (int k = 0; k < 4; ++k) {
+                        if (rooms_position[i][j].getDoors()[k] != null && !rooms_position[i][j].getDoors()[k].isLinked())
                             rooms_position[i][j].closeDoor(k);
-/*
-                        if(rooms_position[i][j].getDoors()[k] != null){
-                            if(isPositionValid(i-1,j)){
-                                if(rooms_position[i-1][j] != null && rooms_position[i][j].getDoors()[0] == null){
-                                    rooms_position[i][j].openNorthDoorTo(i-1,j);
-                                    rooms_position[i][j].getDoors()[0].openDoor();
-
-                                    rooms_position[i-1][j].openSouthDoorTo(i,j);
-                                    rooms_position[i-1][j].getDoors()[2].openDoor();
-                                }
-                            }
-
-                            if(isPositionValid(i,j + 1)){
-                                if(rooms_position[i][j+1] != null && rooms_position[i][j].getDoors()[1] == null){
-                                    rooms_position[i][j].openEastDoorTo(i,j + 1);
-                                    rooms_position[i][j].getDoors()[1].openDoor();
-
-                                    rooms_position[i][j+1].openWestDoorTo(i,j);
-                                    rooms_position[i][j+1].getDoors()[3].openDoor();
-                                }
-                            }
-
-
-                            if(isPositionValid(i + 1,j)){
-                                if(rooms_position[i+1][j] != null && rooms_position[i][j].getDoors()[2] == null){
-                                    rooms_position[i][j].openSouthDoorTo(i + 1,j );
-                                    rooms_position[i][j].getDoors()[2].openDoor();
-
-                                    rooms_position[i+1][j].openNorthDoorTo(i,j);
-                                    rooms_position[i+1][j].getDoors()[0].openDoor();
-                                }
-                            }
-
-                            if(isPositionValid(i ,j-1)){
-                                if(rooms_position[i][j-1] != null && rooms_position[i][j].getDoors()[3] == null){
-                                    rooms_position[i][j].openWestDoorTo(i ,j-1 );
-                                    rooms_position[i][j].getDoors()[3].openDoor();
-
-                                    rooms_position[i][j-1].openEastDoorTo(i,j);
-                                    rooms_position[i][j-1].getDoors()[1].openDoor();
-                                }
-                            }
-
-                        }*/
-
-
                     }
                 }
             }
         }
     }
 
-    public static void main(String []args) throws  Exception{
+    public static void main(String []args) {
         LevelSpawner a = new LevelSpawner(null);
-        a.createLevel(a.DEFAULT_ROOMS_WIDTH/2, DEFAULT_ROOMS_HEIGHT/2, -1);
+        a.createLevel(DEFAULT_ROOMS_WIDTH/2, DEFAULT_ROOMS_HEIGHT/2, -1);
         a.rearrangeTheDoors();
 
         for(int i=0;i<a.rooms_position.length;++i){
@@ -210,13 +185,24 @@ public class LevelSpawner {
             }
 
         }while(true);
-
     }
 
     public Room[][] getLevel(){
-        this.createLevel(DEFAULT_ROOMS_WIDTH/2, DEFAULT_ROOMS_HEIGHT/2, -1);
+        while(no_of_rooms < MIN_ROOMS_NUMBER) {
+            no_of_rooms = 0;
+            rooms_position = new Room[DEFAULT_ROOMS_WIDTH][DEFAULT_ROOMS_HEIGHT];
+            roomsStack = new Stack<>();
+            this.createLevel(DEFAULT_ROOMS_WIDTH / 2, DEFAULT_ROOMS_HEIGHT / 2, -1);
+        }
         rearrangeTheDoors();
 
+        Room tempRoom = roomsStack.peek();
+        tempRoom.addBoss(EnemyBossFactory.getBoss(refs,Toolkit.getDefaultToolkit().getScreenSize().width/2-100,Toolkit.getDefaultToolkit().getScreenSize().height/2-100));
+        roomsStack.firstElement().createNextLevelDoor();
+
+
+        no_of_rooms = 0;
         return this.rooms_position;
     }
+
 }

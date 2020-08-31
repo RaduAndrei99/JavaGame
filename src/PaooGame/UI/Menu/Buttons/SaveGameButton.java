@@ -4,18 +4,20 @@ import PaooGame.Graphics.Assets;
 import PaooGame.RefLinks;
 
 import java.awt.*;
+import java.util.Vector;
 
 public class SaveGameButton extends AbstractButton {
+
 
     public SaveGameButton(RefLinks r,int x, int y, int w, int h){
         super(r,x,y,w,h);
         this.static_image = Assets.saveGame_static;
         this.mouse_over = Assets.saveGame_mouseOver;
+        this.invalid = Assets.saveGame_invalid;
 
-        //this.x = Toolkit.getDefaultToolkit().getScreenSize().width/2 - Assets.playButton_static.getWidth()/2;
-        // this.y = 400;
+        current_image = invalid;
 
-        current_image = static_image;
+        this.isButtonValid = false;
     }
 
 
@@ -27,7 +29,7 @@ public class SaveGameButton extends AbstractButton {
 
     @Override
     void isClicked() {
-
+        refs.GetGame().getDatabase().saveGame(refs.GetGame());
     }
 
 }

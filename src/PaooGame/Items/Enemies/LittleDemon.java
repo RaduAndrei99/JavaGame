@@ -33,6 +33,11 @@ public class LittleDemon extends Enemy {
 
         this.normalBounds = new Rectangle((int)x , (int)y , DEFAULT_BOUNDS_WIDTH,DEFAULT_BOUNDS_HEIGHT);
         this.speed = DEFAULT_SPEED;
+
+        coins_dropped = 1;
+
+        enemy_id = EnemiesFactory.LITTLE_DEMON;
+
     }
 
 

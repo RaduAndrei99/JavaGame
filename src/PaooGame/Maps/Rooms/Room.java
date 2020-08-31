@@ -1,73 +1,76 @@
 package PaooGame.Maps.Rooms;
 
+import PaooGame.GameDifficulty;
 import PaooGame.Items.*;
 import PaooGame.Items.Doors.*;
-import PaooGame.Items.Enemies.Enemy;
+import PaooGame.Items.Enemies.*;
 import PaooGame.RefLinks;
-import javafx.util.Pair;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
 
 public abstract class Room {
     protected final int NO_OF_TILES_WIDTH = 40;
     protected final int NO_OF_TILES_HEIGHT = 20;
 
-    protected final int TILE_SIZE = 48;
+    protected int model;
 
     protected Door[] doors;
-    protected ArrayList<Item> entities;
-    Random rand;
-
-    protected ArrayList<Pair<String ,Pair<Float, Float>>> potentialEntities;
+    protected List<Item> entities;
 
     protected int[][] room_layout;
 
-    protected final List<Enemy> enemies;
 
+    protected LinkedList<Enemy> enemies;
+
+    protected int dead_enemies = 0;
 
     RefLinks refs;
 
-    public Room(RefLinks refs) {
-        rand = new Random();
+    NextLevelDoor nextLevelDoor;
+
+    public Room(RefLinks refs, boolean createDoors) {
+        Random rand = new Random();
         doors = new Door[4];
         boolean door_created = false;
-        entities = new ArrayList<>();
+        entities = new LinkedList<>();
 
         this.refs = refs;
 
-        enemies = new ArrayList<>();
-        while (!door_created) {
-            for (int i = 0; i < 4; ++i) {
-                if (rand.nextInt(2) == 1) {
-                    switch (i) {
-                        case 0://North
-                            doors[0] = new NorthDoor(refs);
-                            doors[0].setI(-1);
-                            doors[0].setJ(0);
-                            break;
+        enemies = new LinkedList<>();
 
-                        case 1://East
-                            doors[1] = new EastDoor(refs);
-                            doors[1].setI(0);
-                            doors[1].setJ(1);
-                            break;
+        if (createDoors) {
+            while (!door_created) {
+                for (int i = 0; i < 4; ++i) {
+                    if (rand.nextInt(2) == 1) {//50% sansa sa apara o usa in oricare directie
+                        switch (i) {
+                            case 0://North
+                                doors[0] = new NorthDoor(refs);
+                                doors[0].setI(-1);
+                                doors[0].setJ(0);
+                                break;
 
-                        case 2://South
-                            doors[2] = new SouthDoor(refs);
-                            doors[2].setI(1);
-                            doors[2].setJ(0);
-                            break;
+                            case 1://East
+                                doors[1] = new EastDoor(refs);
+                                doors[1].setI(0);
+                                doors[1].setJ(1);
+                                break;
 
-                        case 3://West
-                            doors[3] = new WestDoor(refs);
-                            doors[3].setI(0);
-                            doors[3].setJ(-1);
-                            break;
+                            case 2://South
+                                doors[2] = new SouthDoor(refs);
+                                doors[2].setI(1);
+                                doors[2].setJ(0);
+                                break;
+
+                            case 3://West
+                                doors[3] = new WestDoor(refs);
+                                doors[3].setI(0);
+                                doors[3].setJ(-1);
+                                break;
+                        }
+                        door_created = true;
                     }
-                    door_created = true;
                 }
             }
         }
@@ -149,19 +152,8 @@ public abstract class Room {
     }
 
     public void closeDoor(int k) {
-        switch (k) {
-            case 0:
-                this.doors[0] = null;
-                break;
-            case 1:
-                this.doors[1] = null;
-                break;
-            case 2:
-                this.doors[2] = null;
-                break;
-            case 3:
-                this.doors[3] = null;
-                break;
+        if(k >=0 && k <4){
+            doors[k] = null;
         }
     }
 
@@ -173,41 +165,102 @@ public abstract class Room {
         entities.add(item);
     }
 
-    public List<Item> getItemList(){
+    public List<Item> getItemList() {
         return entities;
     }
 
-    public void resetItems(){
+    public void resetItems() {
         this.entities = new ArrayList<>();
     }
 
-    public void Draw(Graphics g){
-        for(Enemy enemy : enemies)
-            enemy.Draw(g);
+    public void Draw(Graphics g) {
+        if (!entities.isEmpty())
+            for (int i = 0; i < entities.size(); ++i)
+                if(entities.get(i) != null)
+                    entities.get(i).Draw(g);
+
+        if (!enemies.isEmpty())
+            if (enemies.size() == 1) {
+                enemies.get(0).Draw(g);
+            } else {
+                for (int i = 0; i < GameDifficulty.current_no_of_enemies - dead_enemies; ++i)
+                    enemies.get(i).Draw(g);
+            }
+
+        for (Door door : doors) {
+            if (door != null)
+                door.Draw(g);
+        }
+
+        if (nextLevelDoor != null)
+            nextLevelDoor.Draw(g);
+
     }
 
     public void Update() {
+        if (enemies.size() == 1) {
+            enemies.get(0).Update();
+        } else {
+            if (!enemies.isEmpty())
+                for (int i = 0; i < GameDifficulty.current_no_of_enemies - dead_enemies; ++i)
+                    enemies.get(i).Update();
+        }
+        if (!entities.isEmpty()) {
+            for (int i = 0; i < entities.size(); ++i)
+                entities.get(i).Update();
+        }
 
-        for(int i = 0; i<enemies.size();++i)
-            enemies.get(i).Update();
 
-        for(int i = 0; i<entities.size();++i)
-            entities.get(i).Update();
     }
 
-    public List<Enemy> getEnemies(){
-        return enemies;
+    public List<Enemy> getEnemies() {
+        List<Enemy> tempList = new LinkedList<>();
+        if (!enemies.isEmpty()) {
+            if (enemies.size() == 1) return enemies;
+            // System.out.println(GameDifficulty.current_no_of_enemies - dead_enemies + " " + enemies.size());
+            for (int i = 0; i < GameDifficulty.current_no_of_enemies - dead_enemies; ++i)
+                tempList.add(enemies.get(i));
+        }
+        return tempList;
     }
 
-    public void removeEnemy(Enemy e){
+    public void removeEnemy(Enemy e) {
         this.enemies.remove(e);
+        dead_enemies++;
     }
 
-    public boolean isContainingEnemies(){
+    public boolean isContainingEnemies() {
         return !enemies.isEmpty();
     }
 
-    public void removeItem(Item i){
+    public void removeItem(Item i) {
         entities.remove(i);
     }
+
+    public int getRoomModel() {
+        return model;
+    }
+
+    public void addBoss(Enemy boss) {
+        enemies.add(0, boss);
+        dead_enemies--;
+    }
+
+    public void addEnemy(Enemy enemy) {
+        this.enemies.add(enemy);
+    }
+
+    public void setDead_enemies(int value) {
+        dead_enemies = value;
+    }
+
+    public void resetEnemies() {
+        this.enemies = new LinkedList<>();
+    }
+
+    public Door getNextLevelDoor() {
+        return this.nextLevelDoor;
+    }
+
+    public abstract void createNextLevelDoor();
 }

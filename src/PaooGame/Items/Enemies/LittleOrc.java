@@ -2,8 +2,11 @@ package PaooGame.Items.Enemies;
 
 import PaooGame.Graphics.Assets;
 import PaooGame.RefLinks;
+import PaooGame.Sound.Sound;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 public class LittleOrc extends Enemy {
 
@@ -33,6 +36,17 @@ public class LittleOrc extends Enemy {
 
         this.normalBounds = new Rectangle((int)x , (int)y , DEFAULT_BOUNDS_WIDTH,DEFAULT_BOUNDS_HEIGHT);
         this.speed = DEFAULT_SPEED;
+
+        coins_dropped = 1;
+
+        moans = new File[1];
+
+        moans[0] = Sound.little_orc1;
+
+        enemy_id = EnemiesFactory.LITTLE_ORC;
+
+
+
     }
 
 

@@ -22,6 +22,8 @@ public class GameMouseListener implements MouseListener, MouseWheelListener {
     static public boolean isRightMouseReleased = true;
 
 
+    static public int notches;
+
 
     public static RefLinks refs;
 
@@ -78,18 +80,7 @@ public class GameMouseListener implements MouseListener, MouseWheelListener {
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
-
-        int notches = mouseWheelEvent.getWheelRotation();
-        if (notches < 0) {
-            Hero.GetInstance().getInventory().decrementSelectedSlot();
-        } else {
-            if(notches > 0) {
-                Hero.GetInstance().getInventory().incrementSelectedSlot();
-            }
-        }
-
-        Hero.GetInstance().setHeldItem();
-
+        notches = mouseWheelEvent.getWheelRotation();
     }
 
     public static Point getMouseCoordinates(){
@@ -116,5 +107,9 @@ public class GameMouseListener implements MouseListener, MouseWheelListener {
                 break;
             }
         }
+    }
+
+    public static void resetNotches(){
+        notches = 0;
     }
 }

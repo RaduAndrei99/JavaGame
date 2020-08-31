@@ -2,6 +2,7 @@ package PaooGame.Items;
 
 import PaooGame.Graphics.Assets;
 import PaooGame.RefLinks;
+import PaooGame.Sound.Sound;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -10,12 +11,15 @@ import java.awt.image.BufferedImage;
 public class Chest extends Item {
     protected BufferedImage image;
 
+    public static int DEFAULT_WIDTH = 50;
+    public static int DEFAULT_HEIGHT = 50;
+
     protected Item stored_item;
     protected boolean isOpened;
 
 
-    public Chest(RefLinks refLink, float x, float y, int width, int height) {
-        super(refLink, x, y, width, height);
+    public Chest(RefLinks refLink, float x, float y) {
+        super(refLink, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT);
         image = Assets.chest_closed;
         isOpened = false;
 
@@ -40,8 +44,8 @@ public class Chest extends Item {
     public void openChest(){
         image = Assets.chest_opened;
         isOpened = true;
-
-        refLink.GetMap().addDiscardedItem(stored_item);
+        Sound.playSound(Sound.chest_sound);
+        refLink.GetMap().getRoom().addEntity(stored_item);
         stored_item = null;
     }
 
@@ -51,6 +55,10 @@ public class Chest extends Item {
 
     public boolean isChestOpened(){
         return isOpened;
+    }
+
+    public Item getStored_item(){
+        return stored_item;
     }
 
 }

@@ -18,7 +18,6 @@ public abstract class Potion extends Item {
     protected void updateBounds(){
         this.droopedBounds.x = (int) x;
         this.droopedBounds.y = (int) y;
-
     }
 
     @Override

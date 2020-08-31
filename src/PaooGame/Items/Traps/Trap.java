@@ -2,8 +2,8 @@ package PaooGame.Items.Traps;
 
 import PaooGame.Items.Item;
 import PaooGame.RefLinks;
+import PaooGame.Tiles.Tile;
 
-import java.awt.*;
 
 public abstract class Trap extends Item {
 
@@ -13,6 +13,8 @@ public abstract class Trap extends Item {
     protected boolean isGivingDamage = false;
 
     protected int damage_given;
+
+    protected int trap_id;
 
     public Trap(RefLinks refLink, float x, float y, int width, int height) {
         super(refLink, x, y, width, height);
@@ -25,5 +27,9 @@ public abstract class Trap extends Item {
 
     public int getDamage(){
         return damage_given;
+    }
+
+    public int getTrap_id(){
+        return trap_id;
     }
 }

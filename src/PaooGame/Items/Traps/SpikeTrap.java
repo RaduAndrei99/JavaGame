@@ -3,11 +3,14 @@ package PaooGame.Items.Traps;
 import PaooGame.Graphics.Assets;
 import PaooGame.RefLinks;
 import PaooGame.Sound.Sound;
+import PaooGame.Tiles.Tile;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class SpikeTrap extends Trap{
+    public static int DEFAULT_WIDTH = Tile.TILE_WIDTH;
+    public static int DEFAULT_HEIGHT = Tile.TILE_HEIGHT;
 
     int wait = 0;
     protected BufferedImage []sprites;
@@ -17,8 +20,8 @@ public class SpikeTrap extends Trap{
     private boolean isActivated = false;
     private boolean isGivingDamage = false;
 
-    public SpikeTrap(RefLinks refLink, float x, float y, int width, int height) {
-        super(refLink, x, y, width, height);
+    public SpikeTrap(RefLinks refLink, float x, float y) {
+        super(refLink, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
         sprites = new BufferedImage[7];
 

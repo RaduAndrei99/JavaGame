@@ -24,6 +24,8 @@ public class VolumeUpButton extends AbstractButton {
     @Override
     void isClicked() {
         Music.getVolumeUp();
+        refs.GetGame().getDatabase().saveSettings();
+
     }
 
 }

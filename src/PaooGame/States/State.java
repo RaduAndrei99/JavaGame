@@ -21,8 +21,6 @@ public abstract class State
         this.refLink = refLink;
     }
 
-    public boolean isHeroDead = false;
-
     protected boolean reset = true;
 
 
@@ -32,7 +30,10 @@ public abstract class State
         \param state Noua stare a programului (jocului).
      */
     public static void SetState(State state)
-    {
+    {/*
+        if(currentState != null)
+            System.out.print("Se schimba " + currentState.getClass().getName());
+        System.out.println(" in " + state.getClass().getName());*/
         previousState = currentState;
         currentState = state;
 
@@ -42,6 +43,10 @@ public abstract class State
     {
         return currentState;
     }
+    public static State GetPreviousState()
+    {
+        return previousState;
+    }
 
         ///Metoda abstracta destinata actualizarii starii curente
     public abstract void Update();
@@ -50,9 +55,6 @@ public abstract class State
 
     public abstract void reset();
 
-    public void setHeroDead(boolean v){
-        isHeroDead = v;
-    }
     public static void setPreviousState(){
         currentState = previousState;
     }

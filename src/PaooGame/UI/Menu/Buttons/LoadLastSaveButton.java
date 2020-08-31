@@ -1,8 +1,9 @@
 package PaooGame.UI.Menu.Buttons;
 
+import PaooGame.Game;
 import PaooGame.Graphics.Assets;
+import PaooGame.Items.Hero;
 import PaooGame.RefLinks;
-import PaooGame.UI.Menu.Buttons.AbstractButton;
 
 import java.awt.*;
 
@@ -12,8 +13,10 @@ public class LoadLastSaveButton extends AbstractButton {
         super(r,x,y,w,h);
         this.static_image = Assets.loadLastSave_static;
         this.mouse_over = Assets.loadLastSave_mouseOver;
+        this.invalid = Assets.loadLastSave_invalid;
+        current_image = invalid;
 
-        current_image = static_image;
+        this.isButtonValid = false;
     }
 
 
@@ -25,7 +28,10 @@ public class LoadLastSaveButton extends AbstractButton {
 
     @Override
     void isClicked() {
-
+        refs.GetGame().getDatabase().loadGame();
+        Hero.GetInstance().notifyObservers();
+        Hero.GetInstance().Update();
+        refs.GetGame().SetPlayState();
     }
 
 }

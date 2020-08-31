@@ -8,11 +8,14 @@ import PaooGame.Items.Potions.SpeedPotion;
 import PaooGame.Items.Traps.HoleTrap;
 import PaooGame.Items.Traps.SpikeTrap;
 import PaooGame.Items.Traps.Trap;
+import PaooGame.Items.Weapons.BasicSword;
+import PaooGame.Items.Weapons.Weapon;
 import PaooGame.Observer.GameObserver;
-import PaooGame.Particles.BloodParticle;
 import PaooGame.Particles.Fireball;
+import PaooGame.Particles.Spell;
 import PaooGame.RefLinks;
 import PaooGame.Sound.Sound;
+import PaooGame.States.PlayState;
 import PaooGame.UI.Inventory;
 import PaooGame.UI.InventoryCell;
 import PaooGame.UI.LifeBar;
@@ -39,8 +42,6 @@ public class Hero extends Character///SINGLETON
 
     private Item heldItem;
 
-    private BloodParticle b = new BloodParticle();
-
     LifeBar lifeBar;
 
     protected boolean actionPerformed;
@@ -51,7 +52,7 @@ public class Hero extends Character///SINGLETON
 
     long oldTime = System.currentTimeMillis()/1000;
 
-    protected final long DEFAULT_NO_DAMAGE_TIME_IN_SECONDS = (long) 1.5;
+    protected final long DEFAULT_NO_DAMAGE_TIME_IN_SECONDS = (long) 2;
 
     protected boolean speedPotionDrunk = false;
 
@@ -82,6 +83,9 @@ public class Hero extends Character///SINGLETON
 
         this.normalBounds = new Rectangle((int)x , (int)y , DEFAULT_BOUNDS_WIDTH,DEFAULT_BOUNDS_HEIGHT);
 
+        damaged = true;
+        drawOpacity = true;
+
     }
 
 
@@ -93,16 +97,16 @@ public class Hero extends Character///SINGLETON
     }
 
     public void init() {
-        inventory = new Inventory(refLink, (float) (refLink.GetGame().GetWidth() / 2.0 - (Inventory.NO_OF_SLOTS * InventoryCell.CELL_WIDTH) / 2.0), 950);
-        inventory.putItemInInventory(heldItem);
+        inventory = new Inventory(refLink, (float) (refLink.GetGame().GetWidth() / 2.0 - (Inventory.NO_OF_SLOTS * InventoryCell.CELL_WIDTH) / 2.0), (int)(0.8796*Toolkit.getDefaultToolkit().getScreenSize().height));
     }
 
 
     @Override
     public void Update() {
         if (life <= 0) {
-            refLink.GetGame().getPlayState().setHeroDead(true);
+            isDead = true;
         } else {
+
             GetInput();
             UpdateBoundsRectangle();
             Move();
@@ -119,14 +123,23 @@ public class Hero extends Character///SINGLETON
             refLink.GetGame().getCamera().centerCameraOnEntity(this);
 
 
-            if ((isMovingDown || isMovingUp || isMovingRight || isMovingLeft )&& refLink.GetMap().getRoom().isContainingEnemies())
-                for (GameObserver o : observers)
+            if ((isMovingDown || isMovingUp || isMovingRight || isMovingLeft )&& refLink.GetMap().getRoom().isContainingEnemies()) {
+                for (GameObserver o : observers) {
                     o.update();
+                }
+            }
 
+
+            inventory.Update();
+
+            for(InventoryCell slot : inventory.getInventorySlots()) {
+                if(slot.getItem() != null) {
+                    slot.getItem().SetX((int) (x + 15));
+                    slot.getItem().SetY((int) (y + 30));
+                }
+            }
 
             if (heldItem != null) {
-                heldItem.SetX((int) (x + 15));
-                heldItem.SetY((int) (y + 30));
                 heldItem.Update();
             }
         }
@@ -140,7 +153,7 @@ public class Hero extends Character///SINGLETON
         //verific daca iau damage
         if(!damaged) {
             for (Enemy enemy : refLink.GetMap().getRoom().getEnemies())
-                if (RectangleCollisionDetector.checkCollision(this.getNormalBounds(), enemy.getNormalBounds())) {
+                if (CollisionDetector.checkRectanglesCollision(this.getNormalBounds(), enemy.getNormalBounds())) {
                     this.life -= enemy.getDamage();
                     this.damaged = true;
                     drawOpacity = true;
@@ -148,13 +161,13 @@ public class Hero extends Character///SINGLETON
                 }
 
             for (int i = 0; i < refLink.GetMap().getRoom().getItemList().size(); ++i) {
-                if (refLink.GetMap().getRoom().getItemList().get(i) instanceof Fireball) {
-                    Fireball tempFireball = (Fireball)refLink.GetMap().getRoom().getItemList().get(i);
-                    if (RectangleCollisionDetector.checkCollision(this.getNormalBounds(), tempFireball.getNormalBounds())) {
+                if (refLink.GetMap().getRoom().getItemList().get(i) instanceof Spell) {
+                    Spell spell =(Spell) refLink.GetMap().getRoom().getItemList().get(i);
+                    if (CollisionDetector.checkRectanglesCollision(this.getNormalBounds(), spell.getNormalBounds())) {
                         this.life -= Fireball.DAMAGE;
                         this.damaged = true;
                         drawOpacity = true;
-                        refLink.GetMap().getRoom().removeItem(tempFireball);
+                        refLink.GetMap().getRoom().removeItem(spell);
                         Sound.playSound(Sound.fireBallExplosion);
                         oldTime = System.currentTimeMillis() / 1000;
                     }
@@ -165,18 +178,17 @@ public class Hero extends Character///SINGLETON
         for (Item trap : refLink.GetMap().getRoom().getItemList() ) {
             if(trap instanceof Trap) {
                 Trap tempTrap = (Trap) trap;
-                if (RectangleCollisionDetector.checkCollision(trap.getNormalBounds(), this.getNormalBounds()))
+                if (CollisionDetector.checkRectanglesCollision(trap.getNormalBounds(), this.getNormalBounds()))
                     tempTrap.activate();
 
-                if (RectangleCollisionDetector.checkCollision(trap.getNormalBounds(), this.getNormalBounds()) && tempTrap.isGivingDamage() && tempTrap instanceof SpikeTrap && !damaged) {
+                if (CollisionDetector.checkRectanglesCollision(trap.getNormalBounds(), this.getNormalBounds()) && tempTrap.isGivingDamage() && tempTrap instanceof SpikeTrap && !damaged) {
                     this.life -= tempTrap.getDamage();
                     this.damaged = true;
                     drawOpacity = true;
                     oldTime = System.currentTimeMillis() / 1000;
-
                 }
 
-                if (RectangleCollisionDetector.checkCollision(tempTrap.getNormalBounds(), this.getNormalBounds()) && tempTrap instanceof HoleTrap && !damaged) {
+                if (CollisionDetector.checkIfSecondRectangleContainsFirst(  this.getNormalBounds(),tempTrap.getNormalBounds()) && tempTrap instanceof HoleTrap && !damaged) {
                     this.life = 0;
                     this.damaged = true;
                     drawOpacity = true;
@@ -246,7 +258,7 @@ public class Hero extends Character///SINGLETON
                 for (Item chest : refLink.GetMap().getRoom().getItemList()) {
                     if (chest instanceof Chest) {
                         Chest tempChest = (Chest)chest;
-                        if (RectangleCollisionDetector.checkCollision(this.getNormalBounds(), chest.getNormalBounds()) && !tempChest.isChestOpened()) {
+                        if (CollisionDetector.checkRectanglesCollision(this.getNormalBounds(), chest.getNormalBounds()) && !tempChest.isChestOpened()) {
                             tempChest.openChest();
                             actionPerformed = true;
                             break;
@@ -255,18 +267,33 @@ public class Hero extends Character///SINGLETON
                 }
 
             if(!actionPerformed)
-                for(Item item : refLink.GetMap().getDiscardedItems()) {
-                    if (item != null && RectangleCollisionDetector.checkCollision(this.getNormalBounds(), item.getDroppedBounds())) {
+                for(Item item : refLink.GetMap().getRoom().getItemList()) {
+                 if(item instanceof Potion || item instanceof Weapon || item instanceof Key)
+                    if (CollisionDetector.checkRectanglesCollision(this.getNormalBounds(), item.getDroppedBounds())) {
                         if(this.inventory.isInventoryFull()){
                             this.inventory.putItemInInventory(item);
+                            refLink.GetMap().getRoom().removeItem(item);
                             this.setHeldItem();
                             refLink.GetMap().removeItemFromDiscarded(item);
+                            actionPerformed = true;
                             break;
                         }
                     }
                 }
 
-        } else {
+            if(!actionPerformed) {
+                if (refLink.GetMap().imInTheFirstRoom() && CollisionDetector.checkIfSecondRectangleContainsFirst(this.getNormalBounds(), refLink.GetMap().getRoom().getNextLevelDoor().getNormalBounds()) && heldItem instanceof Key) {
+                    PlayState.selectNextLevel();
+                    refLink.GetMap().resetMap();
+                    heldItem = null;
+                    inventory.removeSelectedItem();
+                    this.reset();
+                    PlayState.signalLevelHasStarted();
+                }
+            }
+
+        }
+        else {
             actionPerformed = false;
         }
 
@@ -274,8 +301,6 @@ public class Hero extends Character///SINGLETON
             inventory.discardSelectedItem();
             this.heldItem = null;
         }
-
-
     }
 
     @Override
@@ -308,8 +333,8 @@ public class Hero extends Character///SINGLETON
         if (heldItem != null)
             heldItem.Draw(g);
 
-        g.setColor(Color.green);
-        g.drawRect((int) (normalBounds.x - refLink.GetGame().getCamera().getXOffset() + collision_offset_x ), (int) (normalBounds.y - refLink.GetGame().getCamera().getYOffset() + collision_offset_y ), normalBounds.width , normalBounds.height );
+        //g.setColor(Color.green);
+       // g.drawRect((int) (normalBounds.x - refLink.GetGame().getCamera().getXOffset() + collision_offset_x ), (int) (normalBounds.y - refLink.GetGame().getCamera().getYOffset() + collision_offset_y ), normalBounds.width , normalBounds.height );
 
         lifeBar.Draw(g);
 
@@ -376,13 +401,22 @@ public class Hero extends Character///SINGLETON
     }
 
     public void reset() {
-        instance = null;
+        this.x = (float)(Toolkit.getDefaultToolkit().getScreenSize().width/2.0);
+        this.y =  (float)(Toolkit.getDefaultToolkit().getScreenSize().height/2.0);
+        this.life = DEFAULT_LIFE;
+        heldItem = null;
+        UpdateBoundsRectangle();
+        notifyObservers();
+        isDead = false;
+        inventory.resetInventory();
+        heldItem = new BasicSword(refLink,0,0);
+        inventory.putItemInInventory(heldItem);
+
+        damaged = true;
+        drawOpacity = true;
+        oldTime = System.currentTimeMillis()/1000;
     }
 
-    public void updateObservers(){
-        for (GameObserver o : observers)
-            o.update();
-    }
 
     public void heal(int amount){
         if(amount > 0 && amount + life <= MAX_LIFE)
@@ -391,6 +425,31 @@ public class Hero extends Character///SINGLETON
 
     public void takeSpeedBurst(float amount){
         speed += amount;
+    }
+
+    public boolean isHeroDead(){
+        return isDead;
+    }
+
+
+    public void resetOnDeath() {
+        this.x = (float)(Toolkit.getDefaultToolkit().getScreenSize().width/2.0);
+        this.y =  (float)(Toolkit.getDefaultToolkit().getScreenSize().height/2.0);
+        this.life = DEFAULT_LIFE;
+        inventory.dropAllItems();
+        inventory.resetInventory();
+        heldItem = null;
+        UpdateBoundsRectangle();
+        notifyObservers();
+        isDead = false;
+
+        inventory.dropAllItems();
+
+
+        damaged = true;
+        drawOpacity = true;
+        oldTime = System.currentTimeMillis()/1000;
+
     }
 
 }

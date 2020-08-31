@@ -19,7 +19,7 @@ public class GameWindow
 
     private Canvas  canvas;         /*!< "panza/tablou" in care se poate desena*/
 
-    private boolean fullscreenMode = true;
+    private static boolean fullscreenMode = true;
 
     /*! \fn GameWindow(String title, int width, int height)
             \brief Constructorul cu parametri al clasei GameWindow
@@ -59,7 +59,7 @@ public class GameWindow
         wndFrame = new JFrame(wndTitle);
 
         if(fullscreenMode) {
-            wndFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            wndFrame.setState(Frame.NORMAL);
             wndFrame.setUndecorated(true);
         }
 
@@ -143,10 +143,10 @@ public class GameWindow
     }
 
     public void setWindowedMode(){
- 
+        fullscreenMode = false;
     }
 
     public void setFullscreenMode(){
-
+        fullscreenMode = true;
     }
 }

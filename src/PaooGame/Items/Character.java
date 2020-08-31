@@ -7,6 +7,7 @@ import PaooGame.Tiles.Tile;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 
 public abstract class Character extends Item
@@ -43,6 +44,8 @@ public abstract class Character extends Item
     protected Point move;
 
     protected BloodParticle blood;
+
+    protected boolean first_time_draw = true;
 
     public Character(RefLinks refLink, float x, float y, int width, int height)
     {
@@ -98,15 +101,35 @@ public abstract class Character extends Item
 
 
     protected int nextPos(){
-        wait++;
-        if(wait > 5) {
-            wait = 0;
-            if (currentPos < image.length - 1)
-                return currentPos++;
-            else
-                return currentPos = 0;
+        if(first_time_draw){
+            Random rand = new Random();
+            currentPos = rand.nextInt(image.length);
+            first_time_draw = false;
+        }else {
+            wait++;
+            if (wait > 5) {
+                wait = 0;
+                if (currentPos < image.length - 1)
+                    return currentPos++;
+                else
+                    return currentPos = 0;
+            }
         }
         return  currentPos;
+    }
+
+    public boolean isMoving(){
+        return isMovingDown || isMovingUp || isMovingRight || isMovingLeft;
+    }
+    public int getCurrentLife(){
+        return this.life;
+    }
+
+    public void setLife(int value){
+        if(value > 0){
+            this.life = value;
+        }
+
     }
 
 }

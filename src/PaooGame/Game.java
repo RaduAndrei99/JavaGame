@@ -1,5 +1,8 @@
 package PaooGame;
 
+import PaooGame.Database.GameDatabase;
+import PaooGame.Database.ProxySQLiteDatabase;
+import PaooGame.ErrorHandler.ErrorScreenPrinter;
 import PaooGame.GameWindow.Camera;
 import PaooGame.GameWindow.GameWindow;
 import PaooGame.Graphics.Assets;
@@ -12,6 +15,7 @@ import PaooGame.States.*;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.io.*;
 
 /*! \class Game
     \brief Clasa principala a intregului proiect. Implementeaza Game - Loop (Update -> Draw)
@@ -35,7 +39,7 @@ import java.awt.image.BufferStrategy;
 
     Interfata este utilizata pentru a crea un nou fir de executie avand ca argument clasa Game.
     Clasa Game trebuie sa aiba definita metoda "public void run()", metoda ce va fi apelata
-    in noul thread(fir de executie). Mai multe explicatii veti primi la curs.
+    in noul thread(fir de executie).
 
     In mod obisnuit aceasta clasa trebuie sa contina urmatoarele:
         - public Game();            //constructor
@@ -71,15 +75,18 @@ public class Game implements Runnable {
     private State preGameState;         /*!< Referinta catre partea de new/load game.*/
     private State menuState;            /*!< Referinta catre menu.*/
     private State settingsState;        /*!< Referinta catre setari.*/
+    private State endState;        /*!< Referinta catre end.*/
     private State aboutState;           /*!< Referinta catre about.*/
 
-    private State lastState;
+    GameDatabase database;
 
     private KeyManager keyManager;      /*!< Referinta catre obiectul care gestioneaza intrarile din partea utilizatorului.*/
     private GameMouseListener mouseManager;
     private RefLinks refLink;            /*!< Referinta catre un obiect a carui sarcina este doar de a retine diverse referinte pentru a fi usor accesibile.*/
 
     private PathFinderBFS pathFinder;
+
+    private ErrorScreenPrinter errorPrinter;
 
     /*! \fn public Game(String title, int width, int height)
         \brief Constructor de initializare al clasei Game.
@@ -91,6 +98,9 @@ public class Game implements Runnable {
         \param width Latimea ferestrei in pixeli.
         \param height Inaltimea ferestrei in pixeli.
      */
+
+
+
     public Game(String title, int width, int height) {
         /// Obiectul GameWindow este creat insa fereastra nu este construita
         /// Acest lucru va fi realizat in metoda init() prin apelul
@@ -110,6 +120,7 @@ public class Game implements Runnable {
 
      */
     private void InitGame() {
+        errorPrinter = new ErrorScreenPrinter();
         /// Este construita fereastra grafica.
         wnd.BuildGameWindow();
         ///Sa ataseaza ferestrei managerul de tastatura pentru a primi evenimentele furnizate de fereastra.
@@ -126,8 +137,7 @@ public class Game implements Runnable {
         wnd.GetCanvas().addMouseWheelListener(mouseManager);
 
 
-        camera = new Camera(this.refLink, (int)(0.11 *Toolkit.getDefaultToolkit().getScreenSize().width), (int)(0.22 * Toolkit.getDefaultToolkit().getScreenSize().height), (int)(0.78 *  Toolkit.getDefaultToolkit().getScreenSize().width), (int)(0.55 *  Toolkit.getDefaultToolkit().getScreenSize().height));
-
+        camera = new Camera(this.refLink, (int)(0.11 *Toolkit.getDefaultToolkit().getScreenSize().width), (int)(0.22 * Toolkit.getDefaultToolkit().getScreenSize().height), (int)(0.78 *  Toolkit.getDefaultToolkit().getScreenSize().width), (int)(0.5 *  Toolkit.getDefaultToolkit().getScreenSize().height));
 
         pathFinder = new PathFinderBFS(refLink);
 
@@ -137,8 +147,13 @@ public class Game implements Runnable {
         settingsState = new SettingsState(refLink);
         aboutState = new AboutState(refLink);
         preGameState = new PreGameState(refLink);
+        endState = new EndState(refLink);
         ///Seteaza starea implicita cu care va fi lansat programul in executie
         State.SetState(menuState);
+
+        database =  new ProxySQLiteDatabase("gameDatabase.db", refLink);
+        database.loadDatabase();
+        database.loadSettings();
     }
 
     /*! \fn public void run()
@@ -166,13 +181,18 @@ public class Game implements Runnable {
             if ((curentTime - oldTime) > timeFrame) {
 
                 /// Actualizeaza pozitiile elementelor
-                Update();
+                try{
+                    Update();
+                }catch (Exception e){
+                    ErrorScreenPrinter.addErrorMessage("Error updating the game! - " + e.getMessage());
+                }
+
                 /// Deseneaza elementele grafica in fereastra.
-
-
-                Draw();
-
-                //System.out.println((curentTime-oldTime)/1000000);
+                try {
+                    Draw();
+                }catch (Exception e){
+                    ErrorScreenPrinter.addErrorMessage("Error displaying the graphics! - " + e.getMessage());
+                }
 
                 oldTime = curentTime;
 
@@ -207,6 +227,10 @@ public class Game implements Runnable {
         if (runState) {
             /// Actualizare stare thread
             runState = false;
+
+
+
+
             /// Metoda join() arunca exceptii motiv pentru care trebuie incadrata intr-un block try - catch.
             try {
                 /// Metoda join() pune un thread in asteptare panca cand un altul isi termina executie.
@@ -273,8 +297,11 @@ public class Game implements Runnable {
         ///Trebuie obtinuta starea curenta pentru care urmeaza a se actualiza starea, atentie trebuie sa fie diferita de null.
         if (State.GetState() != null) {
             ///Actualizez starea curenta a jocului daca exista
+
             State.GetState().Draw(g);
             camera.draw(g);
+
+            errorPrinter.Draw(g);
 
         }
         /// end operatie de desenare
@@ -319,6 +346,7 @@ public class Game implements Runnable {
 
     public void SetMenuState() {
         State.SetState(menuState);
+
     }
 
     public void SetSettingsState() {
@@ -341,9 +369,16 @@ public class Game implements Runnable {
         return playState;
     }
 
-    public void resetPlayState() {
-        playState = null;
-        playState = new PlayState(refLink);
+    public GameDatabase getDatabase(){
+        return database;
     }
 
+    public void resetRunState(){
+        runState = false;
+    }
+
+    public void setEndState(){
+        State.SetState(endState);
+
+    }
 }
